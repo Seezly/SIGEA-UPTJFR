@@ -1,0 +1,780 @@
+/*
+	BASE TABLES
+*/
+
+Table users {
+  id bigint [pk]
+  name varchar(100)
+  id_prefix char
+  id_number varchar(10) [unique]
+  phone_number varchar(11) [unique]
+  email varchar(255) [unique]
+  status varchar(8) // ACTIVE, INACTIVE
+  password varchar(255)
+  email_verified_at datetime
+  last_login_at datetime
+  remember_token varchar(255)
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table roles {
+  id bigint [pk]
+  name varchar(100)
+  slug varchar(50)
+  description varchar(255)
+  status varchar(8) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table modules {
+  id bigint [pk]
+  name varchar(100)
+  slug varchar(50)
+  description varchar(255)
+  status varchar(8) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table permissions {
+  id bigint [pk]
+  module_id bigint [not null]
+  name varchar(100)
+  slug varchar(50)
+  description varchar(255)
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table role_users {
+  role_id bigint [pk, unique]
+  user_id bigint [pk, unique]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table permission_role {
+  permission_id bigint [pk, unique]
+  role_id bigint [pk, unique]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table audit_logs {
+  id bigint [pk]
+  user_id bigint [pk, null]
+  action varchar(100)
+  module_id bigint [not null]
+  auditable_type varchar(100)
+  auditable_id bigint [unique]
+  old_values JSON
+  new_values JSON
+  ip_address varchar(16)
+  user_agent varchar(100)
+  created_at datetime
+}
+
+/*
+	APPLICANT TABLES
+*/
+
+Table applicant_profiles {
+  id bigint [pk]
+  user_id bigint [pk, unique]
+  first_name varchar(100)
+  second_name varchar(100)
+  middle_name varchar(100)
+  last_name varchar(100)
+  full_name varchar(255)
+  address text
+  birth_date datetime
+  gender varchar(10)
+  curriculum_vitae bigint [unique]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table work_experience {
+  id bigint [pk]
+  applicant_profile_id bigint [not null]
+  company_name varchar(255)
+  position varchar(255)
+  start_date datetime
+  end_date datetime
+  is_current bool
+  location varchar(255)
+  description varchar(255)
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table education_records {
+  id bigint [pk]
+  applicant_profile_id bigint [not null]
+  institution_name varchar(255)
+  degree_name varchar(255)
+  field_of_study varchar(255)
+  start_date datetime
+  end_date datetime
+  description varchar(255)
+  status varchar(10) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table skills {
+  id bigint [pk]
+  name varchar(100)
+  slug varchar(100)
+  status varchar(10) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table applicant_skills {
+  skill_id bigint [pk, unique]
+  applicant_profile_id bigint [pk, unique]
+  level varchar(15)
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table curriculum_vitaes {
+  id bigint [pk]
+  applicant_profile_id bigint [not null]
+  file_name varchar(255)
+  file_path varchar(255)
+  mime_type varchar(20)
+  file_size int
+  is_current bool
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table documents {
+  id bigint [pk]
+  user_id bigint [not null]
+  document_type varchar(100)
+  file_name varchar(255)
+  file_path varchar(255)
+  mime_type varchar(20)
+  file_size int
+  verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
+  verified_by bigint
+  verified_at datetime
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+/*
+	JOB TABLES
+*/
+
+Table areas {
+  id bigint [pk]
+  name varchar(100)
+  code varchar(10) [unique]
+  description varchar(255)
+  status varchar(10) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table positions {
+  id bigint [pk]
+  area_id bigint [not null]
+  name varchar(100)
+  code varchar(10) [unique]
+  description varchar(255)
+  status varchar(10) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table job_categories {
+  id bigint [pk]
+  name varchar(100)
+  slug varchar(100)
+  description varchar(255)
+  status varchar(10) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table jobs {
+  id bigint [pk]
+  area_id bigint [not null]
+  position_id bigint [not null]
+  category_id bigint [not null]
+  created_by bigint [not null]
+  title varchar(255)
+  description varchar(255)
+  requirements text
+  responsibilities text
+  employment_type varchar(100)
+  vacancies_count int
+  status varchar(10) // ACTIVE, INACTIVE
+  published_at datetime
+  application_deadline datetime
+  closed_at datetime
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table job_requirements {
+  id bigint [pk]
+  job_id bigint [not null]
+  requirement_type varchar(100)
+  description varchar(255)
+  weight float
+  is_required bool
+  created_at datetime
+  updated_at datetime
+}
+
+Table job_publications {
+  id bigint [pk]
+  job_id bigint [not null]
+  channel varchar(255)
+  published_at datetime
+  unpublished_at datetime
+  status varchar(10) // ACTIVE, INACTIVE
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table job_favorites {
+  applicant_profile_id bigint
+  job_id bigint
+  created_at datetime
+
+  indexes {
+	(job_id, applicant_profile_id) [unique, pk]
+  }
+}
+
+
+/*
+	INTERVIEW TABLES
+*/
+
+Table recruitment_statuses {
+  id bigint [pk]
+  name varchar(100)
+  slug varchar(100)
+  is_initial bool
+  is_final bool
+  status varchar(10)
+  sort_order varchar(4)
+  created_at datetime
+  updated_at datetime
+}
+
+Table applications {
+  id bigint [pk]
+  job_id bigint [not null]
+  applicant_profile_id bigint [not null]
+  current_status_id bigint [not null]
+  procedure_id bigint [not null]
+  applied_at datetime
+  withdrawn_at datetime
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+	(job_id, applicant_profile_id) [unique]
+  }
+}
+
+Table application_status_history {
+  id bigint [pk]
+  application_id bigint [not null]
+  from_status_id bigint [not null]
+  to_status_id bigint [not null]
+  changed_by bigint [not null]
+  reason text
+  created_at datetime
+}
+
+Table selection_procedures {
+  id bigint [pk]
+  name varchar(100)
+  description varchar(255)
+  status varchar(10)
+  created_at datetime
+  updated_at datetime
+}
+
+Table procedure_stages {
+  id bigint [pk]
+  selection_procedures_id bigint [not null]
+  name varchar(100)
+  description varchar(255)
+  stage_type varchar(20)
+  sort_order varchar(4)
+}
+
+Table application_stage_history {
+  id bigint [pk]
+  application_id bigint [not null]
+  procedure_stage_id bigint [not null]
+  status varchar(10)
+  started_at datetime
+  completed_at datetime
+  completed_by bigint [not null]
+  notes text
+  created_at datetime
+  updated_at datetime
+}
+
+/*
+	HIRING TABLES
+*/
+
+Table interviews {
+  id bigint [pk]
+  application_id bigint [not null]
+  procedure_stage_id bigint
+  scheduled_by bigint [not null]
+  scheduled_at datetime
+  duration_minutes int
+  location varchar(255)
+  meeting_url varchar(255)
+  notes text
+  created_at datetime
+  updated_at datetime
+}
+
+Table interview_participants {
+  id bigint [pk]
+  interview_id bigint [not null]
+  user_id bigint [not null]
+  role bigint
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+	(interview_id, user_id) [unique]
+  }
+}
+
+Table interview_results {
+  id bigint [pk]
+  interview_id bigint [unique]
+  result varchar(12)
+  score int
+  comments text
+  recorded_by bigint [not null]
+  recorded_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table interview_observations {
+  id bigint [pk]
+  interview_id bigint [unique]
+  author_id bigint [not null]
+  observation text
+  created_at datetime
+  updated_at datetime
+}
+
+/*
+	FOLLOW-UP TABLES
+*/
+
+Table hiring_decisions {
+  id bigint [pk]
+  application_id bigint [unique]
+  decision varchar(20)
+  reason varchar(255)
+  decided_by bigint [not null]
+  decided_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table employment_contracts {
+  id bigint [pk]
+  employee_id bigint [not null]
+  contract_type varchar(20)
+  start_date datetime
+  end_date datetime
+  position_id bigint [not null]
+  area_id bigint [not null]
+  salary decimal(12,2)
+  status varchar(10)
+  document_id bigint [not null]
+  created_at datetime
+  updated_at datetime
+}
+
+Table employees {
+  id bigint [pk]
+  user_id bigint [unique]
+  employee_code varchar(16) [unique]
+  hire_date datetime
+  status varchar(20)
+  current_position_id bigint [not null]
+  current_area_id bigint [not null]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table employee_records {
+  id bigint [pk]
+  employee_id bigint [unique]
+  record_type varchar(50) // VACATION, SICK LEAVE, TRAINING, DISCIPLINARY ACTION, PROMOTION, TRANSFER, ABSENCE, TERMINATION, COMPLAINT, PERFORMANCE, OTHER
+  record_value json
+  status varchar(10) // PENDING, APPROVED, REJECTED, COMPLETED, DISMISSED
+  evidence_id bigint [not null]
+  created_at datetime
+  updated_at datetime
+}
+
+Table employee_documents {
+  id bigint [pk]
+  employee_id bigint [not null]
+  document_type varchar(100)
+  file_name varchar(255)
+  file_path varchar(255)
+  mime_type varchar(20)
+  file_size int
+  verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
+  verified_by bigint
+  verified_at datetime
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+/*
+	EVALUATION TABLES
+*/
+
+Table evaluation_criteria {
+  id bigint [pk]
+  name varchar(100)
+  description varchar(255)
+  scale_min float
+  scale_max float
+  weight float
+  status varchar(10)
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table evaluations {
+  id bigint [pk]
+  name varchar(100)
+  description varchar(255)
+  period_start datetime
+  period_end datetime
+  status varchar(10)
+  created_by bigint [not null]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table evaluation_assignments {
+  id bigint [pk]
+  evaluation_id bigint [not null, unique]
+  employee_id bigint [not null, unique]
+  evaluator_id bigint [not null, unique]
+  status varchar(10)
+  assigned_at datetime
+  assigned_by bigint [not null]
+  completed_at datetime
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+	(evaluation_id, employee_id, evaluator_id) [unique]
+  }
+}
+
+Table evaluation_results {
+  id bigint [pk]
+  evaluation_assignments_id bigint [not null, unique]
+  criteria_id bigint [not null, unique]
+  score float
+  comment varchar(255)
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+	(evaluation_assignments_id, criteria_id) [unique]
+  }
+}
+
+Table evaluation_observations {
+  id bigint [pk]
+  evaluation_id bigint [not null]
+  employee_id bigint [not null]
+  observation text
+  author_id bigint [not null]
+  created_at datetime
+  updated_at datetime
+}
+
+/*
+	REPORTS AND ANALYTICS TABLES
+*/
+
+Table indicators {
+  id bigint [pk]
+  name varchar(100)
+  slug varchar(100)
+  description varchar(255)
+  formula varchar(255)
+  unit varchar(4)
+  status varchar(10)
+  created_at datetime
+  updated_at datetime
+}
+
+Table metrics {
+  id bigint [pk]
+  indicator_id bigint [not null]
+  period_start datetime
+  period_end datetime
+  value float
+  dimensions json
+  calculated_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table report_templates {
+  id bigint [pk]
+  name varchar(100)
+  description varchar(255)
+  definition json
+  status varchar(10)
+  created_at datetime
+  updated_at datetime
+}
+
+Table report_runs {
+  id bigint [pk]
+  template_id bigint [not null]
+  requested_by bigint [not null]
+  parameters json
+  status varchar(10)
+  file_path varchar(255)
+  started_at datetime
+  completed_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table historical_reports {
+  id bigint [pk]
+  report_type varchar(100)
+  period_start datetime
+  period_end datetime
+  snapshot json
+  generated_by bigint [not null]
+  generated_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table export_configs {
+  id bigint [pk]
+  name varchar(100)
+  format varchar(6)
+  max_rows int
+  options json
+  status varchar(10)
+  created_at datetime
+  updated_at datetime
+}
+
+/*
+	CONFIGURATION AND BACKUP TABLES
+*/
+
+Table system_settings {
+  id bigint [pk]
+  key varchar(255) [unique]
+  value varchar(255)
+  value_type varchar(100)
+  is_public bool
+  created_at datetime
+  updated_at datetime
+}
+
+Table institutional_settings {
+  id bigint [pk]
+  key varchar(255) [unique]
+  value varchar(255)
+  value_type varchar(100)
+  created_at datetime
+  updated_at datetime
+}
+
+Table module_settings {
+  id bigint [pk]
+  module varchar(255)
+  key varchar(255)
+  value varchar(255)
+  value_type varchar(100)
+  status varchar(10)
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+	(module, key) [unique]
+  }
+}
+
+Table hr_settings {
+  id bigint [pk]
+  key varchar(255) [unique]
+  value varchar(255)
+  value_type varchar(100)
+  created_at datetime
+  updated_at datetime
+}
+
+Table backup_runs {
+  id bigint [pk]
+  requested_by bigint [not null]
+  type varchar(100)
+  status varchar(10)
+  file_path varchar(100)
+  size_bytes int
+  checksum varchar(255)
+  started_at datetime
+  completed_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table backup_verifications {
+  id bigint [pk]
+  backup_run_id bigint [not null]
+  verification_type varchar(100)
+  status varchar(10)
+  details json
+  verified_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table restoration_runs {
+  id bigint [pk]
+  backup_run_id bigint [not null]
+  requested_by bigint [not null]
+  status varchar(10)
+  target_environment varchar(255)
+  started_at datetime
+  completed_at datetime
+  details json
+  created_at datetime
+  updated_at datetime
+}
+
+/*
+	REFERENCES
+*/
+
+Ref: role_users.role_id - roles.id
+Ref: role_users.user_id - users.id
+Ref: modules.id < permissions.module_id
+Ref: permission_role.permission_id - permissions.id
+Ref: permission_role.role_id - roles.id
+Ref: audit_logs.module_id > modules.id
+Ref: applicant_profiles.user_id - users.id
+Ref: work_experience.applicant_profile_id > applicant_profiles.id
+Ref: education_records.applicant_profile_id > applicant_profiles.id
+Ref: applicant_skills.applicant_profile_id - applicant_profiles.id
+Ref: applicant_skills.skill_id - skills.id
+Ref: curriculum_vitaes.applicant_profile_id > applicant_profiles.id
+Ref: documents.user_id > users.id
+Ref: documents.verified_by >? users.id
+Ref: positions.area_id > areas.id
+Ref: jobs.area_id > areas.id
+Ref: jobs.category_id > job_categories.id
+Ref: jobs.position_id > positions.id
+Ref: jobs.created_by > users.id
+Ref: job_requirements.job_id > jobs.id
+Ref: job_publications.job_id > jobs.id
+Ref: job_favorites.job_id > jobs.id
+Ref: job_favorites.applicant_profile_id > applicant_profiles.id
+Ref: applications.applicant_profile_id > applicant_profiles.id
+Ref: applications.job_id > jobs.id
+Ref: applications.current_status_id > recruitment_statuses.id
+Ref: applications.procedure_id > procedure_stages.id
+Ref: application_status_history.application_id > applications.id
+Ref: application_status_history.from_status_id > recruitment_statuses.id
+Ref: application_status_history.to_status_id > recruitment_statuses.id
+Ref: application_status_history.changed_by > users.id
+Ref: procedure_stages.selection_procedures_id > selection_procedures.id
+Ref: application_stage_history.application_id > applications.id
+Ref: application_stage_history.procedure_stage_id > procedure_stages.id
+Ref: application_stage_history.completed_by > users.id
+Ref: interviews.application_id > applications.id
+Ref: interviews.procedure_stage_id >? procedure_stages.id
+Ref: interviews.scheduled_by > users.id
+Ref: interview_participants.interview_id > interviews.id
+Ref: interview_participants.user_id > users.id
+Ref: interview_results.interview_id - interviews.id
+Ref: interview_results.recorded_by > users.id
+Ref: interview_observations.interview_id - interviews.id
+Ref: interview_observations.author_id > users.id
+Ref: hiring_decisions.application_id - applications.id
+Ref: hiring_decisions.decided_by > users.id
+Ref: employment_contracts.employee_id > employees.id
+Ref: employment_contracts.document_id > documents.id
+Ref: employment_contracts.position_id > positions.id
+Ref: employment_contracts.area_id > areas.id
+Ref: employees.user_id - users.id
+Ref: employees.current_area_id > areas.id
+Ref: employees.current_position_id > positions.id
+Ref: employee_records.employee_id - employees.id
+Ref: employee_records.evidence_id > employee_documents.id
+Ref: employee_documents.employee_id > employees.id
+Ref: employee_documents.verified_by >? users.id
+Ref: evaluations.created_by > users.id
+Ref: evaluation_assignments.evaluation_id - evaluations.id
+Ref: evaluation_assignments.employee_id - employees.id
+Ref: evaluation_assignments.evaluator_id - employees.id
+Ref: evaluation_assignments.assigned_by > users.id
+Ref: evaluation_results.evaluation_assignments_id - evaluation_assignments.id
+Ref: evaluation_results.criteria_id - evaluation_criteria.id
+Ref: evaluation_observations.evaluation_id > evaluations.id
+Ref: evaluation_observations.employee_id > employees.id
+Ref: evaluation_observations.author_id > users.id
+Ref: metrics.indicator_id > indicators.id
+Ref: report_runs.template_id > report_templates.id
+Ref: report_runs.requested_by > users.id
+Ref: historical_reports.generated_by > users.id
+Ref: backup_runs.requested_by > users.id
+Ref: backup_verifications.backup_run_id > backup_runs.id
+Ref: restoration_runs.backup_run_id > backup_runs.id
+Ref: restoration_runs.requested_by > users.id
