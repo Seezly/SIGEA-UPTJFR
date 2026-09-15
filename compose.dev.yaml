@@ -64,13 +64,13 @@ services:
     mysql:
         image: mysql:26.7
         restart: unless-stopped
-        user: root
         ports:
             - '${MYSQL_PORT:-3306}:3306'
         environment:
-            - MYSQL_DB=sigea_development
+            - MYSQL_DATABASE=sigea_development
             - MYSQL_USER=laravel
             - MYSQL_PASSWORD=secret
+            - MYSQL_ROOT_PASSWORD=secret
         volumes:
             - mysql-data-development:/var/lib/mysql
         networks:

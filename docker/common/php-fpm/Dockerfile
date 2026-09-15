@@ -123,9 +123,9 @@ RUN if getent group ${GID}; then \
         group_name=www; \
     fi
 
-# Actualizar dinamicamente php-fpm para usar el nuevo usuario y grupo
-RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf && \
-    sed -i "s/group = www-data/group = $group_name/g" /usr/local/etc/php-fpm.d/www.conf
+# Desactivar la directiva user y group para evitar el aviso de PHP-FPM
+RUN sed -i "s/^user =/;/g" /usr/local/etc/php-fpm.d/www.conf && \
+    sed -i "s/^group =/;/g" /usr/local/etc/php-fpm.d/www.conf
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
