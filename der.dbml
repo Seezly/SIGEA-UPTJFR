@@ -732,7 +732,7 @@ Ref: permission_role.permission_id - permissions.id
 Ref: permission_role.role_id - roles.id
 Ref: audit_logs.module_id > modules.id
 Ref: applicant_profiles.user_id - users.id
-Ref: work_experience.applicant_profile_id > applicant_profiles.id
+Ref: work_experiences.applicant_profile_id > applicant_profiles.id
 Ref: education_records.applicant_profile_id > applicant_profiles.id
 Ref: applicant_skills.applicant_profile_id - applicant_profiles.id
 Ref: applicant_skills.skill_id - skills.id
