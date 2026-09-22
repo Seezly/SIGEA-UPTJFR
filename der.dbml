@@ -390,7 +390,7 @@ Table interview_participants {
   id bigint [pk]
   interview_id bigint [not null]
   user_id bigint [not null]
-  role bigint
+  role_id bigint
   created_at datetime
   updated_at datetime
 
