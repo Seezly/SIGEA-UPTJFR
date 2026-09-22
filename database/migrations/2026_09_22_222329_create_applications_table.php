@@ -72,6 +72,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('selection_procedures');
+        Schema::dropIfExists('procedure_stages');
         Schema::dropIfExists('applications');
+        Schema::dropIfExists('application_status_history');
+        Schema::dropIfExists('application_stage_history');
     }
 };
