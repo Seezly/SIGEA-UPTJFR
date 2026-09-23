@@ -660,7 +660,7 @@ Table institutional_settings {
 
 Table module_settings {
   id bigint [pk]
-  module varchar(255)
+  module bigint [not null]
   key varchar(255)
   value varchar(255)
   value_type varchar(100)
@@ -796,6 +796,7 @@ Ref: metrics.indicator_id > indicators.id
 Ref: report_runs.template_id > report_templates.id
 Ref: report_runs.requested_by > users.id
 Ref: historical_reports.generated_by > users.id
+Ref: module_settings.module > modules.id
 Ref: backup_runs.requested_by > users.id
 Ref: backup_verifications.backup_run_id > backup_runs.id
 Ref: restoration_runs.backup_run_id > backup_runs.id
