@@ -225,8 +225,8 @@ Table positions {
 
 Table job_categories {
   id bigint [pk]
-  name varchar(100)
-  slug varchar(100)
+  name varchar(100) [unique]
+  slug varchar(100) [unique]
   description varchar(255)
   status varchar(10) // ACTIVE, INACTIVE
   created_at datetime
@@ -264,6 +264,7 @@ Table job_requirements {
   is_required bool
   created_at datetime
   updated_at datetime
+  deleted_at datetime
 }
 
 Table job_publications {
@@ -282,12 +283,12 @@ Table job_favorites {
   applicant_profile_id bigint
   job_id bigint
   created_at datetime
+  updated_at datetime
 
   indexes {
 	(job_id, applicant_profile_id) [unique, pk]
   }
 }
-
 
 /*
 	INTERVIEW TABLES
