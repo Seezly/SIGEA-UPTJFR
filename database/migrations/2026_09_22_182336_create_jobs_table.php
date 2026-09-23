@@ -58,7 +58,7 @@ return new class extends Migration
             $table->foreignId('available_job_id')->constrained();
             $table->timestamps();
 
-            $table->primary(['applicant_profile_id', 'job_id']);
+            $table->primary(['applicant_profile_id', 'available_job_id']);
         });
     }
 
