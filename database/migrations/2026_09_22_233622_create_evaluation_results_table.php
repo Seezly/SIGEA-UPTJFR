@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('evaluation_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('evaluation_assignment_id')->constrained();
-            $table->foreignId('evaluation_criteria_id')->constrained();
+            $table->foreignId('evaluation_criteria_id')->constrained('evaluation_criteria', 'id');
             $table->float('score');
             $table->string('comment');
             $table->timestamps();
 
-            $table->unique(['evaluation_assignment_id', 'evaluation_criteria_id']);
+            $table->unique(['evaluation_assignment_id', 'evaluation_criteria_id'], "unique_assignment_criteria");
         });
     }
 
