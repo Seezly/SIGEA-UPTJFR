@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->constrained();
+            $table->foreignId('people_id')->constrained();
             $table->string('document_type', 100);
             $table->string('file_name');
             $table->string('file_path');
@@ -27,7 +27,7 @@ return new class extends Migration
 
         Schema::create('applicant_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->unique()->constrained();
+            $table->foreignId('people_id')->unique()->constrained();
             $table->foreignId('current_curriculum_vitae_id')->nullable()->unique()->constrained('documents')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
@@ -40,5 +40,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('applicant_profiles');
+        Schema::dropIfExists('documents');
     }
 };
