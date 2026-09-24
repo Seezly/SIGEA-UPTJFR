@@ -33,7 +33,7 @@ return new class extends Migration
 
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_id')->constrained();
+            $table->foreignId('available_job_id')->constrained();
             $table->foreignId('applicant_profile_id')->constrained();
             $table->foreignId('current_status_id')->constrained('recruitment_statuses', 'id');
             $table->foreignId('procedure_stage_id')->constrained();
@@ -41,14 +41,14 @@ return new class extends Migration
             $table->timestamp('withdrawn_at');
             $table->timestamps();
 
-            $table->unique(['job_id', 'applicant_profile_id']);
+            $table->unique(['available_job_id', 'applicant_profile_id']);
         });
 
         Schema::create('application_status_history', function (Blueprint $table) {
             $table->id();
             $table->foreignId('application_id')->constrained();
-            $table->foreignId('from_status_id')->constrained('recuitment_statuses', 'id');
-            $table->foreignId('to_status_id')->constrained('recuitment_statuses', 'id');
+            $table->foreignId('from_status_id')->constrained('recruitment_statuses', 'id');
+            $table->foreignId('to_status_id')->constrained('recruitment_statuses', 'id');
             $table->foreignId('changed_by')->constrained('users', 'id');
             $table->text('reason');
             $table->timestamps();
@@ -72,10 +72,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('selection_procedures');
-        Schema::dropIfExists('procedure_stages');
-        Schema::dropIfExists('applications');
         Schema::dropIfExists('application_status_history');
         Schema::dropIfExists('application_stage_history');
+        Schema::dropIfExists('applications');
+        Schema::dropIfExists('procedure_stages');
+        Schema::dropIfExists('selection_procedures');
     }
 };
