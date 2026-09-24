@@ -29,10 +29,10 @@ return new class extends Migration
             $table->string('document_type', 100);
             $table->string('file_name');
             $table->string('file_path');
-            $table->string('myme_type', 20);
+            $table->string('mime_type', 20);
             $table->integer('file_size');
             $table->string('verification_status', 12);
-            $table->foreignId('verified_by')->constrained('users', 'id');
+            $table->foreignId('verified_by')->unique()->constrained('users', 'id');
             $table->timestamp('verified_at');
             $table->timestamps();
             $table->softDeletes();

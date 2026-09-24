@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('interviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('application_id')->constrained();
-            $table->foreignId('procedure_stage_id')->constrained();
+            $table->foreignId('procedure_stage_id')->nullable()->constrained();
             $table->foreignId('scheduled_by')->constrained('users', 'id');
             $table->timestamp('scheduled_at');
             $table->integer('duration_minutes');
@@ -36,7 +36,7 @@ return new class extends Migration
 
         Schema::create('interview_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('interview_id')->constrained();
+            $table->foreignId('interview_id')->unique()->constrained();
             $table->string('result', 12);
             $table->integer('score');
             $table->text('comments');

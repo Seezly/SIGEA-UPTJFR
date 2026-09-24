@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hiring_decisions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('application_id')->constrained();
+            $table->foreignId('application_id')->unique()->constrained();
             $table->string('decision', 20);
             $table->string('reason');
             $table->foreignId('decided_by')->constrained('users', 'id');

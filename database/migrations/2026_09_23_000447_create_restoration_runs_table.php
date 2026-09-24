@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('restorations_runs', function (Blueprint $table) {
+        Schema::create('restoration_runs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('backup_run_id')->constrained();
             $table->foreignId('requested_by')->constrained('users', 'id');
