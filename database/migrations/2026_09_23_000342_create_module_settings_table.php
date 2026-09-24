@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->unique(['module', 'key']);
+            $table->unique(['module_id', 'key']);
         });
     }
 
