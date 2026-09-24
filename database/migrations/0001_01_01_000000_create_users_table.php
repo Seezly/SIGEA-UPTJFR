@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::create('persons', function (Blueprint $table) {
+        Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('second_name')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->constrained();
+            $table->foreignId('people_id')->constrained();
             $table->string('phone_number')->unique();
             $table->string('email')->unique();
             $table->string('password');
@@ -62,6 +62,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('people');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
