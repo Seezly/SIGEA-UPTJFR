@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('completed_at');
             $table->timestamps();
 
-            $table->unique(['evaluation_id', 'employee_id', 'evaluator_id']);
+            $table->unique(['evaluation_id', 'employee_id', 'evaluator_id'], "unique_evaluation_employee_evaluator");
         });
     }
 
