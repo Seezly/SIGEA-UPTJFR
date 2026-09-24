@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('evaluator_id')->constrained('users', 'id');
             $table->string('status', 10);
             $table->timestamp('assigned_at');
-            $table->foreignId('assigned_by')->constrained('employees', 'id');
+            $table->foreignId('assigned_by')->constrained('users', 'id');
             $table->timestamp('completed_at');
             $table->timestamps();
 
