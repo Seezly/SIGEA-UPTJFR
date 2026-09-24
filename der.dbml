@@ -304,6 +304,7 @@ Table recruitment_statuses {
   sort_order varchar(4)
   created_at datetime
   updated_at datetime
+  deleted_at datetime
 }
 
 Table applications {
@@ -339,6 +340,7 @@ Table selection_procedures {
   status varchar(10)
   created_at datetime
   updated_at datetime
+  deleted_at datetime
 }
 
 Table procedure_stages {
@@ -348,6 +350,9 @@ Table procedure_stages {
   description varchar(255)
   stage_type varchar(20)
   sort_order varchar(4)
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
 }
 
 Table application_stage_history {
@@ -385,7 +390,7 @@ Table interview_participants {
   id bigint [pk]
   interview_id bigint [not null]
   user_id bigint [not null]
-  role bigint
+  role_id bigint
   created_at datetime
   updated_at datetime
 
@@ -727,7 +732,7 @@ Ref: permission_role.permission_id - permissions.id
 Ref: permission_role.role_id - roles.id
 Ref: audit_logs.module_id > modules.id
 Ref: applicant_profiles.user_id - users.id
-Ref: work_experience.applicant_profile_id > applicant_profiles.id
+Ref: work_experiences.applicant_profile_id > applicant_profiles.id
 Ref: education_records.applicant_profile_id > applicant_profiles.id
 Ref: applicant_skills.applicant_profile_id - applicant_profiles.id
 Ref: applicant_skills.skill_id - skills.id
