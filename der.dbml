@@ -11,19 +11,19 @@ Table users {
   email varchar(255) [unique]
   status varchar(8) // ACTIVE, INACTIVE
   password varchar(255)
-  email_verified_at datetime
-  phone_verified_at datetime
-  last_login_at datetime
+  email_verified_at timestamp
+  phone_verified_at timestamp
+  last_login_at timestamp
   remember_token varchar(255)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table password_reset_tokens {
   email varchar(255) [pk]
   token varchar(255)
-  created_at datetime
+  created_at timestamp
 }
 
 Table sessions {
@@ -32,7 +32,7 @@ Table sessions {
   ip_address varchar(45)
   user_agent varchar(255)
   payload text
-  last_activity datetime
+  last_activity timestamp
 }
 
 Table roles {
@@ -41,9 +41,9 @@ Table roles {
   slug varchar(50)
   description varchar(255)
   status varchar(8) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table modules {
@@ -52,9 +52,9 @@ Table modules {
   slug varchar(50)
   description varchar(255)
   status varchar(8) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table permissions {
@@ -63,25 +63,25 @@ Table permissions {
   name varchar(100)
   slug varchar(50)
   description varchar(255)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table role_users {
   role_id bigint [pk, unique]
   user_id bigint [pk, unique]
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table permission_role {
   permission_id bigint [pk, unique]
   role_id bigint [pk, unique]
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table audit_logs {
@@ -95,7 +95,7 @@ Table audit_logs {
   new_values JSON
   ip_address varchar(45)
   user_agent text
-  created_at datetime
+  created_at timestamp
 }
 
 /*
@@ -111,12 +111,12 @@ Table applicant_profiles {
   last_name varchar(100)
   full_name varchar(255)
   address text
-  birth_date datetime
+  birth_date timestamp
   gender varchar(10)
   curriculum_vitae bigint [unique]
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table work_experiences {
@@ -124,14 +124,14 @@ Table work_experiences {
   applicant_profile_id bigint [not null]
   company_name varchar(255)
   position varchar(255)
-  start_date datetime
-  end_date datetime
+  start_date timestamp
+  end_date timestamp
   is_current bool
   location varchar(255)
   description varchar(255)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table education_records {
@@ -140,12 +140,12 @@ Table education_records {
   institution_name varchar(255)
   degree_name varchar(255)
   field_of_study varchar(255)
-  start_date datetime
-  end_date datetime
+  start_date timestamp
+  end_date timestamp
   description varchar(255)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table skills {
@@ -153,18 +153,18 @@ Table skills {
   name varchar(100)
   slug varchar(100)
   status varchar(10) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table applicant_skills {
   skill_id bigint [pk, unique]
   applicant_profile_id bigint [pk, unique]
   level varchar(15)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table curriculum_vitaes {
@@ -175,9 +175,9 @@ Table curriculum_vitaes {
   mime_type varchar(20)
   file_size int
   is_current bool
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table documents {
@@ -190,10 +190,10 @@ Table documents {
   file_size int
   verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
   verified_by bigint
-  verified_at datetime
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  verified_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 /*
@@ -206,9 +206,9 @@ Table areas {
   code varchar(10) [unique]
   description varchar(255)
   status varchar(10) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table positions {
@@ -218,9 +218,9 @@ Table positions {
   code varchar(10) [unique]
   description varchar(255)
   status varchar(10) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table job_categories {
@@ -229,9 +229,9 @@ Table job_categories {
   slug varchar(100) [unique]
   description varchar(255)
   status varchar(10) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table jobs {
@@ -247,12 +247,12 @@ Table jobs {
   employment_type varchar(100)
   vacancies_count int
   status varchar(10) // ACTIVE, INACTIVE
-  published_at datetime
-  application_deadline datetime
-  closed_at datetime
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  published_at timestamp
+  application_deadline timestamp
+  closed_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table job_requirements {
@@ -262,28 +262,28 @@ Table job_requirements {
   description varchar(255)
   weight float
   is_required bool
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table job_publications {
   id bigint [pk]
   job_id bigint [not null]
   channel varchar(255)
-  published_at datetime
-  unpublished_at datetime
+  published_at timestamp
+  unpublished_at timestamp
   status varchar(10) // ACTIVE, INACTIVE
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table job_favorites {
   applicant_profile_id bigint
   job_id bigint
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 
   indexes {
 	(job_id, applicant_profile_id) [unique, pk]
@@ -302,9 +302,9 @@ Table recruitment_statuses {
   is_final bool
   status varchar(10)
   sort_order varchar(4)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table applications {
@@ -313,10 +313,10 @@ Table applications {
   applicant_profile_id bigint [not null]
   current_status_id bigint [not null]
   procedure_id bigint [not null]
-  applied_at datetime
-  withdrawn_at datetime
-  created_at datetime
-  updated_at datetime
+  applied_at timestamp
+  withdrawn_at timestamp
+  created_at timestamp
+  updated_at timestamp
 
   indexes {
 	(job_id, applicant_profile_id) [unique]
@@ -330,7 +330,7 @@ Table application_status_history {
   to_status_id bigint [not null]
   changed_by bigint [not null]
   reason text
-  created_at datetime
+  created_at timestamp
 }
 
 Table selection_procedures {
@@ -338,9 +338,9 @@ Table selection_procedures {
   name varchar(100)
   description varchar(255)
   status varchar(10)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table procedure_stages {
@@ -350,9 +350,9 @@ Table procedure_stages {
   description varchar(255)
   stage_type varchar(20)
   sort_order varchar(4)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table application_stage_history {
@@ -360,12 +360,12 @@ Table application_stage_history {
   application_id bigint [not null]
   procedure_stage_id bigint [not null]
   status varchar(10)
-  started_at datetime
-  completed_at datetime
+  started_at timestamp
+  completed_at timestamp
   completed_by bigint [not null]
   notes text
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 /*
@@ -377,13 +377,13 @@ Table interviews {
   application_id bigint [not null]
   procedure_stage_id bigint
   scheduled_by bigint [not null]
-  scheduled_at datetime
+  scheduled_at timestamp
   duration_minutes int
   location varchar(255)
   meeting_url varchar(255)
   notes text
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table interview_participants {
@@ -391,8 +391,8 @@ Table interview_participants {
   interview_id bigint [not null]
   user_id bigint [not null]
   role_id bigint
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 
   indexes {
 	(interview_id, user_id) [unique]
@@ -406,9 +406,9 @@ Table interview_results {
   score int
   comments text
   recorded_by bigint [not null]
-  recorded_at datetime
-  created_at datetime
-  updated_at datetime
+  recorded_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table interview_observations {
@@ -416,8 +416,8 @@ Table interview_observations {
   interview_id bigint [unique]
   author_id bigint [not null]
   observation text
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 /*
@@ -430,37 +430,37 @@ Table hiring_decisions {
   decision varchar(20)
   reason varchar(255)
   decided_by bigint [not null]
-  decided_at datetime
-  created_at datetime
-  updated_at datetime
+  decided_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table employment_contracts {
   id bigint [pk]
   employee_id bigint [not null]
   contract_type varchar(20)
-  start_date datetime
-  end_date datetime
+  start_date timestamp
+  end_date timestamp
   position_id bigint [not null]
   area_id bigint [not null]
   salary decimal(12,2)
   status varchar(10)
   document_id bigint [not null]
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table employees {
   id bigint [pk]
   user_id bigint [unique]
   employee_code varchar(16) [unique]
-  hire_date datetime
+  hire_date timestamp
   status varchar(20)
   current_position_id bigint [not null]
   current_area_id bigint [not null]
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table employee_records {
@@ -470,8 +470,8 @@ Table employee_records {
   record_value json
   status varchar(10) // PENDING, APPROVED, REJECTED, COMPLETED, DISMISSED
   evidence_id bigint [not null]
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table employee_documents {
@@ -484,10 +484,10 @@ Table employee_documents {
   file_size int
   verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
   verified_by bigint
-  verified_at datetime
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  verified_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 /*
@@ -502,22 +502,22 @@ Table evaluation_criteria {
   scale_max float
   weight float
   status varchar(10)
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table evaluations {
   id bigint [pk]
   name varchar(100)
   description varchar(255)
-  period_start datetime
-  period_end datetime
+  period_start timestamp
+  period_end timestamp
   status varchar(10)
   created_by bigint [not null]
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
 }
 
 Table evaluation_assignments {
@@ -526,11 +526,11 @@ Table evaluation_assignments {
   employee_id bigint [not null, unique]
   evaluator_id bigint [not null, unique]
   status varchar(10)
-  assigned_at datetime
+  assigned_at timestamp
   assigned_by bigint [not null]
-  completed_at datetime
-  created_at datetime
-  updated_at datetime
+  completed_at timestamp
+  created_at timestamp
+  updated_at timestamp
 
   indexes {
 	(evaluation_id, employee_id, evaluator_id) [unique]
@@ -543,8 +543,8 @@ Table evaluation_results {
   criteria_id bigint [not null, unique]
   score float
   comment varchar(255)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 
   indexes {
 	(evaluation_assignments_id, criteria_id) [unique]
@@ -557,8 +557,8 @@ Table evaluation_observations {
   employee_id bigint [not null]
   observation text
   author_id bigint [not null]
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 /*
@@ -573,20 +573,20 @@ Table indicators {
   formula varchar(255)
   unit varchar(4)
   status varchar(10)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table metrics {
   id bigint [pk]
   indicator_id bigint [not null]
-  period_start datetime
-  period_end datetime
+  period_start timestamp
+  period_end timestamp
   value float
   dimensions json
-  calculated_at datetime
-  created_at datetime
-  updated_at datetime
+  calculated_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table report_templates {
@@ -595,8 +595,8 @@ Table report_templates {
   description varchar(255)
   definition json
   status varchar(10)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table report_runs {
@@ -606,22 +606,22 @@ Table report_runs {
   parameters json
   status varchar(10)
   file_path varchar(255)
-  started_at datetime
-  completed_at datetime
-  created_at datetime
-  updated_at datetime
+  started_at timestamp
+  completed_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table historical_reports {
   id bigint [pk]
   report_type varchar(100)
-  period_start datetime
-  period_end datetime
+  period_start date
+  period_end date
   snapshot json
   generated_by bigint [not null]
-  generated_at datetime
-  created_at datetime
-  updated_at datetime
+  generated_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table export_configs {
@@ -631,8 +631,8 @@ Table export_configs {
   max_rows int
   options json
   status varchar(10)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 /*
@@ -645,8 +645,8 @@ Table system_settings {
   value varchar(255)
   value_type varchar(100)
   is_public bool
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table institutional_settings {
@@ -654,8 +654,8 @@ Table institutional_settings {
   key varchar(255) [unique]
   value varchar(255)
   value_type varchar(100)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table module_settings {
@@ -665,8 +665,8 @@ Table module_settings {
   value varchar(255)
   value_type varchar(100)
   status varchar(10)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 
   indexes {
 	(module, key) [unique]
@@ -678,8 +678,8 @@ Table hr_settings {
   key varchar(255) [unique]
   value varchar(255)
   value_type varchar(100)
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table backup_runs {
@@ -690,10 +690,10 @@ Table backup_runs {
   file_path varchar(100)
   size_bytes int
   checksum varchar(255)
-  started_at datetime
-  completed_at datetime
-  created_at datetime
-  updated_at datetime
+  started_at timestamp
+  completed_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table backup_verifications {
@@ -702,9 +702,9 @@ Table backup_verifications {
   verification_type varchar(100)
   status varchar(10)
   details json
-  verified_at datetime
-  created_at datetime
-  updated_at datetime
+  verified_at timestamp
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table restoration_runs {
@@ -713,11 +713,11 @@ Table restoration_runs {
   requested_by bigint [not null]
   status varchar(10)
   target_environment varchar(255)
-  started_at datetime
-  completed_at datetime
+  started_at timestamp
+  completed_at timestamp
   details json
-  created_at datetime
-  updated_at datetime
+  created_at timestamp
+  updated_at timestamp
 }
 
 /*

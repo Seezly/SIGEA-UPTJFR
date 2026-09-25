@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hiring_decisions', function (Blueprint $table) {
+        Schema::create('export_configs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('application_id')->unique()->constrained();
-            $table->string('decision', 20);
-            $table->string('reason');
-            $table->foreignId('decided_by')->constrained('employees', 'id');
-            $table->timestamp('decided_at')->useCurrent();
+            $table->string('name', 100);
+            $table->string('format', 6);
+            $table->integer('max_rows');
+            $table->json('options');
+            $table->string('status', 10);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hiring_decisions');
+        Schema::dropIfExists('export_configs');
     }
 };

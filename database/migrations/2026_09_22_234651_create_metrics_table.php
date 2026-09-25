@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hiring_decisions', function (Blueprint $table) {
+        Schema::create('metrics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('application_id')->unique()->constrained();
-            $table->string('decision', 20);
-            $table->string('reason');
-            $table->foreignId('decided_by')->constrained('employees', 'id');
-            $table->timestamp('decided_at')->useCurrent();
+            $table->foreignId('indicator_id')->constrained();
+            $table->timestamp('period_start')->nullable();
+            $table->timestamp('period_end')->nullable();
+            $table->float('value');
+            $table->json('dimensions');
+            $table->timestamp('calculated_at')->useCurrent();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hiring_decisions');
+        Schema::dropIfExists('metrics');
     }
 };
