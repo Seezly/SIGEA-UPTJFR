@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('evaluation_id')->constrained();
             $table->foreignId('employee_id')->constrained();
-            $table->foreignId('evaluator_id')->constrained('users', 'id');
+            $table->foreignId('evaluator_id')->constrained('employees', 'id');
             $table->string('status', 10);
-            $table->timestamp('assigned_at');
+            $table->timestamp('assigned_at')->useCurrent();
             $table->foreignId('assigned_by')->constrained('users', 'id');
-            $table->timestamp('completed_at');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
 
             $table->unique(['evaluation_id', 'employee_id', 'evaluator_id'], "unique_evaluation_employee_evaluator");

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->json('parameters');
             $table->string('status', 10);
             $table->string('file_path');
-            $table->timestamp('started_at');
-            $table->timestamp('completed_at');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }

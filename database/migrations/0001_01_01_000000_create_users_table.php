@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('address');
             $table->date('birth_date');
             $table->char('gender', 1);
+            $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('users', function (Blueprint $table) {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('application_id')->constrained();
             $table->foreignId('procedure_stage_id')->nullable()->constrained();
             $table->foreignId('scheduled_by')->constrained('users', 'id');
-            $table->timestamp('scheduled_at');
+            $table->timestamp('scheduled_at')->useCurrent();
             $table->integer('duration_minutes');
             $table->string('location')->nullable();
             $table->string('meeting_url')->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->integer('score');
             $table->text('comments');
             $table->foreignId('recorded_by')->constrained('users', 'id');
-            $table->timestamp('recorded_at');
+            $table->timestamp('recorded_at')->useCurrent();
             $table->timestamps();
         });
 
@@ -50,7 +50,7 @@ return new class extends Migration
             $table->foreignId('interview_id')->unique()->constrained();
             $table->foreignId('author_id')->constrained('users', 'id');
             $table->text('observation');
-            $table->timestamp('recorded_at');
+            $table->timestamp('recorded_at')->useCurrent();
             $table->timestamps();
         });
     }

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('status', 10);
             $table->string('target_environment');
             $table->json('details');
-            $table->timestamp('started_at');
-            $table->timestamp('completed_at');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('restorations_runs');
+        Schema::dropIfExists('restoration_runs');
     }
 };

@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('people_id')->constrained();
             $table->string('document_type', 100);
             $table->string('file_name');
+            $table->string('mime_type');
             $table->string('file_path');
             $table->string('file_size');
             $table->string('verification_status', 12);
             $table->foreignId('verified_by')->nullable()->constrained('users', 'id');
-            $table->timestamp('verified_at');
+            $table->timestamp('verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('description');
-            $table->timestamp('period_start');
-            $table->timestamp('period_end');
+            $table->timestamp('period_start')->nullable();
+            $table->timestamp('period_end')->nullable();
             $table->string('status', 10);
             $table->foreignId('created_by')->constrained('users', 'id');
             $table->timestamps();

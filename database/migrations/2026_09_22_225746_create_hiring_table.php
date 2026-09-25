@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('decision', 20);
             $table->string('reason');
             $table->foreignId('decided_by')->constrained('users', 'id');
-            $table->timestamp('decided_at');
+            $table->timestamp('decided_at')->useCurrent();
             $table->timestamps();
         });
     }

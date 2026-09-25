@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('historical_reports', function (Blueprint $table) {
             $table->id();
             $table->string('report_type', 100);
-            $table->date('period_start');
-            $table->date('period_end');
+            $table->date('period_start')->nullable();
+            $table->date('period_end')->nullable();
             $table->json('snapshot');
             $table->foreignId('generated_by')->constrained('users', 'id');
-            $table->timestamp('generated_at');
+            $table->timestamp('generated_at')->nullable();
             $table->timestamps();
         });
     }

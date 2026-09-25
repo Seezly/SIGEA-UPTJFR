@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('metrics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('indicator_id')->constrained();
-            $table->timestamp('period_start');
-            $table->timestamp('period_end');
+            $table->timestamp('period_start')->nullable();
+            $table->timestamp('period_end')->nullable();
             $table->float('value');
             $table->json('dimensions');
-            $table->timestamp('calculated_at');
+            $table->timestamp('calculated_at')->useCurrent();
             $table->timestamps();
         });
     }

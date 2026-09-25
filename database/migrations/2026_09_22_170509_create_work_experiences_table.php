@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->boolean('is_current');
             $table->string('location');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

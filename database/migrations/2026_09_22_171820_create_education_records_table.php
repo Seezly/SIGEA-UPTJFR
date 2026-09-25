@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('field_of_study');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('description');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
