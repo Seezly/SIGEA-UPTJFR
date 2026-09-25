@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('file_size');
             $table->string('verification_status', 12);
-            $table->foreignId('verified_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('verified_by')->nullable()->constrained('employees', 'id');
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

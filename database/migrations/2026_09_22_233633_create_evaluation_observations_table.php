@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('evaluation_id')->constrained();
             $table->foreignId('employee_id')->constrained();
             $table->text('observation');
-            $table->foreignId('author_id')->constrained('users', 'id');
+            $table->foreignId('author_id')->constrained('employees', 'id');
             $table->timestamps();
         });
     }

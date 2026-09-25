@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('period_start')->nullable();
             $table->date('period_end')->nullable();
             $table->json('snapshot');
-            $table->foreignId('generated_by')->constrained('users', 'id');
+            $table->foreignId('generated_by')->constrained('employees', 'id');
             $table->timestamp('generated_at')->nullable();
             $table->timestamps();
         });

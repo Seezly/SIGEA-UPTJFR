@@ -49,7 +49,7 @@ return new class extends Migration
             $table->foreignId('application_id')->constrained();
             $table->foreignId('from_status_id')->constrained('recruitment_statuses', 'id');
             $table->foreignId('to_status_id')->constrained('recruitment_statuses', 'id');
-            $table->foreignId('changed_by')->constrained('users', 'id');
+            $table->foreignId('changed_by')->constrained('employees', 'id');
             $table->text('reason');
             $table->timestamps();
         });
@@ -61,7 +61,7 @@ return new class extends Migration
             $table->string('status', 10);
             $table->timestamp('started_at')->useCurrent();
             $table->timestamp('completed_at')->nullable();
-            $table->foreignId('completed_by')->constrained('users', 'id');
+            $table->foreignId('completed_by')->constrained('employees', 'id');
             $table->text('notes');
             $table->timestamps();
         });

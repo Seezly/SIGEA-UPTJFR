@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('mime_type', 20);
             $table->integer('file_size');
             $table->string('verification_status', 12);
-            $table->foreignId('verified_by')->constrained('users', 'id');
+            $table->foreignId('verified_by')->constrained('employees', 'id');
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

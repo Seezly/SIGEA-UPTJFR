@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('backup_runs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('requested_by')->constrained('users', 'id');
+            $table->foreignId('requested_by')->constrained('employees', 'id');
             $table->string('type', 100);
             $table->string('status', 10);
             $table->string('file_path');

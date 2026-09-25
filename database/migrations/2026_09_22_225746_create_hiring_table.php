@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('application_id')->unique()->constrained();
             $table->string('decision', 20);
             $table->string('reason');
-            $table->foreignId('decided_by')->constrained('users', 'id');
+            $table->foreignId('decided_by')->constrained('employees', 'id');
             $table->timestamp('decided_at')->useCurrent();
             $table->timestamps();
         });

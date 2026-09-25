@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('area_id')->constrained();
             $table->foreignId('position_id')->constrained();
             $table->foreignId('job_category_id')->constrained();
-            $table->foreignId('created_by')->constrained('users', 'id');
+            $table->foreignId('created_by')->constrained('employees', 'id');
             $table->string('title');
             $table->text('description');
             $table->text('requirements');

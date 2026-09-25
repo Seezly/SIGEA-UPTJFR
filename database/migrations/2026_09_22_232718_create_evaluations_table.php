@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('period_start')->nullable();
             $table->timestamp('period_end')->nullable();
             $table->string('status', 10);
-            $table->foreignId('created_by')->constrained('users', 'id');
+            $table->foreignId('created_by')->constrained('employees', 'id');
             $table->timestamps();
             $table->softDeletes();
         });

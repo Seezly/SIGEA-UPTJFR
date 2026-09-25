@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('restoration_runs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('backup_run_id')->constrained();
-            $table->foreignId('requested_by')->constrained('users', 'id');
+            $table->foreignId('requested_by')->constrained('employees', 'id');
             $table->string('status', 10);
             $table->string('target_environment');
             $table->json('details');

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('application_id')->constrained();
             $table->foreignId('procedure_stage_id')->nullable()->constrained();
-            $table->foreignId('scheduled_by')->constrained('users', 'id');
+            $table->foreignId('scheduled_by')->constrained('employees', 'id');
             $table->timestamp('scheduled_at')->useCurrent();
             $table->integer('duration_minutes');
             $table->string('location')->nullable();
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('result', 12);
             $table->integer('score');
             $table->text('comments');
-            $table->foreignId('recorded_by')->constrained('users', 'id');
+            $table->foreignId('recorded_by')->constrained('employees', 'id');
             $table->timestamp('recorded_at')->useCurrent();
             $table->timestamps();
         });
@@ -48,7 +48,7 @@ return new class extends Migration
         Schema::create('interview_observations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('interview_id')->unique()->constrained();
-            $table->foreignId('author_id')->constrained('users', 'id');
+            $table->foreignId('author_id')->constrained('employees', 'id');
             $table->text('observation');
             $table->timestamp('recorded_at')->useCurrent();
             $table->timestamps();
