@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\People;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('auth/register');
+        return Inertia::render('Auth/Register');
     }
 
     /**
@@ -31,16 +32,40 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'first_name' => 'required|string|max:255',
+            'second_name' => 'required|string|max:255',
+            'middle_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'id_prefix' => 'required|string|max:1',
+            'id_number' => 'required|string|max:9|unique:' . People::class,
+            'address' => 'required|string|min:10',
+            'birth_date' => 'required|date_format:d/m/Y|before:today',
+            'gender' => 'required|string|max:1',
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'phone_number' => 'required|string|lowercase|max:11|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+        $people = People::create([
+            'first_name' => $request->first_name,
+            'second_name' => $request->second_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'id_prefix' => $request->id_prefix,
+            'id_number' => $request->id_number,
+            'address' => $request->address,
+            'birth_date' => $request->birth_date,
+            'gender' => $request->gender,
         ]);
+
+        if ($people->id) {
+            $user = User::create([
+                'people_id' => $people->id,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'password' => Hash::make($request->password),
+            ]);
+        }
 
         event(new Registered($user));
 
