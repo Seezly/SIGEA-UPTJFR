@@ -1,5 +1,5 @@
-import { Icon } from '@/components/icon';
-import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { Icon } from '@/components/Icon';
+import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/Sidebar';
 import { type NavItem } from '@/types';
 
 export function NavFooter({
