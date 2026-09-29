@@ -47,7 +47,7 @@ test('User can not request new forgot password link if not registered', function
     $response = $this->post('/forgot-password', $formData)
         ->assertRedirect();
 
-    Notification::assertNothingSentTo($this->user);
+    Notification::assertNothingSent();
 });
 
 test('User can render change password view from reset link', function () {
