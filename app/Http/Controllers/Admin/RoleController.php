@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -77,9 +77,33 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $role)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:50',
+            'slug' => 'required|string|max:50|unique:roles,slug',
+            'description' => 'string|max:255',
+            'is_active' => 'boolean',
+        ]);
+
+        $role = Role::where('id', $role)->update($validated);
+
+        if (!$role) {
+            return back()->with([
+                'flash' => [
+                    'success' => false,
+                    'message' => 'Fallo al actualizar el rol.',
+                ]
+            ]);
+        }
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Rol actualizado exitosamente.',
+                'role' => $role
+            ]
+        ]);
     }
 
     /**
