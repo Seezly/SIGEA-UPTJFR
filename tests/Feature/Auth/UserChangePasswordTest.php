@@ -1,27 +1,22 @@
 <?php
 
-use App\Models\People;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
-    $this->people = People::factory()->create();
-    $this->user = User::factory()->create([
-        'people_id' => $this->people->id,
-        'password' => bcrypt('password'),
-    ]);
+    $this->user = User::factory()->create();
 });
 
 test('Logged user can render change password view', function () {
-    $response = $this->actingAs($this->user)->get('/settings/password');
+    $response = $this->actingAs($this->user)->get(route('password.edit'));
 
     $response->assertStatus(200)
         ->assertInertia(fn(Assert $page) => $page->component('Settings/Password'));
 });
 
 test('Guest can not render change password view', function () {
-    $response = $this->get('/settings/password');
+    $response = $this->get(route('password.edit'));
 
     $response->assertRedirect(route('login'));
 });
@@ -48,7 +43,7 @@ test('Logged user can change password and login', function () {
     ];
 
     $this->post(route('login'), $formData)
-        ->assertRedirect('/dashboard');
+        ->assertRedirect(route('dashboard'));
 
     $this->assertAuthenticatedAs($this->user);
 });
