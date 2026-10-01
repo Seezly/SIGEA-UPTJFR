@@ -16,7 +16,7 @@ beforeEach(function () {
 });
 
 test('Unverified user can render verification email view', function () {
-    $response = $this->actingAs($this->unverifiedUser)->get('/verify-email');
+    $response = $this->actingAs($this->unverifiedUser)->get(route('verification.notice'));
 
     $response->assertStatus(200)
         ->assertInertia(fn(Assert $page) => $page->component('Auth/VerifyEmail'));
@@ -38,7 +38,7 @@ test('User is redirected away from verification email view', function () {
         'email_verified_at' => now(),
     ]);
 
-    $response = $this->actingAs($verifiedUser)->get('/verify-email');
+    $response = $this->actingAs($verifiedUser)->get(route('verification.notice'));
 
-    $response->assertRedirect('/dashboard');
+    $response->assertRedirect(route('dashboard'));
 });

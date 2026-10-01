@@ -13,7 +13,7 @@ beforeEach(function () {
 });
 
 test('User can see login page', function () {
-    $response = $this->get('/login');
+    $response = $this->get(route('login'));
     $response->assertStatus(200)
         ->assertInertia(fn(Assert $page) => $page->component('Auth/Login'));
 });
@@ -24,7 +24,7 @@ test('User can login', function () {
         'password' => 'password',
     ];
 
-    $response = $this->post('/login', $formData);
+    $response = $this->post(route('login'), $formData);
     $response->assertStatus(302)->assertRedirect(route('dashboard'));
 
     $this->assertAuthenticatedAs($this->user);

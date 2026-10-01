@@ -3,7 +3,7 @@
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('User can register', function () {
-    $response = $this->get('/register');
+    $response = $this->get(route('register.create'));
     $response->assertStatus(200)
         ->assertInertia(fn(Assert $page) => $page->component('Auth/Register'));
 
@@ -23,7 +23,7 @@ test('User can register', function () {
         'password_confirmation' => 'password',
     ];
 
-    $response = $this->post('/register', $formData);
+    $response = $this->post(route('register.create'), $formData);
     $response->assertStatus(302)->assertRedirect(route('dashboard'));
 
     $this->assertDatabaseHas('users', [

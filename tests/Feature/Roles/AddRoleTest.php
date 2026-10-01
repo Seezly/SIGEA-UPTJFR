@@ -13,7 +13,7 @@ beforeEach(function () {
 });
 
 test('Guest can not add role and redirects to login', function () {
-    $response = $this->post('/roles', $this->formData)
+    $response = $this->post(route('roles.store'), $this->formData)
         ->assertRedirect(route('login'))
         ->assertSessionHasNoErrors();
 });
@@ -25,7 +25,7 @@ test('Non-admin authenticated user cannot add role', function () {
         'password' => bcrypt('password'),
     ]);
 
-    $response = $this->actingAs($user)->post('/roles', $this->formData);
+    $response = $this->actingAs($user)->post(route('roles.store'), $this->formData);
 
     $response->assertStatus(403);
 });
@@ -44,7 +44,7 @@ test('Admin user can add role', function () {
 
     $admin->assignRole($adminRole);
 
-    $response = $this->actingAs($admin)->post('/roles', $this->formData);
+    $response = $this->actingAs($admin)->post(route('roles.store'), $this->formData);
 
     $response->assertRedirect()
         ->assertSessionHasNoErrors()
