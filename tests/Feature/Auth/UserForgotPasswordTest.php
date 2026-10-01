@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\People;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
@@ -8,11 +7,7 @@ use Illuminate\Support\Facades\Password;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
-    $this->people = People::factory()->create();
-    $this->user = User::factory()->create([
-        'people_id' => $this->people->id,
-        'password' => bcrypt('password'),
-    ]);
+    $this->user = User::factory()->create();
 });
 
 test('User can render forgot password view', function () {

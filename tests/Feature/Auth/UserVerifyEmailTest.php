@@ -1,18 +1,12 @@
 <?php
 
-use App\Models\People;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
-    $this->people = People::factory()->create();
-
-    $this->unverifiedUser = User::factory()->unverified()->create([
-        'password' => bcrypt('password'),
-        'people_id' => $this->people->id,
-    ]);
+    $this->unverifiedUser = User::factory()->unverified()->create();
 });
 
 test('Unverified user can render verification email view', function () {
@@ -33,10 +27,7 @@ test('Unverified user can request a new verification email', function () {
 });
 
 test('User is redirected away from verification email view', function () {
-    $verifiedUser = User::factory()->create([
-        'people_id' => $this->people->id,
-        'email_verified_at' => now(),
-    ]);
+    $verifiedUser = User::factory()->create();
 
     $response = $this->actingAs($verifiedUser)->get(route('verification.notice'));
 

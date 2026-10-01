@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\People;
 use App\Models\User;
-use App\Models\Role;
 
 beforeEach(function () {
     $this->formData = [
@@ -19,11 +17,7 @@ test('Guest can not add role and redirects to login', function () {
 });
 
 test('Non-admin authenticated user cannot add role', function () {
-    $people = People::factory()->create();
-    $user = User::factory()->create([
-        'people_id' => $people->id,
-        'password' => bcrypt('password'),
-    ]);
+    $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post(route('roles.store'), $this->formData);
 
@@ -31,18 +25,7 @@ test('Non-admin authenticated user cannot add role', function () {
 });
 
 test('Admin user can add role', function () {
-    $people = People::factory()->create();
-    $admin = User::factory()->create([
-        'people_id' => $people->id,
-        'password' => bcrypt('password'),
-    ]);
-
-    $adminRole = Role::factory()->create([
-        'name' => 'admin',
-        'slug' => 'admin',
-    ]);
-
-    $admin->assignRole($adminRole);
+    $admin = User::factory()->admin()->create();
 
     $response = $this->actingAs($admin)->post(route('roles.store'), $this->formData);
 

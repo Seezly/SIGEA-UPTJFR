@@ -1,16 +1,11 @@
 <?php
 
-use App\Models\People;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
-    $this->people = People::factory()->create();
-    $this->user = User::factory()->create([
-        'people_id' => $this->people->id,
-        'password' => bcrypt('password'),
-    ]);
+    $this->user = User::factory()->create();
 });
 
 test('Logged user can render change password view', function () {

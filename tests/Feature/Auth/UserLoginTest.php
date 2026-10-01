@@ -2,14 +2,9 @@
 
 use Inertia\Testing\AssertableInertia as Assert;
 use App\Models\User;
-use App\Models\People;
 
 beforeEach(function () {
-    $this->people = People::factory()->create();
-    $this->user = User::factory()->create([
-        'password' => bcrypt('password'),
-        'people_id' => $this->people->id,
-    ]);
+    $this->user = User::factory()->create();
 });
 
 test('User can see login page', function () {
