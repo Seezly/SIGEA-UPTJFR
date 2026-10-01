@@ -109,8 +109,26 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $role)
     {
-        //
+        $role = Role::find($role);
+
+        if (!$role) {
+            return back()->with([
+                'flash' => [
+                    'success' => false,
+                    'message' => 'El rol que quieres eliminar no existe.',
+                ]
+            ]);
+        }
+
+        $role->delete();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Rol eliminado exitosamente.',
+            ]
+        ]);
     }
 }
