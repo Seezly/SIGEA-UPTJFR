@@ -12,4 +12,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('modules', [ModuleController::class, 'index'])->name('modules.index');
     Route::post('modules', [ModuleController::class, 'store'])->name('modules.store');
+    Route::put('modules/{moduleId}', [ModuleController::class, 'update'])->name('modules.update');
 });

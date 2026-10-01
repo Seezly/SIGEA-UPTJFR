@@ -40,21 +40,10 @@ class ModuleController extends Controller
 
         $module = Module::create($validated);
 
-        if (!$module) {
-            return back()->with([
-                'flash' => [
-                    'success' => false,
-                    'message' => 'Fallo al crear el módulo.',
-                ]
-            ]);
-        }
-
-        return back()->with([
-            'flash' => [
-                'success' => true,
-                'message' => 'Módulo creado exitosamente.',
-                'module' => $module
-            ]
+        return back()->with('flash', [
+            'success' => true,
+            'message' => 'Módulo creado exitosamente.',
+            'module' => $module
         ]);
     }
 
@@ -77,9 +66,24 @@ class ModuleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $moduleId)
     {
-        //
+        $module = Module::findOrFail($moduleId);
+
+        $validated = $request->validate([
+            'name' => 'string|max:50',
+            'slug' => 'string|max:50|unique:modules,slug,' . $module->id,
+            'description' => 'string|max:255',
+            'is_active' => 'boolean',
+        ]);
+
+        $module->update($validated);
+
+        return back()->with('flash', [
+            'success' => true,
+            'message' => 'Módulo actualizado exitosamente.',
+            'module' => $module
+        ]);
     }
 
     /**
