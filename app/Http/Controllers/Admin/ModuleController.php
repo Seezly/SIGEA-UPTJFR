@@ -31,7 +31,31 @@ class ModuleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:50',
+            'slug' => 'required|string|max:50|unique:modules,slug',
+            'description' => 'string|max:255',
+            'is_active' => 'boolean',
+        ]);
+
+        $module = Module::create($validated);
+
+        if (!$module) {
+            return back()->with([
+                'flash' => [
+                    'success' => false,
+                    'message' => 'Fallo al crear el módulo.',
+                ]
+            ]);
+        }
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Módulo creado exitosamente.',
+                'module' => $module
+            ]
+        ]);
     }
 
     /**

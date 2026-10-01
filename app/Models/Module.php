@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Module extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'is_active',
+    ];
 }

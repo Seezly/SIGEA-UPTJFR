@@ -11,4 +11,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('modules', [ModuleController::class, 'index'])->name('modules.index');
+    Route::post('modules', [ModuleController::class, 'store'])->name('modules.store');
 });
