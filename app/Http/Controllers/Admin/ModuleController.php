@@ -89,8 +89,17 @@ class ModuleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $moduleId)
     {
-        //
+        $module = Module::findOrFail($moduleId);
+
+        abort_if($module->is_active, 403, 'No se puede eliminar un módulo activo.');
+
+        $module->delete();
+
+        return back()->with('flash', [
+            'success' => true,
+            'message' => 'Módulo eliminado exitosamente.',
+        ]);
     }
 }
