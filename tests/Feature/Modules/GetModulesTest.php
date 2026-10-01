@@ -1,26 +1,41 @@
 <?php
 
+use App\Models\Module;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('Guest cannot access the modules page', function () {
-    $response = $this->get(route('modules.index'))
+    $this->get(route('modules.index'))
         ->assertRedirect(route('login'));
 });
 
 test('Authenticated non-admin user cannot access the modules page', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(route('modules.index'));
-
-    $response->assertStatus(403);
+    $this->actingAs($user)
+        ->get(route('modules.index'))
+        ->assertStatus(403);
 });
 
-test('Admin user can access the modules page', function () {
+test('Admin user can access the modules page with listed data', function () {
     $user = User::factory()->admin()->create();
 
-    $response = $this->actingAs($user)->get(route('modules.index'))
+    Module::factory()->count(3)->create();
+
+    $this->actingAs($user)
+        ->get(route('modules.index'))
         ->assertStatus(200)
-        ->assertInertia(fn(Assert $page) => $page
-            ->component('Admin/Modules'));
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Admin/Modules')
+                ->has('modules', 3)
+                ->has(
+                    'modules.0',
+                    fn(Assert $page) => $page
+                        ->has('id')
+                        ->has('name')
+                        ->has('slug')
+                        ->etc()
+                )
+        );
 });
