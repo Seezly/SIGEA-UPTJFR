@@ -19,7 +19,7 @@ test('Authenticated non-admin user cannot access roles page and gets 403 forbidd
 
     $response = $this->actingAs($user)->get(route('roles.index'));
 
-    $response->assertRedirect(route('login'));
+    $response->assertStatus(403);
 });
 
 test('Authenticated admin user can access roles page', function () {
@@ -38,5 +38,6 @@ test('Authenticated admin user can access roles page', function () {
     $response = $this->actingAs($user)->get(route('roles.index'));
 
     $response->assertStatus(200)
-        ->assertInertia(fn(Assert $page) => $page->component('Settings/Roles'));
+        ->assertSessionHasNoErrors()
+        ->assertInertia(fn(Assert $page) => $page->component('Admin/Roles'));
 });

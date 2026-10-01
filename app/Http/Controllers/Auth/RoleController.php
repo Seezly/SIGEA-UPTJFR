@@ -13,7 +13,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Admin/Roles', [
+            'roles' => Role::all()
+        ]);
     }
 
     /**
