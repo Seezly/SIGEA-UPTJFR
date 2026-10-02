@@ -21,7 +21,14 @@ class RoleFactory extends Factory
             'name' => fake()->word(),
             'slug' => fake()->unique()->slug(),
             'description' => fake()->sentence(),
-            'is_active' => fake()->boolean(),
+            'is_active' => true,
         ];
+    }
+
+    public function notActive(): static
+    {
+        return $this->state(fn() => [
+            'is_active' => false,
+        ]);
     }
 }

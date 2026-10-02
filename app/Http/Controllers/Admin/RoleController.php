@@ -40,15 +40,6 @@ class RoleController extends Controller
 
         $role = Role::create($validated);
 
-        if (!$role) {
-            return back()->with([
-                'flash' => [
-                    'success' => false,
-                    'message' => 'Fallo al crear el rol.',
-                ]
-            ]);
-        }
-
         return back()->with([
             'flash' => [
                 'success' => true,
@@ -77,25 +68,31 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $role)
+    public function update(Request $request, string $roleId)
     {
+        $role = Role::findOrFail($roleId);
+        $hasActiveUsers = $role->users()->where('is_active', true)->exists();
+
         $validated = $request->validate([
-            'name' => 'required|string|max:50',
-            'slug' => 'required|string|max:50|unique:roles,slug',
+            'name' => 'string|max:50',
+            'slug' => 'string|max:50|unique:roles,slug,' . $role->id,
             'description' => 'string|max:255',
             'is_active' => 'boolean',
         ]);
 
-        $role = Role::where('id', $role)->update($validated);
-
-        if (!$role) {
-            return back()->with([
-                'flash' => [
-                    'success' => false,
-                    'message' => 'Fallo al actualizar el rol.',
-                ]
-            ]);
+        if (
+            isset($validated['is_active']) &&
+            $validated['is_active'] === false &&
+            $hasActiveUsers
+        ) {
+            abort(403, 'No se puede desactivar un rol que está siendo usado.');
         }
+
+        if ($role->slug === 'admin') {
+            abort(403, 'No se puede desactivar el rol \'Admin\'.');
+        }
+
+        $role->update($validated);
 
         return back()->with([
             'flash' => [
@@ -109,18 +106,11 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $role)
+    public function destroy(string $roleId)
     {
-        $role = Role::find($role);
+        $role = Role::findOrFail($roleId);
 
-        if (!$role) {
-            return back()->with([
-                'flash' => [
-                    'success' => false,
-                    'message' => 'El rol que quieres eliminar no existe.',
-                ]
-            ]);
-        }
+        abort_if($role->is_active, 403, 'No se puede eliminar un módulo activo.');
 
         $role->delete();
 
