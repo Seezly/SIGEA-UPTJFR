@@ -62,3 +62,27 @@ test('User can not change password using incorrect password', function () {
 
     $this->assertFalse(Hash::check('new_password', $this->user->refresh()->password));
 });
+
+test('User cannot change password if confirmation does not match', function () {
+    $formData = [
+        'current_password' => 'password',
+        'password' => 'new_password_123',
+        'password_confirmation' => 'different_password',
+    ];
+
+    $this->actingAs($this->user)
+        ->put(route('password.update'), $formData)
+        ->assertSessionHasErrors(['password']);
+});
+
+test('User cannot change password with missing or weak fields', function () {
+    $formData = [
+        'current_password' => '',
+        'password' => '123',
+        'password_confirmation' => '123',
+    ];
+
+    $this->actingAs($this->user)
+        ->put(route('password.update'), $formData)
+        ->assertSessionHasErrors(['current_password', 'password']);
+});

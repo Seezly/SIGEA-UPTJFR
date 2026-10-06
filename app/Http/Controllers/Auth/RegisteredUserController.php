@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -31,11 +32,11 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'second_name' => 'required|string|max:255',
+            'second_name' => 'string|max:255',
             'middle_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'last_name' => 'string|max:255',
             'id_prefix' => 'required|string|max:1',
             'id_number' => 'required|string|max:9|unique:' . People::class,
             'address' => 'required|string|min:10',
@@ -46,26 +47,26 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $people = People::create([
-            'first_name' => $request->first_name,
-            'second_name' => $request->second_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'id_prefix' => $request->id_prefix,
-            'id_number' => $request->id_number,
-            'address' => $request->address,
-            'birth_date' => $request->birth_date,
-            'gender' => $request->gender,
-        ]);
-
-        if ($people->id) {
-            $user = User::create([
-                'people_id' => $people->id,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-                'password' => Hash::make($request->password),
+        $user = DB::transaction(function () use ($validated) {
+            $people = People::create([
+                'first_name' => $validated['first_name'],
+                'second_name' => $validated['second_name'] ?? null,
+                'middle_name' => $validated['middle_name'],
+                'last_name' => $validated['last_name'] ?? null,
+                'id_prefix' => $validated['id_prefix'],
+                'id_number' => $validated['id_number'],
+                'address' => $validated['address'],
+                'birth_date' => $validated['birth_date'],
+                'gender' => $validated['gender'],
             ]);
-        }
+
+            return User::create([
+                'people_id' => $people->id,
+                'email' => $validated['email'],
+                'phone_number' => $validated['phone_number'],
+                'password' => Hash::make($validated['password']),
+            ]);
+        });
 
         event(new Registered($user));
 
