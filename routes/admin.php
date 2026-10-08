@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ModuleController;
+use App\Http\Controllers\Admin\PermissionController;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
@@ -14,4 +15,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('modules', [ModuleController::class, 'store'])->name('modules.store');
     Route::put('modules/{moduleId}', [ModuleController::class, 'update'])->name('modules.update');
     Route::delete('modules/{moduleId}', [ModuleController::class, 'destroy'])->name('modules.destroy');
+
+    Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
+    Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
+    Route::delete('permissions/{permissionId}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 });
