@@ -65,7 +65,20 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $permission = Permission::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'string|max:50|unique:permissions,name,' . $permission->id,
+            'slug' => 'string|max:50|unique:permissions,slug,' . $permission->id,
+            'description' => 'string|max:255'
+        ]);
+
+        $permission->update($validated);
+
+        return back()->with('flash', [
+            'success' => true,
+            'message' => 'Permiso actualizado correctamente.'
+        ]);
     }
 
     /**
