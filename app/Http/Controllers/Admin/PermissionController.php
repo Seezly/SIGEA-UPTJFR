@@ -13,7 +13,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Admin/Permissions', [
+            'permissions' => Permission::all()
+        ]);
     }
 
     /**
