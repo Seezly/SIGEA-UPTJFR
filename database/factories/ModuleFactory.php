@@ -18,7 +18,7 @@ class ModuleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => mb_substr($this->faker->word(), 0, 50),
+            'name' => mb_substr(fake()->unique()->word(), 0, 50),
             'slug' => mb_substr($this->faker->unique()->slug(), 0, 50),
             'description' => mb_substr($this->faker->sentence(), 0, 255),
             'is_active' => $this->faker->boolean(),

@@ -3,6 +3,7 @@
 use App\Models\Module;
 use App\Models\Permission;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 beforeEach(function () {
     $this->module = Module::factory()->create();
@@ -87,7 +88,7 @@ test('Admin user cannot create a new permission exceeding maximum field lengths'
     $exceedingFormData = [
         'module_id' => $this->module->id,
         'name' => 'Exceeding Admin Create Permission',
-        'slug' => $this->module->slug . '.create',
+        'slug' => mb_substr($this->module->slug . Str::random(60), 0, 50) . '.create',
         'description' => 'Exceeding Admin Create Permission'
     ];
 
