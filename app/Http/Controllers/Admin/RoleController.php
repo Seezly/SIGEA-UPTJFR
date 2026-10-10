@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
@@ -14,7 +16,7 @@ class RoleController extends Controller
     public function index()
     {
         return inertia('Admin/Roles', [
-            'roles' => Role::all()
+            'roles' => Role::withTrashed()->get()
         ]);
     }
 
@@ -36,15 +38,22 @@ class RoleController extends Controller
             'slug' => 'required|string|max:50|unique:roles,slug',
             'description' => 'string|max:255',
             'is_active' => 'boolean',
+            'permission_ids' => 'array',
+            'permission_ids.*' => 'exists:permissions,id',
         ]);
 
-        $role = Role::create($validated);
+        DB::transaction(function () use ($validated) {
+            $role = Role::create(Arr::except($validated, 'permission_ids'));
+
+            if (!empty($validated['permission_ids'])) {
+                $role->permissions()->attach($validated['permission_ids']);
+            }
+        });
 
         return back()->with([
             'flash' => [
                 'success' => true,
                 'message' => 'Rol creado exitosamente.',
-                'role' => $role
             ]
         ]);
     }
@@ -78,6 +87,8 @@ class RoleController extends Controller
             'slug' => 'string|max:50|unique:roles,slug,' . $role->id,
             'description' => 'string|max:255',
             'is_active' => 'boolean',
+            'permission_ids' => 'array',
+            'permission_ids.*' => 'exists:permissions,id',
         ]);
 
         if (
@@ -92,13 +103,16 @@ class RoleController extends Controller
             abort(403, 'No se puede desactivar el rol \'Admin\'.');
         }
 
-        $role->update($validated);
+        DB::transaction(function () use ($validated, $role) {
+            $role->update(Arr::except($validated, 'permission_ids'));
+
+            $role->permissions()->sync($validated['permission_ids'] ?? []);
+        });
 
         return back()->with([
             'flash' => [
                 'success' => true,
                 'message' => 'Rol actualizado exitosamente.',
-                'role' => $role
             ]
         ]);
     }
@@ -118,6 +132,25 @@ class RoleController extends Controller
             'flash' => [
                 'success' => true,
                 'message' => 'Rol eliminado exitosamente.',
+            ]
+        ]);
+    }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $roleId)
+    {
+        $role = Role::withTrashed()->findOrFail($roleId);
+
+        abort_unless($role->trashed(), 404);
+
+        $role->restore();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Rol restaurado exitosamente.',
             ]
         ]);
     }

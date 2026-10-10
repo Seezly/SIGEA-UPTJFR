@@ -18,9 +18,9 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->word(),
-            'slug' => fake()->unique()->slug(),
-            'description' => fake()->sentence(),
+            'name' => mb_substr(fake()->unique()->word(), 0, 50),
+            'slug' => mb_substr(fake()->unique()->slug(), 0, 50),
+            'description' => mb_substr(fake()->sentence(), 0, 255),
             'is_active' => true,
         ];
     }

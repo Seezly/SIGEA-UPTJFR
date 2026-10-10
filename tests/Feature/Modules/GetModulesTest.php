@@ -39,3 +39,21 @@ test('Admin user can access the modules page with listed data', function () {
                 )
         );
 });
+
+test('Modules list includes soft-deleted modules', function () {
+    $user = User::factory()->admin()->create();
+
+    Module::factory()->create(['name' => 'Active Module', 'slug' => 'active-module']);
+    Module::factory()->create(['name' => 'Deleted Module', 'slug' => 'deleted-module'])->delete();
+
+    $this->actingAs($user)
+        ->get(route('modules.index'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Admin/Modules')
+                ->has('modules', 2)
+                ->where('modules.1.slug', 'deleted-module')
+                ->where('modules.1.deleted_at', fn($value) => $value !== null)
+        );
+});

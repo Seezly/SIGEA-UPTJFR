@@ -37,7 +37,7 @@ test('Admin user can delete an unused role', function () {
         ->delete(route('roles.destroy', ['roleId' => $role->id]))
         ->assertRedirect();
 
-    $this->assertDatabaseMissing('roles', ['id' => $role->id]);
+    $this->assertSoftDeleted('roles', ['id' => $role->id]);
 });
 
 test('Admin user cannot delete an active role', function () {

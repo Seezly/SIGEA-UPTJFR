@@ -14,7 +14,7 @@ class ModuleController extends Controller
     public function index()
     {
         return inertia('Admin/Modules', [
-            'modules' => Module::all()
+            'modules' => Module::withTrashed()->get()
         ]);
     }
 
@@ -100,6 +100,23 @@ class ModuleController extends Controller
         return back()->with('flash', [
             'success' => true,
             'message' => 'Módulo eliminado exitosamente.',
+        ]);
+    }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $moduleId)
+    {
+        $module = Module::withTrashed()->findOrFail($moduleId);
+
+        abort_unless($module->trashed(), 404);
+
+        $module->restore();
+
+        return back()->with('flash', [
+            'success' => true,
+            'message' => 'Módulo restaurado exitosamente.',
         ]);
     }
 }

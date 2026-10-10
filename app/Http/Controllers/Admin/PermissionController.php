@@ -14,7 +14,7 @@ class PermissionController extends Controller
     public function index()
     {
         return inertia('Admin/Permissions', [
-            'permissions' => Permission::all()
+            'permissions' => Permission::withTrashed()->get()
         ]);
     }
 
@@ -95,6 +95,23 @@ class PermissionController extends Controller
         return back()->with('flash', [
             'success' => true,
             'message' => 'Permiso eliminado correctamente.'
+        ]);
+    }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $permissionId)
+    {
+        $permission = Permission::withTrashed()->findOrFail($permissionId);
+
+        abort_unless($permission->trashed(), 404);
+
+        $permission->restore();
+
+        return back()->with('flash', [
+            'success' => true,
+            'message' => 'Permiso restaurado exitosamente.'
         ]);
     }
 }
