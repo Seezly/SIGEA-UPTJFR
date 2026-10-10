@@ -34,7 +34,7 @@ test('Admin user can delete a permission', function () {
     $response->assertSessionHasNoErrors()
         ->assertRedirect();
 
-    $this->assertDatabaseMissing('permissions', [
+    $this->assertSoftDeleted('permissions', [
         'id' => $this->permission->id,
     ]);
 });

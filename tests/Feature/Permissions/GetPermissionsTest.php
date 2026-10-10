@@ -41,3 +41,21 @@ test('Admin user can view list of permissions', function () {
                 ->where('permissions.0.slug', 'users.view')
         );
 });
+
+test('Permissions list includes soft-deleted permissions', function () {
+    $admin = User::factory()->admin()->create();
+
+    Permission::factory()->create(['name' => 'Deleted Permission', 'slug' => 'users.deleted'])->delete();
+
+    $response = $this->actingAs($admin)
+        ->get(route('permissions.index'));
+
+    $response->assertOk()
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Admin/Permissions')
+                ->has('permissions', 4)
+                ->where('permissions.3.slug', 'users.deleted')
+                ->where('permissions.3.deleted_at', fn($value) => $value !== null)
+        );
+});

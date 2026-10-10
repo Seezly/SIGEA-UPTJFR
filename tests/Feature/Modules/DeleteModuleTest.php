@@ -35,7 +35,7 @@ test('Admin user can delete an unused module', function () {
         ->delete(route('modules.destroy', ['moduleId' => $module->id]))
         ->assertRedirect();
 
-    $this->assertDatabaseMissing('modules', ['id' => $module->id]);
+    $this->assertSoftDeleted('modules', ['id' => $module->id]);
 });
 
 test('Admin user cannot delete an active module', function () {

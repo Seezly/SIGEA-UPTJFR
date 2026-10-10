@@ -16,7 +16,7 @@ class RoleController extends Controller
     public function index()
     {
         return inertia('Admin/Roles', [
-            'roles' => Role::all()
+            'roles' => Role::withTrashed()->get()
         ]);
     }
 
@@ -132,6 +132,25 @@ class RoleController extends Controller
             'flash' => [
                 'success' => true,
                 'message' => 'Rol eliminado exitosamente.',
+            ]
+        ]);
+    }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $roleId)
+    {
+        $role = Role::withTrashed()->findOrFail($roleId);
+
+        abort_unless($role->trashed(), 404);
+
+        $role->restore();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Rol restaurado exitosamente.',
             ]
         ]);
     }
