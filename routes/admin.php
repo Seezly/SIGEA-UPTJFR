@@ -22,6 +22,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
     Route::post('skills', [SkillController::class, 'store'])->name('skills.store');
     Route::put('skills/{skillId}', [SkillController::class, 'update'])->name('skills.update');
+    Route::delete('skills/{skillId}', [SkillController::class, 'destroy'])->name('skills.destroy');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
