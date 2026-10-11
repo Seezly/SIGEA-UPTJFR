@@ -2,15 +2,29 @@
 	BASE TABLES
 */
 
+Table people {
+  id bigint [pk]
+  first_name varchar(255)
+  second_name varchar(255) [null]
+  middle_name varchar(255)
+  last_name varchar(255) [null]
+  id_prefix char(1)
+  id_number varchar(10) [unique]
+  address text
+  birth_date date
+  gender char(1)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
 Table users {
   id bigint [pk]
-  name varchar(100)
-  id_prefix char
-  id_number varchar(10) [unique]
-  phone_number varchar(11) [unique]
+  people_id bigint [not null, unique]
+  phone_number varchar(255) [unique]
   email varchar(255) [unique]
-  status varchar(8) // ACTIVE, INACTIVE
   password varchar(255)
+  is_active bool
   email_verified_at timestamp
   phone_verified_at timestamp
   last_login_at timestamp
@@ -27,20 +41,20 @@ Table password_reset_tokens {
 }
 
 Table sessions {
-  id bigint [pk]
-  user_id bigint
+  id varchar(255) [pk]
+  user_id bigint [null]
   ip_address varchar(45)
-  user_agent varchar(255)
+  user_agent text
   payload text
-  last_activity timestamp
+  last_activity int
 }
 
 Table roles {
   id bigint [pk]
-  name varchar(100)
-  slug varchar(50)
+  name varchar(50) [unique]
+  slug varchar(50) [unique]
   description varchar(255)
-  status varchar(8) // ACTIVE, INACTIVE
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -48,10 +62,10 @@ Table roles {
 
 Table modules {
   id bigint [pk]
-  name varchar(100)
-  slug varchar(50)
+  name varchar(50) [unique]
+  slug varchar(50) [unique]
   description varchar(255)
-  status varchar(8) // ACTIVE, INACTIVE
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -60,8 +74,8 @@ Table modules {
 Table permissions {
   id bigint [pk]
   module_id bigint [not null]
-  name varchar(100)
-  slug varchar(50)
+  name varchar(50) [unique]
+  slug varchar(50) [unique]
   description varchar(255)
   created_at timestamp
   updated_at timestamp
@@ -76,7 +90,7 @@ Table role_users {
   deleted_at timestamp
 }
 
-Table permission_role {
+Table permission_roles {
   permission_id bigint [pk, unique]
   role_id bigint [pk, unique]
   created_at timestamp
@@ -86,13 +100,13 @@ Table permission_role {
 
 Table audit_logs {
   id bigint [pk]
-  user_id bigint [pk, null]
+  user_id bigint [not null]
   action varchar(100)
   module_id bigint [not null]
   auditable_type varchar(100)
   auditable_id bigint [unique]
-  old_values JSON
-  new_values JSON
+  old_values json
+  new_values json
   ip_address varchar(45)
   user_agent text
   created_at timestamp
@@ -104,16 +118,8 @@ Table audit_logs {
 
 Table applicant_profiles {
   id bigint [pk]
-  user_id bigint [pk, unique]
-  first_name varchar(100)
-  second_name varchar(100)
-  middle_name varchar(100)
-  last_name varchar(100)
-  full_name varchar(255)
-  address text
-  birth_date timestamp
-  gender varchar(10)
-  curriculum_vitae bigint [unique]
+  people_id bigint [not null, unique]
+  current_curriculum_vitae_id bigint [unique] [null]
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -124,11 +130,11 @@ Table work_experiences {
   applicant_profile_id bigint [not null]
   company_name varchar(255)
   position varchar(255)
-  start_date timestamp
-  end_date timestamp
+  start_date date
+  end_date date
   is_current bool
   location varchar(255)
-  description varchar(255)
+  description text
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -140,9 +146,9 @@ Table education_records {
   institution_name varchar(255)
   degree_name varchar(255)
   field_of_study varchar(255)
-  start_date timestamp
-  end_date timestamp
-  description varchar(255)
+  start_date date
+  end_date date
+  description text
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -150,9 +156,9 @@ Table education_records {
 
 Table skills {
   id bigint [pk]
-  name varchar(100)
-  slug varchar(100)
-  status varchar(10) // ACTIVE, INACTIVE
+  name varchar(100) [unique]
+  slug varchar(100) [unique]
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -167,29 +173,16 @@ Table applicant_skills {
   deleted_at timestamp
 }
 
-Table curriculum_vitaes {
-  id bigint [pk]
-  applicant_profile_id bigint [not null]
-  file_name varchar(255)
-  file_path varchar(255)
-  mime_type varchar(20)
-  file_size int
-  is_current bool
-  created_at timestamp
-  updated_at timestamp
-  deleted_at timestamp
-}
-
 Table documents {
   id bigint [pk]
-  user_id bigint [not null]
+  people_id bigint [not null]
   document_type varchar(100)
   file_name varchar(255)
+  mime_type varchar(255)
   file_path varchar(255)
-  mime_type varchar(20)
-  file_size int
+  file_size varchar(255)
   verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
-  verified_by bigint
+  verified_by bigint [null]
   verified_at timestamp
   created_at timestamp
   updated_at timestamp
@@ -205,7 +198,7 @@ Table areas {
   name varchar(100)
   code varchar(10) [unique]
   description varchar(255)
-  status varchar(10) // ACTIVE, INACTIVE
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -217,7 +210,7 @@ Table positions {
   name varchar(100)
   code varchar(10) [unique]
   description varchar(255)
-  status varchar(10) // ACTIVE, INACTIVE
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -228,28 +221,28 @@ Table job_categories {
   name varchar(100) [unique]
   slug varchar(100) [unique]
   description varchar(255)
-  status varchar(10) // ACTIVE, INACTIVE
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
 }
 
-Table jobs {
+Table available_jobs {
   id bigint [pk]
   area_id bigint [not null]
   position_id bigint [not null]
-  category_id bigint [not null]
+  job_category_id bigint [not null]
   created_by bigint [not null]
   title varchar(255)
-  description varchar(255)
+  description text
   requirements text
   responsibilities text
-  employment_type varchar(100)
+  employment_type varchar(255)
   vacancies_count int
-  status varchar(10) // ACTIVE, INACTIVE
+  is_active bool
   published_at timestamp
   application_deadline timestamp
-  closed_at timestamp
+  closed_at timestamp [null]
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -257,10 +250,10 @@ Table jobs {
 
 Table job_requirements {
   id bigint [pk]
-  job_id bigint [not null]
+  available_job_id bigint [not null]
   requirement_type varchar(100)
   description varchar(255)
-  weight float
+  weight int
   is_required bool
   created_at timestamp
   updated_at timestamp
@@ -269,11 +262,11 @@ Table job_requirements {
 
 Table job_publications {
   id bigint [pk]
-  job_id bigint [not null]
+  available_job_id bigint [not null]
   channel varchar(255)
   published_at timestamp
-  unpublished_at timestamp
-  status varchar(10) // ACTIVE, INACTIVE
+  unpublished_at timestamp [null]
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -281,12 +274,12 @@ Table job_publications {
 
 Table job_favorites {
   applicant_profile_id bigint
-  job_id bigint
+  available_job_id bigint
   created_at timestamp
   updated_at timestamp
 
   indexes {
-	(job_id, applicant_profile_id) [unique, pk]
+	(applicant_profile_id, available_job_id) [unique, pk]
   }
 }
 
@@ -296,11 +289,11 @@ Table job_favorites {
 
 Table recruitment_statuses {
   id bigint [pk]
-  name varchar(100)
-  slug varchar(100)
+  name varchar(100) [unique]
+  slug varchar(100) [unique]
   is_initial bool
   is_final bool
-  status varchar(10)
+  is_active bool
   sort_order varchar(4)
   created_at timestamp
   updated_at timestamp
@@ -309,17 +302,17 @@ Table recruitment_statuses {
 
 Table applications {
   id bigint [pk]
-  job_id bigint [not null]
+  available_job_id bigint [not null]
   applicant_profile_id bigint [not null]
   current_status_id bigint [not null]
-  procedure_id bigint [not null]
+  procedure_stage_id bigint [not null]
   applied_at timestamp
-  withdrawn_at timestamp
+  withdrawn_at timestamp [null]
   created_at timestamp
   updated_at timestamp
 
   indexes {
-	(job_id, applicant_profile_id) [unique]
+	(available_job_id, applicant_profile_id) [unique]
   }
 }
 
@@ -331,13 +324,14 @@ Table application_status_history {
   changed_by bigint [not null]
   reason text
   created_at timestamp
+  updated_at timestamp
 }
 
 Table selection_procedures {
   id bigint [pk]
   name varchar(100)
   description varchar(255)
-  status varchar(10)
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -345,7 +339,7 @@ Table selection_procedures {
 
 Table procedure_stages {
   id bigint [pk]
-  selection_procedures_id bigint [not null]
+  selection_procedure_id bigint [not null]
   name varchar(100)
   description varchar(255)
   stage_type varchar(20)
@@ -361,7 +355,7 @@ Table application_stage_history {
   procedure_stage_id bigint [not null]
   status varchar(10)
   started_at timestamp
-  completed_at timestamp
+  completed_at timestamp [null]
   completed_by bigint [not null]
   notes text
   created_at timestamp
@@ -375,12 +369,12 @@ Table application_stage_history {
 Table interviews {
   id bigint [pk]
   application_id bigint [not null]
-  procedure_stage_id bigint
+  procedure_stage_id bigint [null]
   scheduled_by bigint [not null]
   scheduled_at timestamp
   duration_minutes int
-  location varchar(255)
-  meeting_url varchar(255)
+  location varchar(255) [null]
+  meeting_url varchar(255) [null]
   notes text
   created_at timestamp
   updated_at timestamp
@@ -390,7 +384,7 @@ Table interview_participants {
   id bigint [pk]
   interview_id bigint [not null]
   user_id bigint [not null]
-  role_id bigint
+  role_id bigint [not null]
   created_at timestamp
   updated_at timestamp
 
@@ -416,6 +410,7 @@ Table interview_observations {
   interview_id bigint [unique]
   author_id bigint [not null]
   observation text
+  recorded_at timestamp
   created_at timestamp
   updated_at timestamp
 }
@@ -431,21 +426,6 @@ Table hiring_decisions {
   reason varchar(255)
   decided_by bigint [not null]
   decided_at timestamp
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table employment_contracts {
-  id bigint [pk]
-  employee_id bigint [not null]
-  contract_type varchar(20)
-  start_date timestamp
-  end_date timestamp
-  position_id bigint [not null]
-  area_id bigint [not null]
-  salary decimal(12,2)
-  status varchar(10)
-  document_id bigint [not null]
   created_at timestamp
   updated_at timestamp
 }
@@ -483,8 +463,8 @@ Table employee_documents {
   mime_type varchar(20)
   file_size int
   verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
-  verified_by bigint
-  verified_at timestamp
+  verified_by bigint [not null]
+  verified_at timestamp [null]
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -501,7 +481,7 @@ Table evaluation_criteria {
   scale_min float
   scale_max float
   weight float
-  status varchar(10)
+  is_active bool
   created_at timestamp
   updated_at timestamp
   deleted_at timestamp
@@ -511,8 +491,8 @@ Table evaluations {
   id bigint [pk]
   name varchar(100)
   description varchar(255)
-  period_start timestamp
-  period_end timestamp
+  period_start timestamp [null]
+  period_end timestamp [null]
   status varchar(10)
   created_by bigint [not null]
   created_at timestamp
@@ -522,13 +502,13 @@ Table evaluations {
 
 Table evaluation_assignments {
   id bigint [pk]
-  evaluation_id bigint [not null, unique]
-  employee_id bigint [not null, unique]
-  evaluator_id bigint [not null, unique]
+  evaluation_id bigint [not null]
+  employee_id bigint [not null]
+  evaluator_id bigint [not null]
   status varchar(10)
   assigned_at timestamp
   assigned_by bigint [not null]
-  completed_at timestamp
+  completed_at timestamp [null]
   created_at timestamp
   updated_at timestamp
 
@@ -539,15 +519,15 @@ Table evaluation_assignments {
 
 Table evaluation_results {
   id bigint [pk]
-  evaluation_assignments_id bigint [not null, unique]
-  criteria_id bigint [not null, unique]
+  evaluation_assignment_id bigint [not null]
+  evaluation_criteria_id bigint [not null]
   score float
   comment varchar(255)
   created_at timestamp
   updated_at timestamp
 
   indexes {
-	(evaluation_assignments_id, criteria_id) [unique]
+	(evaluation_assignment_id, evaluation_criteria_id) [unique]
   }
 }
 
@@ -567,12 +547,12 @@ Table evaluation_observations {
 
 Table indicators {
   id bigint [pk]
-  name varchar(100)
-  slug varchar(100)
+  name varchar(100) [unique]
+  slug varchar(100) [unique]
   description varchar(255)
-  formula varchar(255)
+  formula text
   unit varchar(4)
-  status varchar(10)
+  is_active bool
   created_at timestamp
   updated_at timestamp
 }
@@ -580,8 +560,8 @@ Table indicators {
 Table metrics {
   id bigint [pk]
   indicator_id bigint [not null]
-  period_start timestamp
-  period_end timestamp
+  period_start timestamp [null]
+  period_end timestamp [null]
   value float
   dimensions json
   calculated_at timestamp
@@ -594,20 +574,20 @@ Table report_templates {
   name varchar(100)
   description varchar(255)
   definition json
-  status varchar(10)
+  is_active bool
   created_at timestamp
   updated_at timestamp
 }
 
 Table report_runs {
   id bigint [pk]
-  template_id bigint [not null]
+  report_template_id bigint [not null]
   requested_by bigint [not null]
   parameters json
   status varchar(10)
   file_path varchar(255)
-  started_at timestamp
-  completed_at timestamp
+  started_at timestamp [null]
+  completed_at timestamp [null]
   created_at timestamp
   updated_at timestamp
 }
@@ -615,11 +595,11 @@ Table report_runs {
 Table historical_reports {
   id bigint [pk]
   report_type varchar(100)
-  period_start date
-  period_end date
+  period_start date [null]
+  period_end date [null]
   snapshot json
   generated_by bigint [not null]
-  generated_at timestamp
+  generated_at timestamp [null]
   created_at timestamp
   updated_at timestamp
 }
@@ -660,16 +640,16 @@ Table institutional_settings {
 
 Table module_settings {
   id bigint [pk]
-  module bigint [not null]
+  module_id bigint [not null]
   key varchar(255)
   value varchar(255)
   value_type varchar(100)
-  status varchar(10)
+  is_active bool
   created_at timestamp
   updated_at timestamp
 
   indexes {
-	(module, key) [unique]
+	(module_id, key) [unique]
   }
 }
 
@@ -687,11 +667,11 @@ Table backup_runs {
   requested_by bigint [not null]
   type varchar(100)
   status varchar(10)
-  file_path varchar(100)
+  file_path varchar(255)
   size_bytes int
   checksum varchar(255)
-  started_at timestamp
-  completed_at timestamp
+  started_at timestamp [null]
+  completed_at timestamp [null]
   created_at timestamp
   updated_at timestamp
 }
@@ -711,10 +691,10 @@ Table restoration_runs {
   id bigint [pk]
   backup_run_id bigint [not null]
   requested_by bigint [not null]
-  status varchar(10)
+  status varchar(10]
   target_environment varchar(255)
-  started_at timestamp
-  completed_at timestamp
+  started_at timestamp [null]
+  completed_at timestamp [null]
   details json
   created_at timestamp
   updated_at timestamp
@@ -724,80 +704,78 @@ Table restoration_runs {
 	REFERENCES
 */
 
+Ref: users.people_id - people.id
 Ref: sessions.user_id > users.id
 Ref: role_users.role_id - roles.id
 Ref: role_users.user_id - users.id
 Ref: modules.id < permissions.module_id
-Ref: permission_role.permission_id - permissions.id
-Ref: permission_role.role_id - roles.id
+Ref: permission_roles.permission_id - permissions.id
+Ref: permission_roles.role_id - roles.id
+Ref: audit_logs.user_id > users.id
 Ref: audit_logs.module_id > modules.id
-Ref: applicant_profiles.user_id - users.id
+Ref: applicant_profiles.people_id - people.id
 Ref: work_experiences.applicant_profile_id > applicant_profiles.id
 Ref: education_records.applicant_profile_id > applicant_profiles.id
 Ref: applicant_skills.applicant_profile_id - applicant_profiles.id
 Ref: applicant_skills.skill_id - skills.id
-Ref: curriculum_vitaes.applicant_profile_id > applicant_profiles.id
-Ref: documents.user_id > users.id
-Ref: documents.verified_by >? users.id
+Ref: documents.people_id > people.id
+Ref: documents.verified_by >? employees.id
 Ref: positions.area_id > areas.id
-Ref: jobs.area_id > areas.id
-Ref: jobs.category_id > job_categories.id
-Ref: jobs.position_id > positions.id
-Ref: jobs.created_by > users.id
-Ref: job_requirements.job_id > jobs.id
-Ref: job_publications.job_id > jobs.id
-Ref: job_favorites.job_id > jobs.id
+Ref: available_jobs.area_id > areas.id
+Ref: available_jobs.job_category_id > job_categories.id
+Ref: available_jobs.position_id > positions.id
+Ref: available_jobs.created_by > employees.id
+Ref: job_requirements.available_job_id > available_jobs.id
+Ref: job_publications.available_job_id > available_jobs.id
+Ref: job_favorites.available_job_id > available_jobs.id
 Ref: job_favorites.applicant_profile_id > applicant_profiles.id
 Ref: applications.applicant_profile_id > applicant_profiles.id
-Ref: applications.job_id > jobs.id
+Ref: applications.available_job_id > available_jobs.id
 Ref: applications.current_status_id > recruitment_statuses.id
-Ref: applications.procedure_id > procedure_stages.id
+Ref: applications.procedure_stage_id > procedure_stages.id
 Ref: application_status_history.application_id > applications.id
 Ref: application_status_history.from_status_id > recruitment_statuses.id
 Ref: application_status_history.to_status_id > recruitment_statuses.id
-Ref: application_status_history.changed_by > users.id
-Ref: procedure_stages.selection_procedures_id > selection_procedures.id
+Ref: application_status_history.changed_by > employees.id
+Ref: procedure_stages.selection_procedure_id > selection_procedures.id
 Ref: application_stage_history.application_id > applications.id
 Ref: application_stage_history.procedure_stage_id > procedure_stages.id
-Ref: application_stage_history.completed_by > users.id
+Ref: application_stage_history.completed_by > employees.id
 Ref: interviews.application_id > applications.id
 Ref: interviews.procedure_stage_id >? procedure_stages.id
-Ref: interviews.scheduled_by > users.id
+Ref: interviews.scheduled_by > employees.id
 Ref: interview_participants.interview_id > interviews.id
 Ref: interview_participants.user_id > users.id
+Ref: interview_participants.role_id > roles.id
 Ref: interview_results.interview_id - interviews.id
-Ref: interview_results.recorded_by > users.id
+Ref: interview_results.recorded_by > employees.id
 Ref: interview_observations.interview_id - interviews.id
-Ref: interview_observations.author_id > users.id
+Ref: interview_observations.author_id > employees.id
 Ref: hiring_decisions.application_id - applications.id
-Ref: hiring_decisions.decided_by > users.id
-Ref: employment_contracts.employee_id > employees.id
-Ref: employment_contracts.document_id > documents.id
-Ref: employment_contracts.position_id > positions.id
-Ref: employment_contracts.area_id > areas.id
+Ref: hiring_decisions.decided_by > employees.id
 Ref: employees.user_id - users.id
 Ref: employees.current_area_id > areas.id
 Ref: employees.current_position_id > positions.id
 Ref: employee_records.employee_id - employees.id
 Ref: employee_records.evidence_id > employee_documents.id
 Ref: employee_documents.employee_id > employees.id
-Ref: employee_documents.verified_by >? users.id
-Ref: evaluations.created_by > users.id
+Ref: employee_documents.verified_by > employees.id
+Ref: evaluations.created_by > employees.id
 Ref: evaluation_assignments.evaluation_id - evaluations.id
 Ref: evaluation_assignments.employee_id - employees.id
 Ref: evaluation_assignments.evaluator_id - employees.id
-Ref: evaluation_assignments.assigned_by > users.id
-Ref: evaluation_results.evaluation_assignments_id - evaluation_assignments.id
-Ref: evaluation_results.criteria_id - evaluation_criteria.id
+Ref: evaluation_assignments.assigned_by > employees.id
+Ref: evaluation_results.evaluation_assignment_id - evaluation_assignments.id
+Ref: evaluation_results.evaluation_criteria_id - evaluation_criteria.id
 Ref: evaluation_observations.evaluation_id > evaluations.id
 Ref: evaluation_observations.employee_id > employees.id
-Ref: evaluation_observations.author_id > users.id
+Ref: evaluation_observations.author_id > employees.id
 Ref: metrics.indicator_id > indicators.id
-Ref: report_runs.template_id > report_templates.id
-Ref: report_runs.requested_by > users.id
-Ref: historical_reports.generated_by > users.id
-Ref: module_settings.module > modules.id
-Ref: backup_runs.requested_by > users.id
+Ref: report_runs.report_template_id > report_templates.id
+Ref: report_runs.requested_by > employees.id
+Ref: historical_reports.generated_by > employees.id
+Ref: module_settings.module_id > modules.id
+Ref: backup_runs.requested_by > employees.id
 Ref: backup_verifications.backup_run_id > backup_runs.id
 Ref: restoration_runs.backup_run_id > backup_runs.id
-Ref: restoration_runs.requested_by > users.id
+Ref: restoration_runs.requested_by > employees.id

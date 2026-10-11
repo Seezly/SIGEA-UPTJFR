@@ -38,7 +38,7 @@
         "y": 0
       },
       {
-        "name": "permission_role",
+        "name": "permission_roles",
         "schemaName": "public",
         "x": 1648,
         "y": 0
@@ -56,7 +56,7 @@
         "y": 528
       },
       {
-        "name": "work_experience",
+        "name": "work_experiences",
         "schemaName": "public",
         "x": 312,
         "y": 336
@@ -77,12 +77,6 @@
         "name": "applicant_skills",
         "schemaName": "public",
         "x": 1280,
-        "y": 240
-      },
-      {
-        "name": "curriculum_vitaes",
-        "schemaName": "public",
-        "x": 1648,
         "y": 240
       },
       {
@@ -110,7 +104,7 @@
         "y": 808
       },
       {
-        "name": "jobs",
+        "name": "available_jobs",
         "schemaName": "public",
         "x": 968,
         "y": 648
@@ -198,12 +192,6 @@
         "schemaName": "public",
         "x": 968,
         "y": 1576
-      },
-      {
-        "name": "employment_contracts",
-        "schemaName": "public",
-        "x": 1280,
-        "y": 1128
       },
       {
         "name": "employees",
@@ -384,7 +372,7 @@
         "firstFieldNames": [
           "permission_id"
         ],
-        "firstTableName": "permission_role",
+        "firstTableName": "permission_roles",
         "firstSchemaName": "public",
         "firstRelation": "1",
         "secondFieldNames": [
@@ -399,7 +387,7 @@
         "firstFieldNames": [
           "role_id"
         ],
-        "firstTableName": "permission_role",
+        "firstTableName": "permission_roles",
         "firstSchemaName": "public",
         "firstRelation": "1",
         "secondFieldNames": [
@@ -427,7 +415,7 @@
       },
       {
         "firstFieldNames": [
-          "user_id"
+          "people_id"
         ],
         "firstTableName": "applicant_profiles",
         "firstSchemaName": "public",
@@ -435,7 +423,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "people",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -444,7 +432,7 @@
         "firstFieldNames": [
           "applicant_profile_id"
         ],
-        "firstTableName": "work_experience",
+        "firstTableName": "work_experiences",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
@@ -502,22 +490,7 @@
       },
       {
         "firstFieldNames": [
-          "applicant_profile_id"
-        ],
-        "firstTableName": "curriculum_vitaes",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "id"
-        ],
-        "secondTableName": "applicant_profiles",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "user_id"
+          "people_id"
         ],
         "firstTableName": "documents",
         "firstSchemaName": "public",
@@ -525,7 +498,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "people",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -540,7 +513,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "0..1",
         "checkPoints": []
@@ -564,7 +537,7 @@
         "firstFieldNames": [
           "area_id"
         ],
-        "firstTableName": "jobs",
+        "firstTableName": "available_jobs",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
@@ -577,9 +550,9 @@
       },
       {
         "firstFieldNames": [
-          "category_id"
+          "job_category_id"
         ],
-        "firstTableName": "jobs",
+        "firstTableName": "available_jobs",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
@@ -594,7 +567,7 @@
         "firstFieldNames": [
           "position_id"
         ],
-        "firstTableName": "jobs",
+        "firstTableName": "available_jobs",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
@@ -609,20 +582,20 @@
         "firstFieldNames": [
           "created_by"
         ],
-        "firstTableName": "jobs",
+        "firstTableName": "available_jobs",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "job_id"
+          "available_job_id"
         ],
         "firstTableName": "job_requirements",
         "firstSchemaName": "public",
@@ -630,14 +603,14 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "jobs",
+        "secondTableName": "available_jobs",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "job_id"
+          "available_job_id"
         ],
         "firstTableName": "job_publications",
         "firstSchemaName": "public",
@@ -645,14 +618,14 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "jobs",
+        "secondTableName": "available_jobs",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "job_id"
+          "available_job_id"
         ],
         "firstTableName": "job_favorites",
         "firstSchemaName": "public",
@@ -660,7 +633,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "jobs",
+        "secondTableName": "available_jobs",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -697,7 +670,7 @@
       },
       {
         "firstFieldNames": [
-          "job_id"
+          "available_job_id"
         ],
         "firstTableName": "applications",
         "firstSchemaName": "public",
@@ -705,7 +678,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "jobs",
+        "secondTableName": "available_jobs",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -727,7 +700,7 @@
       },
       {
         "firstFieldNames": [
-          "procedure_id"
+          "procedure_stage_id"
         ],
         "firstTableName": "applications",
         "firstSchemaName": "public",
@@ -795,14 +768,14 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "selection_procedures_id"
+          "selection_procedure_id"
         ],
         "firstTableName": "procedure_stages",
         "firstSchemaName": "public",
@@ -855,7 +828,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -900,7 +873,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -960,7 +933,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -990,7 +963,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1020,67 +993,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "employee_id"
-        ],
-        "firstTableName": "employment_contracts",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "id"
-        ],
         "secondTableName": "employees",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "document_id"
-        ],
-        "firstTableName": "employment_contracts",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "id"
-        ],
-        "secondTableName": "documents",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "position_id"
-        ],
-        "firstTableName": "employment_contracts",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "id"
-        ],
-        "secondTableName": "positions",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "area_id"
-        ],
-        "firstTableName": "employment_contracts",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "id"
-        ],
-        "secondTableName": "areas",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1185,7 +1098,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "0..1",
         "checkPoints": []
@@ -1200,7 +1113,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1260,14 +1173,14 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "evaluation_assignments_id"
+          "evaluation_assignment_id"
         ],
         "firstTableName": "evaluation_results",
         "firstSchemaName": "public",
@@ -1282,7 +1195,7 @@
       },
       {
         "firstFieldNames": [
-          "criteria_id"
+          "evaluation_criteria_id"
         ],
         "firstTableName": "evaluation_results",
         "firstSchemaName": "public",
@@ -1335,7 +1248,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1357,7 +1270,7 @@
       },
       {
         "firstFieldNames": [
-          "template_id"
+          "report_template_id"
         ],
         "firstTableName": "report_runs",
         "firstSchemaName": "public",
@@ -1380,7 +1293,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1395,7 +1308,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1410,7 +1323,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -1455,7 +1368,7 @@
         "secondFieldNames": [
           "id"
         ],
-        "secondTableName": "users",
+        "secondTableName": "employees",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
