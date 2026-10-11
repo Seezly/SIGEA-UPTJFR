@@ -11,6 +11,16 @@ use Illuminate\Support\Str;
 class SkillController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return inertia('Admin/Skills', [
+            'skills' => Skill::withTrashed()->get(),
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

@@ -20,6 +20,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('modules/{moduleId}/restore', [ModuleController::class, 'restore'])->name('modules.restore');
 
     Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::get('skills', [SkillController::class, 'index'])->name('skills.index');
     Route::post('skills', [SkillController::class, 'store'])->name('skills.store');
     Route::put('skills/{skillId}', [SkillController::class, 'update'])->name('skills.update');
     Route::delete('skills/{skillId}', [SkillController::class, 'destroy'])->name('skills.destroy');
