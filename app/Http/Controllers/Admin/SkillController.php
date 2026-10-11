@@ -81,4 +81,23 @@ class SkillController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $skillId)
+    {
+        $skill = Skill::withTrashed()->findOrFail($skillId);
+
+        abort_unless($skill->trashed(), 404);
+
+        $skill->restore();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Habilidad restaurada exitosamente.',
+            ],
+        ]);
+    }
 }
