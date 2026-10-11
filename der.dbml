@@ -178,9 +178,9 @@ Table documents {
   people_id bigint [not null]
   document_type varchar(100)
   file_name varchar(255)
-  mime_type varchar(255)
+  mime_type varchar(100)
   file_path varchar(255)
-  file_size varchar(255)
+  file_size unsigned bigint
   verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
   verified_by bigint [null]
   verified_at timestamp
@@ -460,10 +460,10 @@ Table employee_documents {
   document_type varchar(100)
   file_name varchar(255)
   file_path varchar(255)
-  mime_type varchar(20)
-  file_size int
+  mime_type varchar(100)
+  file_size unsigned bigint
   verification_status varchar(12) // IN REVIEW, REVIEWED, APPROVED, DECLINED
-  verified_by bigint [not null]
+  verified_by bigint [null]
   verified_at timestamp [null]
   created_at timestamp
   updated_at timestamp
