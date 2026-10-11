@@ -30,4 +30,28 @@ class SkillController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $skillId)
+    {
+        $skill = Skill::findOrFail($skillId);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:100|unique:skills,name,'.$skill->id,
+        ]);
+
+        $skill->update([
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+        ]);
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Habilidad actualizada exitosamente.',
+            ],
+        ]);
+    }
 }
