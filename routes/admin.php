@@ -27,6 +27,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('skills/{skillId}', [SkillController::class, 'destroy'])->name('skills.destroy');
     Route::post('skills/{skillId}/restore', [SkillController::class, 'restore'])->name('skills.restore');
 
+    Route::get('areas', [AreaController::class, 'index'])->name('areas.index');
     Route::post('areas', [AreaController::class, 'store'])->name('areas.store');
     Route::put('areas/{areaId}', [AreaController::class, 'update'])->name('areas.update');
     Route::delete('areas/{areaId}', [AreaController::class, 'destroy'])->name('areas.destroy');
