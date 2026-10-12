@@ -29,6 +29,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::post('areas', [AreaController::class, 'store'])->name('areas.store');
     Route::put('areas/{areaId}', [AreaController::class, 'update'])->name('areas.update');
+    Route::delete('areas/{areaId}', [AreaController::class, 'destroy'])->name('areas.destroy');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');

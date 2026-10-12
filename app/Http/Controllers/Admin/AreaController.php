@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Area;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class AreaController extends Controller
@@ -75,6 +76,40 @@ class AreaController extends Controller
             'flash' => [
                 'success' => true,
                 'message' => 'Área actualizada exitosamente.',
+            ],
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $areaId)
+    {
+        $area = Area::findOrFail($areaId);
+
+        abort_if($area->is_active, 403, 'No se puede eliminar un área activa.');
+
+        $isInUse = DB::table('positions')
+            ->where('area_id', $area->id)
+            ->whereNull('deleted_at')
+            ->exists()
+            || DB::table('available_jobs')
+                ->where('area_id', $area->id)
+                ->whereNull('deleted_at')
+                ->exists()
+            || DB::table('employees')
+                ->where('current_area_id', $area->id)
+                ->whereNull('deleted_at')
+                ->exists();
+
+        abort_if($isInUse, 403, 'No se puede eliminar un área que está siendo usada.');
+
+        $area->delete();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Área eliminada exitosamente.',
             ],
         ]);
     }
