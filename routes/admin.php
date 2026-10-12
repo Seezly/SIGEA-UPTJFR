@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SkillController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
@@ -19,6 +20,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('modules/{moduleId}/restore', [ModuleController::class, 'restore'])->name('modules.restore');
 
     Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::get('skills', [SkillController::class, 'index'])->name('skills.index');
+    Route::post('skills', [SkillController::class, 'store'])->name('skills.store');
+    Route::put('skills/{skillId}', [SkillController::class, 'update'])->name('skills.update');
+    Route::delete('skills/{skillId}', [SkillController::class, 'destroy'])->name('skills.destroy');
+    Route::post('skills/{skillId}/restore', [SkillController::class, 'restore'])->name('skills.restore');
+
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
     Route::delete('permissions/{permissionId}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
