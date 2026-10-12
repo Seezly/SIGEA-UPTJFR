@@ -113,4 +113,23 @@ class AreaController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $areaId)
+    {
+        $area = Area::withTrashed()->findOrFail($areaId);
+
+        abort_unless($area->trashed(), 404);
+
+        $area->restore();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Área restaurada exitosamente.',
+            ],
+        ]);
+    }
 }
