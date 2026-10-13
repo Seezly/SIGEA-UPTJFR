@@ -45,7 +45,7 @@ test('Admin user cannot edit an area that does not exist', function () {
         ->assertStatus(404);
 });
 
-test('Admin user cannot edit area with missing required name', function () {
+test('Admin user cannot edit area with an empty name', function () {
     $admin = User::factory()->admin()->create();
 
     $this->actingAs($admin)
@@ -55,10 +55,10 @@ test('Admin user cannot edit area with missing required name', function () {
         ])
         ->assertSessionHasErrors(['name']);
 
-    $this->assertDatabaseMissing('areas', ['name' => '']);
+    $this->assertDatabaseHas('areas', ['id' => $this->area->id, 'name' => 'Área Original']);
 });
 
-test('Admin user cannot edit area with missing required code', function () {
+test('Admin user cannot edit area with an empty code', function () {
     $admin = User::factory()->admin()->create();
 
     $this->actingAs($admin)
@@ -140,6 +140,25 @@ test('Admin user can update area data', function () {
         'name' => 'Área Actualizada',
         'code' => 'ACT01',
         'description' => 'Descripción actualizada del área.',
+    ]);
+});
+
+test('Admin user can partially update an area sending only its description', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)
+        ->put(route('areas.update', ['areaId' => $this->area->id]), [
+            'description' => 'Nueva descripción del área.',
+        ])
+        ->assertRedirect()
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('flash.message', 'Área actualizada exitosamente.');
+
+    $this->assertDatabaseHas('areas', [
+        'id' => $this->area->id,
+        'name' => 'Área Original',
+        'code' => 'ORI01',
+        'description' => 'Nueva descripción del área.',
     ]);
 });
 

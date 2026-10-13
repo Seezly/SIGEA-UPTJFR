@@ -38,12 +38,7 @@ class AreaController extends Controller
             'is_active' => 'sometimes|boolean',
         ]);
 
-        Area::create([
-            'name' => $validated['name'],
-            'code' => $validated['code'],
-            'description' => $validated['description'] ?? null,
-            'is_active' => $validated['is_active'] ?? true,
-        ]);
+        Area::create($validated);
 
         return back()->with([
             'flash' => [
@@ -67,20 +62,13 @@ class AreaController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:areas,name,'.$area->id,
-            'code' => 'required|string|max:10|unique:areas,code,'.$area->id,
+            'name' => 'string|max:100|unique:areas,name,'.$area->id,
+            'code' => 'string|max:10|unique:areas,code,'.$area->id,
             'description' => 'nullable|string|max:255',
             'is_active' => 'sometimes|boolean',
         ]);
 
-        $area->update([
-            'name' => $validated['name'],
-            'code' => $validated['code'],
-            'description' => array_key_exists('description', $validated)
-                ? $validated['description']
-                : $area->description,
-            'is_active' => $validated['is_active'] ?? $area->is_active,
-        ]);
+        $area->update($validated);
 
         return back()->with([
             'flash' => [
