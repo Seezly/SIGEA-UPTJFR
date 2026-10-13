@@ -41,14 +41,14 @@ test('Admin user cannot edit a skill that does not exist', function () {
         ->assertStatus(404);
 });
 
-test('Admin user cannot edit skill with missing required name', function () {
+test('Admin user cannot edit skill with an empty name', function () {
     $admin = User::factory()->admin()->create();
 
     $this->actingAs($admin)
         ->put(route('skills.update', ['skillId' => $this->skill->id]), ['name' => ''])
         ->assertSessionHasErrors(['name']);
 
-    $this->assertDatabaseMissing('skills', ['name' => '']);
+    $this->assertDatabaseHas('skills', ['id' => $this->skill->id, 'name' => 'Original Skill']);
 });
 
 test('Admin user cannot update skill name to a name already taken by another skill', function () {
@@ -83,5 +83,22 @@ test('Admin user can rename a skill and its slug is regenerated', function () {
         'id' => $this->skill->id,
         'name' => 'Updated Skill',
         'slug' => 'updated-skill',
+    ]);
+});
+
+test('Admin user can send an update without the name and the skill stays unchanged', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)
+        ->put(route('skills.update', ['skillId' => $this->skill->id]), []);
+
+    $response->assertRedirect()
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('flash.message', 'Habilidad actualizada exitosamente.');
+
+    $this->assertDatabaseHas('skills', [
+        'id' => $this->skill->id,
+        'name' => 'Original Skill',
+        'slug' => 'original-skill',
     ]);
 });
