@@ -38,4 +38,35 @@ class PositionController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $positionId)
+    {
+        $position = Position::findOrFail($positionId);
+
+        $code = $request->input('code');
+
+        if (is_string($code) && $code !== '') {
+            $request->merge(['code' => Str::upper($code)]);
+        }
+
+        $validated = $request->validate([
+            'area_id' => 'sometimes|integer|'.Rule::exists('areas', 'id')->where('is_active', true)->whereNull('deleted_at'),
+            'name' => 'string|max:100',
+            'code' => 'string|max:10|unique:positions,code,'.$position->id,
+            'description' => 'nullable|string|max:255',
+            'is_active' => 'sometimes|boolean',
+        ]);
+
+        $position->update($validated);
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Cargo actualizado exitosamente.',
+            ],
+        ]);
+    }
 }
