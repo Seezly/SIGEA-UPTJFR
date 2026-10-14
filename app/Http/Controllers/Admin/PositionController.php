@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -66,6 +67,36 @@ class PositionController extends Controller
             'flash' => [
                 'success' => true,
                 'message' => 'Cargo actualizado exitosamente.',
+            ],
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $positionId)
+    {
+        $position = Position::findOrFail($positionId);
+
+        abort_if($position->is_active, 403, 'No se puede eliminar un cargo activo.');
+
+        $isInUse = DB::table('available_jobs')
+            ->where('position_id', $position->id)
+            ->whereNull('deleted_at')
+            ->exists()
+            || DB::table('employees')
+                ->where('current_position_id', $position->id)
+                ->whereNull('deleted_at')
+                ->exists();
+
+        abort_if($isInUse, 403, 'No se puede eliminar un cargo que está siendo usado.');
+
+        $position->delete();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Cargo eliminado exitosamente.',
             ],
         ]);
     }
