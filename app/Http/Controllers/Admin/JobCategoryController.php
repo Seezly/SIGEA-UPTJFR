@@ -41,4 +41,41 @@ class JobCategoryController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $jobCategoryId)
+    {
+        $jobCategory = JobCategory::findOrFail($jobCategoryId);
+
+        $name = $request->input('name');
+
+        if (is_string($name) && $name !== '') {
+            $request->merge(['slug' => Str::slug($name)]);
+        }
+
+        $validated = $request->validate([
+            'name' => 'string|max:100|unique:job_categories,name,'.$jobCategory->id,
+            'slug' => 'string|max:100|unique:job_categories,slug,'.$jobCategory->id,
+            'description' => 'nullable|string|max:255',
+            'is_active' => 'sometimes|boolean',
+        ]);
+
+        $data = collect($validated)->except(['name', 'slug'])->all();
+
+        if (array_key_exists('name', $validated)) {
+            $data['name'] = $validated['name'];
+            $data['slug'] = $validated['slug'];
+        }
+
+        $jobCategory->update($data);
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Categoría de puesto actualizada exitosamente.',
+            ],
+        ]);
+    }
 }

@@ -35,6 +35,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('areas/{areaId}/restore', [AreaController::class, 'restore'])->name('areas.restore');
 
     Route::post('job-categories', [JobCategoryController::class, 'store'])->name('job-categories.store');
+    Route::put('job-categories/{jobCategoryId}', [JobCategoryController::class, 'update'])->name('job-categories.update');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
