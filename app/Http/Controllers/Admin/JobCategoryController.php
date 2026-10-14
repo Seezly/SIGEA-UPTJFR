@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class JobCategoryController extends Controller
@@ -75,6 +76,32 @@ class JobCategoryController extends Controller
             'flash' => [
                 'success' => true,
                 'message' => 'Categoría de puesto actualizada exitosamente.',
+            ],
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $jobCategoryId)
+    {
+        $jobCategory = JobCategory::findOrFail($jobCategoryId);
+
+        abort_if($jobCategory->is_active, 403, 'No se puede eliminar una categoría de puesto activa.');
+
+        $isInUse = DB::table('available_jobs')
+            ->where('job_category_id', $jobCategory->id)
+            ->whereNull('deleted_at')
+            ->exists();
+
+        abort_if($isInUse, 403, 'No se puede eliminar una categoría de puesto que está siendo usada.');
+
+        $jobCategory->delete();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Categoría de puesto eliminada exitosamente.',
             ],
         ]);
     }

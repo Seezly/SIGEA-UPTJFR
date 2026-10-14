@@ -36,6 +36,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::post('job-categories', [JobCategoryController::class, 'store'])->name('job-categories.store');
     Route::put('job-categories/{jobCategoryId}', [JobCategoryController::class, 'update'])->name('job-categories.update');
+    Route::delete('job-categories/{jobCategoryId}', [JobCategoryController::class, 'destroy'])->name('job-categories.destroy');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
