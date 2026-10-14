@@ -34,6 +34,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('areas/{areaId}', [AreaController::class, 'destroy'])->name('areas.destroy');
     Route::post('areas/{areaId}/restore', [AreaController::class, 'restore'])->name('areas.restore');
 
+    Route::get('job-categories', [JobCategoryController::class, 'index'])->name('job-categories.index');
     Route::post('job-categories', [JobCategoryController::class, 'store'])->name('job-categories.store');
     Route::put('job-categories/{jobCategoryId}', [JobCategoryController::class, 'update'])->name('job-categories.update');
     Route::delete('job-categories/{jobCategoryId}', [JobCategoryController::class, 'destroy'])->name('job-categories.destroy');
