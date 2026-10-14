@@ -44,6 +44,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('positions', [PositionController::class, 'store'])->name('positions.store');
     Route::put('positions/{positionId}', [PositionController::class, 'update'])->name('positions.update');
     Route::delete('positions/{positionId}', [PositionController::class, 'destroy'])->name('positions.destroy');
+    Route::post('positions/{positionId}/restore', [PositionController::class, 'restore'])->name('positions.restore');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');

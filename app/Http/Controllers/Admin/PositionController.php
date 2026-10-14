@@ -100,4 +100,23 @@ class PositionController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $positionId)
+    {
+        $position = Position::withTrashed()->findOrFail($positionId);
+
+        abort_unless($position->trashed(), 404);
+
+        $position->restore();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Cargo restaurado exitosamente.',
+            ],
+        ]);
+    }
 }
