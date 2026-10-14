@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\JobCategoryController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PositionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SkillController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('job-categories/{jobCategoryId}', [JobCategoryController::class, 'update'])->name('job-categories.update');
     Route::delete('job-categories/{jobCategoryId}', [JobCategoryController::class, 'destroy'])->name('job-categories.destroy');
     Route::post('job-categories/{jobCategoryId}/restore', [JobCategoryController::class, 'restore'])->name('job-categories.restore');
+
+    Route::post('positions', [PositionController::class, 'store'])->name('positions.store');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
