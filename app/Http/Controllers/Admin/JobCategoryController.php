@@ -105,4 +105,23 @@ class JobCategoryController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Restore the specified soft-deleted resource.
+     */
+    public function restore(string $jobCategoryId)
+    {
+        $jobCategory = JobCategory::withTrashed()->findOrFail($jobCategoryId);
+
+        abort_unless($jobCategory->trashed(), 404);
+
+        $jobCategory->restore();
+
+        return back()->with([
+            'flash' => [
+                'success' => true,
+                'message' => 'Categoría de puesto restaurada exitosamente.',
+            ],
+        ]);
+    }
 }
