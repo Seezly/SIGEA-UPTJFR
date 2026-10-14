@@ -12,6 +12,16 @@ use Illuminate\Validation\Rule;
 class PositionController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return inertia('Admin/Positions', [
+            'positions' => Position::withTrashed()->get(),
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

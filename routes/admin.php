@@ -41,6 +41,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('job-categories/{jobCategoryId}', [JobCategoryController::class, 'destroy'])->name('job-categories.destroy');
     Route::post('job-categories/{jobCategoryId}/restore', [JobCategoryController::class, 'restore'])->name('job-categories.restore');
 
+    Route::get('positions', [PositionController::class, 'index'])->name('positions.index');
     Route::post('positions', [PositionController::class, 'store'])->name('positions.store');
     Route::put('positions/{positionId}', [PositionController::class, 'update'])->name('positions.update');
     Route::delete('positions/{positionId}', [PositionController::class, 'destroy'])->name('positions.destroy');
