@@ -2,6 +2,7 @@
 
 use App\Models\Area;
 use App\Models\JobCategory;
+use App\Models\Position;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -79,13 +80,11 @@ test('Admin user cannot delete a job category that is in use by an available job
     $admin = User::factory()->admin()->create();
 
     $area = Area::factory()->create();
-    $positionId = DB::table('positions')->insertGetId([
+    $positionId = Position::factory()->create([
         'area_id' => $area->id,
         'name' => 'Coordinador',
         'code' => 'POS01',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    ])->id;
     $employeeId = DB::table('employees')->insertGetId([
         'user_id' => User::factory()->create()->id,
         'employee_code' => 'EMP001',
@@ -124,13 +123,11 @@ test('Admin user can delete a job category whose only available job is soft-dele
     $admin = User::factory()->admin()->create();
 
     $area = Area::factory()->create();
-    $positionId = DB::table('positions')->insertGetId([
+    $positionId = Position::factory()->create([
         'area_id' => $area->id,
         'name' => 'Coordinador',
         'code' => 'POS01',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    ])->id;
     $employeeId = DB::table('employees')->insertGetId([
         'user_id' => User::factory()->create()->id,
         'employee_code' => 'EMP001',
