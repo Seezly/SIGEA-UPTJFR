@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AreaController;
+use App\Http\Controllers\Admin\JobCategoryController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
@@ -32,6 +33,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('areas/{areaId}', [AreaController::class, 'update'])->name('areas.update');
     Route::delete('areas/{areaId}', [AreaController::class, 'destroy'])->name('areas.destroy');
     Route::post('areas/{areaId}/restore', [AreaController::class, 'restore'])->name('areas.restore');
+
+    Route::get('job-categories', [JobCategoryController::class, 'index'])->name('job-categories.index');
+    Route::post('job-categories', [JobCategoryController::class, 'store'])->name('job-categories.store');
+    Route::put('job-categories/{jobCategoryId}', [JobCategoryController::class, 'update'])->name('job-categories.update');
+    Route::delete('job-categories/{jobCategoryId}', [JobCategoryController::class, 'destroy'])->name('job-categories.destroy');
+    Route::post('job-categories/{jobCategoryId}/restore', [JobCategoryController::class, 'restore'])->name('job-categories.restore');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');
