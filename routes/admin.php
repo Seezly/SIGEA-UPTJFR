@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
@@ -25,6 +26,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('skills/{skillId}', [SkillController::class, 'update'])->name('skills.update');
     Route::delete('skills/{skillId}', [SkillController::class, 'destroy'])->name('skills.destroy');
     Route::post('skills/{skillId}/restore', [SkillController::class, 'restore'])->name('skills.restore');
+
+    Route::get('areas', [AreaController::class, 'index'])->name('areas.index');
+    Route::post('areas', [AreaController::class, 'store'])->name('areas.store');
+    Route::put('areas/{areaId}', [AreaController::class, 'update'])->name('areas.update');
+    Route::delete('areas/{areaId}', [AreaController::class, 'destroy'])->name('areas.destroy');
+    Route::post('areas/{areaId}/restore', [AreaController::class, 'restore'])->name('areas.restore');
 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::put('permissions/{permissionId}', [PermissionController::class, 'update'])->name('permissions.update');

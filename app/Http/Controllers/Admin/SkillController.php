@@ -50,13 +50,15 @@ class SkillController extends Controller
         $skill = Skill::findOrFail($skillId);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:skills,name,'.$skill->id,
+            'name' => 'string|max:100|unique:skills,name,'.$skill->id,
         ]);
 
-        $skill->update([
-            'name' => $validated['name'],
-            'slug' => Str::slug($validated['name']),
-        ]);
+        if (array_key_exists('name', $validated)) {
+            $skill->update([
+                'name' => $validated['name'],
+                'slug' => Str::slug($validated['name']),
+            ]);
+        }
 
         return back()->with([
             'flash' => [
