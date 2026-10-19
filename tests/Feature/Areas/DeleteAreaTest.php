@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Area;
+use App\Models\JobCategory;
+use App\Models\Position;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -77,12 +79,10 @@ test('Admin user cannot delete an active area', function () {
 test('Admin user cannot delete an area that is in use by a position', function () {
     $admin = User::factory()->admin()->create();
 
-    DB::table('positions')->insert([
+    Position::factory()->create([
         'area_id' => $this->area->id,
         'name' => 'Coordinador',
         'code' => 'POS01',
-        'created_at' => now(),
-        'updated_at' => now(),
     ]);
 
     $this->actingAs($admin)
@@ -96,19 +96,15 @@ test('Admin user cannot delete an area that is in use by an available job', func
     $admin = User::factory()->admin()->create();
 
     $otherArea = Area::factory()->create();
-    $positionId = DB::table('positions')->insertGetId([
+    $positionId = Position::factory()->create([
         'area_id' => $otherArea->id,
         'name' => 'Coordinador',
         'code' => 'POS01',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-    $categoryId = DB::table('job_categories')->insertGetId([
+    ])->id;
+    $categoryId = JobCategory::factory()->create([
         'name' => 'Tecnología',
         'slug' => 'tecnologia',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    ])->id;
     $employeeId = DB::table('employees')->insertGetId([
         'user_id' => User::factory()->create()->id,
         'employee_code' => 'EMP001',
@@ -147,13 +143,11 @@ test('Admin user cannot delete an area that is in use by an employee', function 
     $admin = User::factory()->admin()->create();
 
     $otherArea = Area::factory()->create();
-    $positionId = DB::table('positions')->insertGetId([
+    $positionId = Position::factory()->create([
         'area_id' => $otherArea->id,
         'name' => 'Coordinador',
         'code' => 'POS01',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    ])->id;
     DB::table('employees')->insert([
         'user_id' => User::factory()->create()->id,
         'employee_code' => 'EMP001',
