@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Static\LandingPageController;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', LandingPageController::class)->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
