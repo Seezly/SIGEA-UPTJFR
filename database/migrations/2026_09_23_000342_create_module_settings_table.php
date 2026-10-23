@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('module_id')->constrained();
             $table->string('key');
             $table->string('value');
-            $table->string('value_type', 100);
+            $table->string('value_type', 20);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('key')->unique();
             $table->string('value');
-            $table->string('value_type', 100);
+            $table->string('value_type', 20);
             $table->boolean('is_public')->default(true);
             $table->timestamps();
         });
