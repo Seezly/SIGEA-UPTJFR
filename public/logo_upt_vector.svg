@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="720" height="960" viewBox="0 0 720 960" role="img" aria-labelledby="title desc">
+  <title id="title">Universidad Politécnica Territorial del Estado Barinas “José Félix Ribas”</title>
+  <desc id="desc">Emblema con texto negro en arco, disco y base amarillos, estrella y eje azul oscuro y nueve franjas rojas finas.</desc>
+  <rect width="720" height="960" fill="#FFFFFF"/>
+  <defs>
+    <path id="header-arc" d="M 4,435 C 25,185 205,25 360,25 C 515,25 695,185 716,435"/>
+  </defs>
+  <text font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#101010" letter-spacing="0.1">
+    <textPath xlink:href="#header-arc" startOffset="50%" text-anchor="middle" textLength="920" lengthAdjust="spacingAndGlyphs">UNIVERSIDAD POLITÉCNICA TERRITORIAL DEL ESTADO BARINAS</textPath>
+  </text>
+  <!-- Yellow solar disc and widening lower field -->
+  <ellipse cx="360" cy="310" rx="242" ry="190" fill="#FFF20A"/>
+  <path d="M 360,386 L 104,828 L 616,828 Z" fill="#FFF20A"/>
+  <!-- Red stripes: slim horizontal bands with inward-slanted inner ends -->
+  <path d="M 112 488 H 341 L 325 505 H 112 Z" fill="#D12622"/>
+    <path d="M 379 488 H 608 V 505 H 395 Z" fill="#D12622"/><path d="M 112 523 H 341 L 325 540 H 112 Z" fill="#D12622"/>
+    <path d="M 379 523 H 608 V 540 H 395 Z" fill="#D12622"/><path d="M 112 558 H 341 L 325 575 H 112 Z" fill="#D12622"/>
+    <path d="M 379 558 H 608 V 575 H 395 Z" fill="#D12622"/><path d="M 112 593 H 341 L 325 610 H 112 Z" fill="#D12622"/>
+    <path d="M 379 593 H 608 V 610 H 395 Z" fill="#D12622"/><path d="M 112 628 H 341 L 325 645 H 112 Z" fill="#D12622"/>
+    <path d="M 379 628 H 608 V 645 H 395 Z" fill="#D12622"/><path d="M 112 663 H 341 L 325 680 H 112 Z" fill="#D12622"/>
+    <path d="M 379 663 H 608 V 680 H 395 Z" fill="#D12622"/><path d="M 112 698 H 341 L 325 715 H 112 Z" fill="#D12622"/>
+    <path d="M 379 698 H 608 V 715 H 395 Z" fill="#D12622"/><path d="M 112 733 H 341 L 325 750 H 112 Z" fill="#D12622"/>
+    <path d="M 379 733 H 608 V 750 H 395 Z" fill="#D12622"/><path d="M 112 768 H 341 L 325 785 H 112 Z" fill="#D12622"/>
+    <path d="M 379 768 H 608 V 785 H 395 Z" fill="#D12622"/>
+  <!-- Central shaft drawn over the bands -->
+  <rect x="348" y="295" width="24" height="540" fill="#28116D"/>
+  <!-- Starburst -->
+  <polygon points="360.00,152.50 369.36,260.57 417.40,164.49 386.67,268.09 466.07,198.63 399.91,282.00 498.58,249.73 407.08,300.17 510.00,310.00 407.08,319.83 498.58,370.27 399.91,338.00 466.07,421.37 386.67,351.91 417.40,455.51 369.36,359.43 360.00,467.50 350.64,359.43 302.60,455.51 333.33,351.91 253.93,421.37 320.09,338.00 221.42,370.27 312.92,319.83 210.00,310.00 312.92,300.17 221.42,249.73 320.09,282.00 253.93,198.63 333.33,268.09 302.60,164.49 350.64,260.57" fill="#28116D"/>
+  <!-- Institution name -->
+  <text x="360" y="935" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="49" font-weight="700" fill="#101010" textLength="610" lengthAdjust="spacingAndGlyphs">“José Félix Ribas”</text>
+</svg>
