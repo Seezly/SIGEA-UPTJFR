@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('vacancies_count');
             $table->boolean('is_active')->default(true);
             $table->timestamp('published_at')->useCurrent();
-            $table->timestamp('application_deadline');
+            $table->timestamp('application_deadline')->nullable();
             $table->timestamp('closed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
