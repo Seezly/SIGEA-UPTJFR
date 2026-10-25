@@ -1,4 +1,4 @@
-import { type SharedData } from '@/types';
+import { type Job, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Welcome() {
@@ -15,6 +15,38 @@ export default function Welcome() {
                 mobileMenu.classList.toggle('px-4');
             });
         }
+    }
+
+    function dateFormat(date: string): string {
+        const jobDate = new Date(date).toTemporalInstant().epochMilliseconds;
+        const today = new Date().toTemporalInstant().epochMilliseconds;
+        let formattedDate;
+
+        const diff = Math.abs(today - jobDate);
+
+        const minutes = Math.floor(diff / 1000 / 60);
+
+        const hours = Math.floor(minutes / 60);
+
+        const days = Math.floor(hours / 24);
+
+        const weeks = Math.floor(days / 7);
+
+        const months = Math.floor(weeks / 4);
+
+        if (months > 0) {
+            formattedDate = `${months} mese(s)`;
+        } else if (weeks > 0) {
+            formattedDate = `${weeks} semana(s)`;
+        } else if (days > 0) {
+            formattedDate = `${days} dia(s)`;
+        } else if (hours > 0) {
+            formattedDate = `${hours} hora(s)`;
+        } else {
+            formattedDate = `${minutes} minuto(s)`;
+        }
+
+        return formattedDate;
     }
 
     return (
@@ -183,7 +215,7 @@ export default function Welcome() {
 
                 {/* Featured Jobs Section */}
                 <section id="featured-jobs" className="relative flex flex-col gap-4 px-4 py-8">
-                    <div>
+                    <div className="flex items-center justify-between">
                         <div>
                             <h2>Oportunidades destacadas</h2>
                             <p className="text-secondary-text">Descubre los últimos puestos disponibles en nuestra universidad</p>
@@ -195,24 +227,36 @@ export default function Welcome() {
                         </div>
                     </div>
 
-                    <div>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {jobs.length > 0 ? (
-                            jobs.map((job) => (
-                                <div key={job.id}>
-                                    <div>
-                                        <div>Icon</div>
-                                        <div>
-                                            <span>{job.employment_type}</span>
+                            jobs.map((job: Job) => (
+                                <Link
+                                    href={`/jobs/${job.id}`}
+                                    className="border-muted flex flex-col gap-2 rounded border px-8 py-4 shadow transition-shadow hover:shadow-md active:shadow-sm"
+                                    data-id={job.id}
+                                    key={job.id}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>{job.category}</div>
+                                        <div className="bg-lighter-blue flex items-center justify-center px-4 py-2">
+                                            <span className="text-lighter-blue-foreground">{job.employment_type}</span>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p>{job.title}</p>
+                                    <div className="my-4 flex flex-col">
+                                        <p className="text-3xl font-semibold">{job.title}</p>
+                                        <p className="text-mute text-xs">{`${job.area} - ${job.position}`}</p>
                                     </div>
-                                    <div>
-                                        <div>{job.published_at}</div>
-                                        <div>{job.application_deadline}</div>
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-mute text-sm">
+                                            Publicado hace <span className="text-blue">{dateFormat(job.published_at)}</span>
+                                        </p>
+                                        {job.application_deadline ? (
+                                            <p className="text-mute text-sm">
+                                                Expira en <span className="text-blue">{dateFormat(job.application_deadline)}</span>
+                                            </p>
+                                        ) : null}
                                     </div>
-                                </div>
+                                </Link>
                             ))
                         ) : (
                             <p className="text-muted text-center">No hay oportunidades de empleo disponibles en este momento</p>
