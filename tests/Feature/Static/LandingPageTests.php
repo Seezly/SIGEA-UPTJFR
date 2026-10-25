@@ -34,6 +34,7 @@ beforeEach(function () {
         'responsibilities' => 'Job responsibilities',
         'employment_type' => 'Full-time',
         'vacancies_count' => 3,
+        'is_active' => true,
     ];
 });
 
@@ -126,12 +127,14 @@ test('Landing page has jobs prop containing only active jobs', function () {
         'published_at' => now()->subDays(1),
         'title' => 'Active Job',
         'application_deadline' => now()->addDays(5),
+        'is_active' => true,
     ]));
 
     AvailableJob::factory()->create(array_merge($this->jobData, [
         'title' => 'Deadline Job',
         'published_at' => now()->subDays(1),
         'application_deadline' => now()->subDay(),
+        'is_active' => true,
     ]));
 
     AvailableJob::factory()->create(array_merge($this->jobData, [
@@ -159,12 +162,14 @@ test(
             'published_at' => now()->subDays(1),
             'title' => 'First Job',
             'application_deadline' => now()->addDays(5),
+            'is_active' => true,
         ]));
 
         $secondJob = AvailableJob::factory()->create(array_merge($this->jobData, [
             'published_at' => now()->subDays(2),
             'title' => 'Second Job',
             'application_deadline' => now()->addDays(5),
+            'is_active' => true,
         ]));
 
         $response = $this->get(route('home'))
@@ -186,6 +191,7 @@ test(
             'published_at' => now()->subDays(1),
             'title' => 'Public Job',
             'application_deadline' => now()->addDays(5),
+            'is_active' => true,
         ]));
 
         $response = $this->get(route('home'))
@@ -198,19 +204,22 @@ test(
                         fn(Assert $job) => $job
                             ->has('id')
                             ->has('title')
-                            ->has('description')
                             ->has('employment_type')
-                            ->has('vacancies_count')
                             ->has('published_at')
-                            ->has('area_id')
-                            ->has('position_id')
-                            ->has('job_category_id')
-                            ->has('requirements')
-                            ->has('responsibilities')
                             ->has('application_deadline')
+                            ->has('area')
+                            ->has('position')
+                            ->has('category')
                             ->missing('created_by')
                             ->missing('created_at')
                             ->missing('updated_at')
+                            ->missing('description')
+                            ->missing('requirements')
+                            ->missing('responsibilities')
+                            ->missing('vacancies_count')
+                            ->missing('area_id')
+                            ->missing('position_id')
+                            ->missing('job_category_id')
                     )
             );
     }

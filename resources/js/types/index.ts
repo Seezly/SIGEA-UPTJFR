@@ -4,6 +4,17 @@ export interface Auth {
     user: User;
 }
 
+export interface Job {
+    id: number;
+    title: string;
+    employment_type: string;
+    position: string;
+    area: string;
+    category: string;
+    published_at: string;
+    application_deadline: string;
+}
+
 export interface BreadcrumbItem {
     title: string;
     href: string;
@@ -25,6 +36,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    jobs: Job[];
     [key: string]: unknown;
 }
 
