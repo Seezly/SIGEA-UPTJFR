@@ -28,42 +28,50 @@ export default function Welcome() {
 
             <header className="bg-blue text-blue-foreground sticky top-0 z-1000">
                 <div className="flex w-full items-center justify-between p-4">
-                    <div className="flex shrink-0 items-center gap-2">
+                    <div className="flex flex-1 items-center justify-start gap-2">
                         <img className="size-8" src="/logo_upt_vector.svg" alt='Logo de la Universidad Politécnica Territorial "José Félix Ribas"' />
                     </div>
-                    <nav className="hidden md:block">
-                        <ul>
+                    <nav className="hidden flex-1 items-center justify-center lg:flex">
+                        <ul className="flex flex-1 items-center justify-center gap-8">
                             <li>
-                                <Link href="#">Inicio</Link>
+                                <Link className="hover:" href="#">
+                                    Inicio
+                                </Link>
                             </li>
                             <li>
-                                <Link href="#">Empleos</Link>
+                                <Link className="hover:" href="#">
+                                    Empleos
+                                </Link>
                             </li>
                             <li>
-                                <Link href="#">Nosotros</Link>
+                                <Link className="hover:" href="#">
+                                    Nosotros
+                                </Link>
                             </li>
                             <li>
-                                <Link href="#">Contacto</Link>
+                                <Link className="hover:" href="#">
+                                    Contacto
+                                </Link>
                             </li>
                         </ul>
                     </nav>
-                    <div className="hidden md:block">
+                    <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
                         {auth.user ? (
                             <Link href="#">Mi Perfil</Link>
                         ) : (
                             <>
-                                <Link href={route('register')} className="w-full">
-                                    <button className="text-blue w-full bg-white px-4 py-2 font-semibold">Regístrate</button>
+                                <Link href={route('register')}>
+                                    <button className="text-blue w-full cursor-pointer bg-white px-4 py-2 font-semibold">Regístrate</button>
                                 </Link>
-                                <Link href={route('login')} className="w-full">
-                                    <button className="bg-blue text-blue-foreground w-full border border-white px-4 py-2 font-semibold">
+                                <Link href={route('login')}>
+                                    <button className="bg-blue text-blue-foreground w-full cursor-pointer border border-white px-4 py-2 font-semibold">
                                         Iniciar Sesión
                                     </button>
                                 </Link>
                             </>
                         )}
                     </div>
-                    <div className="block md:hidden">
+                    <div className="block lg:hidden">
                         <button
                             id="mobile-menu-button"
                             className="flex size-8 items-center justify-center"
@@ -82,7 +90,7 @@ export default function Welcome() {
 
                 <div
                     id="mobile-menu"
-                    className="bg-blue text-blue-foreground flex h-screen max-h-0 flex-col gap-8 overflow-hidden transition-all md:hidden"
+                    className="bg-blue text-blue-foreground flex h-screen max-h-0 flex-col gap-8 overflow-hidden transition-all lg:hidden"
                 >
                     <nav>
                         <ul className="flex flex-col gap-2">
@@ -107,10 +115,10 @@ export default function Welcome() {
                         ) : (
                             <>
                                 <Link href={route('register')} className="w-full">
-                                    <button className="text-blue w-full bg-white px-4 py-2 font-semibold">Regístrate</button>
+                                    <button className="text-blue w-full cursor-pointer bg-white px-4 py-2 font-semibold">Regístrate</button>
                                 </Link>
                                 <Link href={route('login')} className="w-full">
-                                    <button className="bg-blue text-blue-foreground w-full border border-white px-4 py-2 font-semibold">
+                                    <button className="bg-blue text-blue-foreground w-full cursor-pointer border border-white px-4 py-2 font-semibold">
                                         Iniciar Sesión
                                     </button>
                                 </Link>
@@ -124,7 +132,10 @@ export default function Welcome() {
 
             <main className="flex flex-col">
                 {/* Hero Section */}
-                <section id="hero" className="text-blue-foreground relative flex flex-col items-center gap-4 px-4 py-8">
+                <section
+                    id="hero"
+                    className="text-blue-foreground relative flex flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-[75vh]"
+                >
                     <div className="after:bg-blue/80 absolute inset-0 z-0 after:absolute after:inset-0">
                         <img
                             src="/fachada_upt.jpg"
@@ -132,18 +143,18 @@ export default function Welcome() {
                             alt='Fachada de la Universidad Politécnica Territorial "José Félix Ribas"'
                         />
                     </div>
-                    <div className="relative z-10 flex flex-col items-center gap-4">
-                        <div className="text-center">
+                    <div className="relative z-10 flex max-w-5xl flex-col items-center gap-4">
+                        <div className="mb-8 text-center">
                             <h1>Impulsa tu futuro con nosotros</h1>
                             <p className="text-lighter-blue">
                                 Conecta con las propuestas de trabajo ofrecidas por nuestra prestigiosa universidad. Empieza tu carrera profesional
                                 con nosotros hoy.
                             </p>
                         </div>
-                        <form action="" className="bg-background text-text flex flex-col gap-2 rounded p-2">
-                            <label htmlFor="job-search" className="border-background flex flex-col rounded border bg-white p-2">
-                                <div className="flex items-center justify-between gap-2">
-                                    <div className="size-4">
+                        <form action="" className="bg-background text-text flex w-full flex-col gap-4 rounded p-2 lg:flex-row">
+                            <label htmlFor="job-search" className="border-background flex flex-col rounded border bg-white p-2 lg:w-10/12">
+                                <div className="flex w-full items-center justify-between gap-4 lg:justify-center">
+                                    <div className="size-4 lg:size-8">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                                             <path
                                                 className="fill-mute"
@@ -151,13 +162,19 @@ export default function Welcome() {
                                             />
                                         </svg>
                                     </div>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-1 flex-col">
                                         Busca una vacante por título o palabras clave
-                                        <input type="search" name="job-search" id="job-search" placeholder="ej. Profesor de física" />
+                                        <input
+                                            className="w-full outline-none"
+                                            type="search"
+                                            name="job-search"
+                                            id="job-search"
+                                            placeholder="ej. Profesor de física"
+                                        />
                                     </div>
                                 </div>
                             </label>
-                            <button type="submit" className="bg-blue text-blue-foreground px-4 py-2 font-semibold">
+                            <button type="submit" className="bg-blue text-blue-foreground cursor-pointer px-4 py-2 font-semibold lg:w-2/12">
                                 Buscar
                             </button>
                         </form>
@@ -245,7 +262,9 @@ export default function Welcome() {
                                 Visita las propuestas, verifica el feedback de tus postulaciones, historial y muéstranos tu talento.
                             </p>
                             <Link href={route('register')} className="w-full">
-                                <button className="text-blue border-blue w-full border bg-white px-4 py-2 font-semibold">Regístrate &rarr;</button>
+                                <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
+                                    Regístrate &rarr;
+                                </button>
                             </Link>
                         </div>
                     </div>
@@ -262,10 +281,10 @@ export default function Welcome() {
                     </div>
                     <div className="flex w-full flex-col items-center gap-2">
                         <Link href={route('register')} className="w-full">
-                            <button className="bg-blue text-blue-foreground w-full px-4 py-2 font-semibold">Crear una cuenta</button>
+                            <button className="bg-blue text-blue-foreground w-full cursor-pointer px-4 py-2 font-semibold">Crear una cuenta</button>
                         </Link>
                         <Link href={route('register')} className="w-full">
-                            <button className="text-blue border-blue w-full border bg-white px-4 py-2 font-semibold">
+                            <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
                                 Explorar los empleos disponibles
                             </button>
                         </Link>
