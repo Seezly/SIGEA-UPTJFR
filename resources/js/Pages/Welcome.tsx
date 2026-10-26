@@ -1,21 +1,16 @@
 import { type Job, type WelcomeProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useRef, useState } from 'react';
 
 export default function Welcome() {
     const { auth, jobs, institution } = usePage<WelcomeProps>().props;
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-    function handleMobileMenuToggle() {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('max-h-0');
-                mobileMenu.classList.toggle('py-8');
-                mobileMenu.classList.toggle('px-4');
-            });
-        }
-    }
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen((prev) => !prev);
+    };
 
     function dateFormat(date: string): string {
         const jobDate = new Date(date).getTime();
@@ -63,7 +58,7 @@ export default function Welcome() {
                     <div className="flex flex-1 items-center justify-start gap-2">
                         <img className="size-8" src={institution.logo} alt='Logo de la Universidad Politécnica Territorial "José Félix Ribas"' />
                     </div>
-                    <nav className="hidden flex-1 items-center justify-center lg:flex">
+                    <nav className="hidden flex-1 items-center justify-center lg:flex" aria-label="Menú de navegación principal">
                         <ul className="flex flex-1 items-center justify-center gap-8">
                             {/* TODO change href to real ones */}
                             <li className="flex items-center justify-center">
@@ -105,13 +100,11 @@ export default function Welcome() {
                             <Link href="#">Mi Perfil</Link>
                         ) : (
                             <>
-                                <Link href={route('register')}>
-                                    <button className="text-blue w-full cursor-pointer bg-white px-4 py-2 font-semibold">Regístrate</button>
+                                <Link href={route('register')} className="text-blue bg-white px-4 py-2 font-semibold">
+                                    Regístrate
                                 </Link>
-                                <Link href={route('login')}>
-                                    <button className="bg-blue text-blue-foreground w-full cursor-pointer border border-white px-4 py-2 font-semibold">
-                                        Iniciar Sesión
-                                    </button>
+                                <Link href={route('login')} className="bg-blue text-blue-foreground border border-white px-4 py-2 font-semibold">
+                                    Iniciar Sesión
                                 </Link>
                             </>
                         )}
@@ -120,8 +113,11 @@ export default function Welcome() {
                         <button
                             id="mobile-menu-button"
                             className="flex size-8 items-center justify-center"
-                            aria-label="Abrir menú de navegación"
-                            onClick={handleMobileMenuToggle}
+                            ref={mobileMenuButtonRef}
+                            onClick={toggleMobileMenu}
+                            aria-label={mobileMenuOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
+                            aria-expanded={mobileMenuOpen}
+                            aria-controls="mobile-menu"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                                 <path
@@ -135,7 +131,12 @@ export default function Welcome() {
 
                 <div
                     id="mobile-menu"
-                    className="bg-blue text-blue-foreground flex h-screen max-h-0 flex-col gap-8 overflow-hidden transition-all lg:hidden"
+                    ref={mobileMenuRef}
+                    aria-hidden={!mobileMenuOpen}
+                    inert={!mobileMenuOpen ? true : false}
+                    role="menu"
+                    className={`bg-blue text-blue-foreground flex ${mobileMenuOpen ? 'h-screen px-4 py-8' : 'max-h-0'} flex-col gap-8 overflow-hidden transition-all lg:hidden`}
+                    aria-label="Menú de navegación móvil"
                 >
                     <nav>
                         {' '}
@@ -161,13 +162,17 @@ export default function Welcome() {
                             <Link href="#">Mi Perfil</Link>
                         ) : (
                             <>
-                                <Link href={route('register')} className="w-full">
-                                    <button className="text-blue w-full cursor-pointer bg-white px-4 py-2 font-semibold">Regístrate</button>
+                                <Link
+                                    href={route('register')}
+                                    className="text-blue w-full cursor-pointer bg-white px-4 py-2 text-center font-semibold"
+                                >
+                                    Regístrate
                                 </Link>
-                                <Link href={route('login')} className="w-full">
-                                    <button className="bg-blue text-blue-foreground w-full cursor-pointer border border-white px-4 py-2 font-semibold">
-                                        Iniciar Sesión
-                                    </button>
+                                <Link
+                                    href={route('login')}
+                                    className="bg-blue text-blue-foreground w-full cursor-pointer border border-white px-4 py-2 text-center font-semibold"
+                                >
+                                    Iniciar Sesión
                                 </Link>
                             </>
                         )}
@@ -181,27 +186,29 @@ export default function Welcome() {
                 {/* Hero Section */}
                 <section
                     id="hero"
+                    aria-labelledby="hero-heading"
                     className="text-blue-foreground relative flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-[75vh]"
                 >
                     <div className="after:bg-blue/80 absolute inset-0 z-0 after:absolute after:inset-0">
-                        <img
-                            src={institution.facade}
-                            className="h-full w-full object-cover"
-                            alt='Fachada de la Universidad Politécnica Territorial "José Félix Ribas"'
-                        />
+                        <img src={institution.facade} className="h-full w-full object-cover" alt="" aria-hidden="true" />
                     </div>
                     <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-4">
                         <div className="mb-8 text-center">
-                            <h1>Impulsa tu futuro con nosotros</h1>
+                            <h1 id="hero-heading">Impulsa tu futuro con nosotros</h1>
                             <p className="text-lighter-blue">
                                 Conecta con las propuestas de trabajo ofrecidas por nuestra prestigiosa universidad. Empieza tu carrera profesional
                                 con nosotros hoy.
                             </p>
                         </div>
-                        <form action="" className="bg-background text-text flex w-full flex-col gap-4 rounded p-2 lg:flex-row">
+                        <form
+                            action=""
+                            role="search"
+                            aria-label="Buscar vacantes"
+                            className="bg-background text-text flex w-full flex-col gap-4 rounded p-2 lg:flex-row"
+                        >
                             <label htmlFor="job-search" className="border-background flex flex-col rounded border bg-white p-2 lg:w-10/12">
                                 <div className="flex w-full items-center justify-between gap-4 lg:justify-center">
-                                    <div className="size-4 lg:size-8">
+                                    <div className="size-4 lg:size-8" aria-hidden="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                                             <path
                                                 className="fill-mute"
@@ -215,6 +222,7 @@ export default function Welcome() {
                                             className="w-full outline-none"
                                             type="search"
                                             name="job-search"
+                                            autoComplete="off"
                                             id="job-search"
                                             placeholder="ej. Profesor de física"
                                         />
@@ -227,13 +235,15 @@ export default function Welcome() {
                         </form>
                     </div>
                 </section>
-
-                {/* Featured Jobs Section */}
-                <section id="featured-jobs" className="relative flex w-full items-center justify-center gap-4 px-4 py-8">
+                <section
+                    id="featured-jobs"
+                    aria-labelledby="featured-jobs-heading"
+                    className="relative flex w-full items-center justify-center gap-4 px-4 py-8"
+                >
                     <div className="w-full max-w-6xl">
                         <div className="mb-8 flex items-center justify-between">
                             <div>
-                                <h2>Oportunidades destacadas</h2>
+                                <h2 id="featured-jobs-heading">Oportunidades destacadas</h2>
                                 <p className="text-secondary-text">Descubre los últimos puestos disponibles en nuestra universidad</p>
                             </div>
                             <div className="mt-2 hidden text-center md:block">
@@ -245,7 +255,9 @@ export default function Welcome() {
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {jobs === null ? (
-                                <p className="text-muted col-span-full text-center">Ha ocurrido un error, por favor inténtelo más tarde</p>
+                                <p role="alert" className="text-muted col-span-full text-center">
+                                    Ha ocurrido un error, por favor inténtelo más tarde
+                                </p>
                             ) : jobs.length > 0 ? (
                                 jobs.map((job: Job) => (
                                     <Link
@@ -277,7 +289,9 @@ export default function Welcome() {
                                     </Link>
                                 ))
                             ) : (
-                                <p className="text-muted col-span-full text-center">No hay oportunidades de empleo disponibles en este momento</p>
+                                <p aria-live="polite" className="text-muted col-span-full text-center">
+                                    No hay oportunidades de empleo disponibles en este momento
+                                </p>
                             )}
                         </div>
 
@@ -288,12 +302,14 @@ export default function Welcome() {
                         </div>
                     </div>
                 </section>
-
-                {/* About Section */}
-                <section id="about" className="bg-background-darker flex w-full flex-col items-center justify-center px-4 py-8">
+                <section
+                    id="about"
+                    aria-labelledby="about-heading"
+                    className="bg-background-darker flex w-full flex-col items-center justify-center px-4 py-8"
+                >
                     <div className="flex w-full max-w-6xl flex-col">
                         <div className="mb-8 text-center">
-                            <h2>Apoyamos tu crecimiento</h2>
+                            <h2 id="about-heading">Apoyamos tu crecimiento</h2>
                             <p className="text-secondary-text">Cerramos la brecha entre la excelencia académica y el saber profesional</p>
                         </div>
                         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -325,10 +341,11 @@ export default function Welcome() {
                                     Considera la Universidad Politécnica Territorial José Félix Ribas como tu punto de partida hacia un trabajo de
                                     punta. Visita las propuestas, verifica el feedback de tus postulaciones, historial y muéstranos tu talento.
                                 </p>
-                                <Link href={route('register')} className="mt-auto w-full">
-                                    <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
-                                        Regístrate &rarr;
-                                    </button>
+                                <Link
+                                    href={route('register')}
+                                    className="text-blue border-blue mt-auto w-full cursor-pointer border bg-white px-4 py-2 text-center font-semibold"
+                                >
+                                    Regístrate &rarr;
                                 </Link>
                             </div>
                         </div>
@@ -337,24 +354,30 @@ export default function Welcome() {
 
                 {/* CTA Section */}
 
-                <section id="cta" className="flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-screen">
+                <section
+                    id="cta"
+                    aria-labelledby="cta-heading"
+                    className="flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-screen"
+                >
                     <div className="w-full max-w-6xl">
                         <div className="mb-8 text-center">
-                            <h2>¿Listo para comenzar un nuevo hito en tu carrera profesional?</h2>
+                            <h2 id="cta-heading">¿Listo para comenzar un nuevo hito en tu carrera profesional?</h2>
                             <p className="text-secondary-text">
                                 Únete a nuestro portal de empleos hoy. El registro y proceso de contratación es completamente gratuito
                             </p>
                         </div>
                         <div className="flex w-full flex-col items-center gap-2 lg:flex-row lg:justify-center">
-                            <Link href={route('register')} className="w-full lg:w-auto">
-                                <button className="bg-blue text-blue-foreground w-full cursor-pointer px-4 py-2 font-semibold">
-                                    Crear una cuenta
-                                </button>
+                            <Link
+                                href={route('register')}
+                                className="bg-blue text-blue-foreground w-full cursor-pointer px-4 py-2 text-center font-semibold lg:w-auto"
+                            >
+                                Crear una cuenta
                             </Link>
-                            <Link href={route('register')} className="w-full lg:w-auto">
-                                <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
-                                    Explorar los empleos disponibles
-                                </button>
+                            <Link
+                                href={route('register')}
+                                className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 text-center font-semibold lg:w-auto"
+                            >
+                                Explorar los empleos disponibles
                             </Link>
                         </div>
                     </div>
@@ -365,9 +388,11 @@ export default function Welcome() {
                     <div>
                         <p className="text-blue text-xl font-bold">{institution.name}</p>
                         <p className="text-secondary-text">{institution.acronym}</p>
-                        <h6>&copy; 2026 {institution.name}. Todos los derechos reservados.</h6>
+                        <small>
+                            &copy; {new Date().getFullYear()} {institution.name}. Todos los derechos reservados.
+                        </small>
                     </div>
-                    <nav>
+                    <nav aria-label="Menú de navegación del footer">
                         {' '}
                         {/* TODO change href to real ones */}
                         <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
