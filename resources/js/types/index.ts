@@ -36,7 +36,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
-    jobs: Job[];
+    jobs: Job[] | null;
     [key: string]: unknown;
 }
 

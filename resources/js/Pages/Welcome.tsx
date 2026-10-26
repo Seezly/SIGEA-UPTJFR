@@ -229,7 +229,9 @@ export default function Welcome() {
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            {jobs.length > 0 ? (
+                            {jobs === null ? (
+                                <p className="text-muted col-span-full text-center">Ha ocurrido un error, por favor inténtelo más tarde</p>
+                            ) : jobs.length > 0 ? (
                                 jobs.map((job: Job) => (
                                     <Link
                                         href={`/jobs/${job.id}`}
