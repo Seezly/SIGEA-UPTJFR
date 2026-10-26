@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/Button';
+import { NavLink } from '@/components/ui/NavLink';
 import { type Job, type WelcomeProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useRef, useState } from 'react';
@@ -62,55 +64,39 @@ export default function Welcome() {
                         <ul className="flex flex-1 items-center justify-center gap-8">
                             {/* TODO change href to real ones */}
                             <li className="flex items-center justify-center">
-                                <Link
-                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
-                                    href="#"
-                                >
-                                    Inicio
-                                </Link>
+                                <NavLink href="#">Inicio</NavLink>
                             </li>
                             <li className="flex items-center justify-center">
-                                <Link
-                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
-                                    href="#"
-                                >
-                                    Empleos
-                                </Link>
+                                <NavLink href="#">Empleos</NavLink>
                             </li>
                             <li className="flex items-center justify-center">
-                                <Link
-                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
-                                    href="#"
-                                >
-                                    Nosotros
-                                </Link>
+                                <NavLink href="#">Nosotros</NavLink>
                             </li>
                             <li className="flex items-center justify-center">
-                                <Link
-                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
-                                    href="#"
-                                >
-                                    Contacto
-                                </Link>
+                                <NavLink href="#">Contacto</NavLink>
                             </li>
                         </ul>
                     </nav>
                     <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
                         {auth.user ? (
-                            <Link href="#">Mi Perfil</Link>
+                            <Button asChild variant="ghost">
+                                <Link href="#">Mi Perfil</Link>
+                            </Button>
                         ) : (
                             <>
-                                <Link href={route('register')} className="text-blue bg-white px-4 py-2 font-semibold">
-                                    Regístrate
-                                </Link>
-                                <Link href={route('login')} className="bg-blue text-blue-foreground border border-white px-4 py-2 font-semibold">
-                                    Iniciar Sesión
-                                </Link>
+                                <Button asChild>
+                                    <Link href={route('register')}>Regístrate</Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link href={route('login')}>Iniciar Sesión</Link>
+                                </Button>
                             </>
                         )}
                     </div>
                     <div className="block lg:hidden">
-                        <button
+                        <Button
+                            variant="ghost"
+                            size="icon"
                             id="mobile-menu-button"
                             className="flex size-8 items-center justify-center"
                             ref={mobileMenuButtonRef}
@@ -125,7 +111,7 @@ export default function Welcome() {
                                     d="M96 160C96 142.3 110.3 128 128 128L512 128C529.7 128 544 142.3 544 160C544 177.7 529.7 192 512 192L128 192C110.3 192 96 177.7 96 160zM96 320C96 302.3 110.3 288 128 288L512 288C529.7 288 544 302.3 544 320C544 337.7 529.7 352 512 352L128 352C110.3 352 96 337.7 96 320zM544 480C544 497.7 529.7 512 512 512L128 512C110.3 512 96 497.7 96 480C96 462.3 110.3 448 128 448L512 448C529.7 448 544 462.3 544 480z"
                                 />
                             </svg>
-                        </button>
+                        </Button>
                     </div>
                 </div>
 
@@ -143,37 +129,41 @@ export default function Welcome() {
                         {/* TODO change href to real ones */}
                         <ul className="flex flex-col gap-2">
                             <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <Link href="#">Inicio</Link>
+                                <NavLink href="#" className="block px-2 py-4">
+                                    Inicio
+                                </NavLink>
                             </li>
                             <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <Link href="#">Empleos</Link>
+                                <NavLink href="#" className="block px-2 py-4">
+                                    Empleos
+                                </NavLink>
                             </li>
                             <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <Link href="#">Nosotros</Link>
+                                <NavLink href="#" className="block px-2 py-4">
+                                    Nosotros
+                                </NavLink>
                             </li>
                             <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <Link href="#">Contacto</Link>
+                                <NavLink href="#" className="block px-2 py-4">
+                                    Contacto
+                                </NavLink>
                             </li>
                         </ul>
                     </nav>
 
                     <div className="flex flex-col gap-2">
                         {auth.user ? (
-                            <Link href="#">Mi Perfil</Link>
+                            <Button asChild variant="ghost" className="w-full justify-start">
+                                <Link href="#">Mi Perfil</Link>
+                            </Button>
                         ) : (
                             <>
-                                <Link
-                                    href={route('register')}
-                                    className="text-blue w-full cursor-pointer bg-white px-4 py-2 text-center font-semibold"
-                                >
-                                    Regístrate
-                                </Link>
-                                <Link
-                                    href={route('login')}
-                                    className="bg-blue text-blue-foreground w-full cursor-pointer border border-white px-4 py-2 text-center font-semibold"
-                                >
-                                    Iniciar Sesión
-                                </Link>
+                                <Button asChild className="w-full">
+                                    <Link href={route('register')}>Regístrate</Link>
+                                </Button>
+                                <Button asChild variant="outline" className="w-full">
+                                    <Link href={route('login')}>Iniciar Sesión</Link>
+                                </Button>
                             </>
                         )}
                     </div>
@@ -229,9 +219,9 @@ export default function Welcome() {
                                     </div>
                                 </div>
                             </label>
-                            <button type="submit" className="bg-blue text-blue-foreground cursor-pointer px-4 py-2 font-semibold lg:w-2/12">
+                            <Button type="submit" variant="outline" className="cursor-pointer lg:w-2/12">
                                 Buscar
-                            </button>
+                            </Button>
                         </form>
                     </div>
                 </section>
@@ -247,9 +237,9 @@ export default function Welcome() {
                                 <p className="text-secondary-text">Descubre los últimos puestos disponibles en nuestra universidad</p>
                             </div>
                             <div className="mt-2 hidden text-center md:block">
-                                <Link href="/jobs" className="text-blue active:text-muted font-medium hover:underline active:no-underline">
-                                    Ver todos los empleos &rarr;
-                                </Link>
+                                <Button asChild variant="link">
+                                    <Link href="/jobs">Ver todos los empleos &rarr;</Link>
+                                </Button>
                             </div>
                         </div>
 
@@ -260,33 +250,34 @@ export default function Welcome() {
                                 </p>
                             ) : jobs.length > 0 ? (
                                 jobs.map((job: Job) => (
-                                    <Link
-                                        href={`/jobs/${job.id}`}
-                                        className="border-muted flex flex-col gap-2 rounded border p-4 shadow transition-shadow hover:shadow-md active:shadow-sm"
+                                    <div
+                                        className="border-muted flex h-auto w-full flex-col justify-start gap-2 rounded border p-4 shadow transition-shadow hover:shadow-md active:shadow-sm"
                                         data-id={job.id}
                                         key={job.id}
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <div>{job.category}</div>
-                                            <div className="bg-lighter-blue flex items-center justify-center px-4 py-2">
-                                                <span className="text-lighter-blue-foreground">{job.employment_type}</span>
+                                        <Link href={`/jobs/${job.id}`}>
+                                            <div className="flex items-center justify-between">
+                                                <div>{job.category}</div>
+                                                <div className="bg-lighter-blue flex items-center justify-center px-4 py-2">
+                                                    <span className="text-lighter-blue-foreground">{job.employment_type}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="my-4 flex flex-col">
-                                            <p className="text-3xl font-semibold">{job.title}</p>
-                                            <p className="text-mute text-xs">{`${job.area} - ${job.position}`}</p>
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <p className="text-mute text-sm">
-                                                Publicado hace <span className="text-blue">{dateFormat(job.published_at)}</span>
-                                            </p>
-                                            {job.application_deadline ? (
+                                            <div className="my-4 flex flex-col">
+                                                <p className="text-3xl font-semibold">{job.title}</p>
+                                                <p className="text-mute text-xs">{`${job.area} - ${job.position}`}</p>
+                                            </div>
+                                            <div className="flex items-center justify-between">
                                                 <p className="text-mute text-sm">
-                                                    Expira en <span className="text-blue">{dateFormat(job.application_deadline)}</span>
+                                                    Publicado hace <span className="text-blue">{dateFormat(job.published_at)}</span>
                                                 </p>
-                                            ) : null}
-                                        </div>
-                                    </Link>
+                                                {job.application_deadline ? (
+                                                    <p className="text-mute text-sm">
+                                                        Expira en <span className="text-blue">{dateFormat(job.application_deadline)}</span>
+                                                    </p>
+                                                ) : null}
+                                            </div>
+                                        </Link>
+                                    </div>
                                 ))
                             ) : (
                                 <p aria-live="polite" className="text-muted col-span-full text-center">
@@ -296,9 +287,9 @@ export default function Welcome() {
                         </div>
 
                         <div className="mt-4 block text-center md:hidden">
-                            <Link href="/jobs" className="text-blue font-medium active:underline">
-                                Ver todos los empleos &rarr;
-                            </Link>
+                            <Button asChild variant="link">
+                                <Link href="/jobs">Ver todos los empleos &rarr;</Link>
+                            </Button>
                         </div>
                     </div>
                 </section>
@@ -341,12 +332,9 @@ export default function Welcome() {
                                     Considera la Universidad Politécnica Territorial José Félix Ribas como tu punto de partida hacia un trabajo de
                                     punta. Visita las propuestas, verifica el feedback de tus postulaciones, historial y muéstranos tu talento.
                                 </p>
-                                <Link
-                                    href={route('register')}
-                                    className="text-blue border-blue mt-auto w-full cursor-pointer border bg-white px-4 py-2 text-center font-semibold"
-                                >
-                                    Regístrate &rarr;
-                                </Link>
+                                <Button asChild variant="default" className="mt-auto w-full">
+                                    <Link href={route('register')}>Regístrate &rarr;</Link>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -367,18 +355,12 @@ export default function Welcome() {
                             </p>
                         </div>
                         <div className="flex w-full flex-col items-center gap-2 lg:flex-row lg:justify-center">
-                            <Link
-                                href={route('register')}
-                                className="bg-blue text-blue-foreground w-full cursor-pointer px-4 py-2 text-center font-semibold lg:w-auto"
-                            >
-                                Crear una cuenta
-                            </Link>
-                            <Link
-                                href={route('register')}
-                                className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 text-center font-semibold lg:w-auto"
-                            >
-                                Explorar los empleos disponibles
-                            </Link>
+                            <Button asChild variant="outline" className="w-full lg:w-auto">
+                                <Link href={route('register')}>Crear una cuenta</Link>
+                            </Button>
+                            <Button asChild variant="outline-light" className="w-full lg:w-auto">
+                                <Link href={route('register')}>Explorar los empleos disponibles</Link>
+                            </Button>
                         </div>
                     </div>
                 </section>
@@ -397,24 +379,24 @@ export default function Welcome() {
                         {/* TODO change href to real ones */}
                         <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
                             <li>
-                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
+                                <NavLink href="#" variant="secondary">
                                     Políticas de privacidad
-                                </Link>
+                                </NavLink>
                             </li>
                             <li>
-                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
+                                <NavLink href="#" variant="secondary">
                                     Términos del servicio
-                                </Link>
+                                </NavLink>
                             </li>
                             <li>
-                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
+                                <NavLink href="#" variant="secondary">
                                     Portal universitario
-                                </Link>
+                                </NavLink>
                             </li>
                             <li>
-                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
+                                <NavLink href="#" variant="secondary">
                                     Contacto
-                                </Link>
+                                </NavLink>
                             </li>
                         </ul>
                     </nav>
