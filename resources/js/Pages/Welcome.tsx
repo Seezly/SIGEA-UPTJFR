@@ -162,11 +162,11 @@ export default function Welcome() {
 
             {/* Main Content */}
 
-            <main className="flex flex-col">
+            <main className="flex flex-col items-center justify-center">
                 {/* Hero Section */}
                 <section
                     id="hero"
-                    className="text-blue-foreground relative flex flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-[75vh]"
+                    className="text-blue-foreground relative flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-[75vh]"
                 >
                     <div className="after:bg-blue/80 absolute inset-0 z-0 after:absolute after:inset-0">
                         <img
@@ -175,7 +175,7 @@ export default function Welcome() {
                             alt='Fachada de la Universidad Politécnica Territorial "José Félix Ribas"'
                         />
                     </div>
-                    <div className="relative z-10 flex max-w-5xl flex-col items-center gap-4">
+                    <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-4">
                         <div className="mb-8 text-center">
                             <h1>Impulsa tu futuro con nosotros</h1>
                             <p className="text-lighter-blue">
@@ -214,156 +214,166 @@ export default function Welcome() {
                 </section>
 
                 {/* Featured Jobs Section */}
-                <section id="featured-jobs" className="relative flex flex-col gap-4 px-4 py-8">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h2>Oportunidades destacadas</h2>
-                            <p className="text-secondary-text">Descubre los últimos puestos disponibles en nuestra universidad</p>
+                <section id="featured-jobs" className="relative flex w-full items-center justify-center gap-4 px-4 py-8">
+                    <div className="w-full max-w-6xl">
+                        <div className="mb-8 flex items-center justify-between">
+                            <div>
+                                <h2>Oportunidades destacadas</h2>
+                                <p className="text-secondary-text">Descubre los últimos puestos disponibles en nuestra universidad</p>
+                            </div>
+                            <div className="mt-2 hidden text-center md:block">
+                                <Link href="/jobs" className="text-blue font-medium hover:underline">
+                                    Ver todos los empleos &rarr;
+                                </Link>
+                            </div>
                         </div>
-                        <div className="mt-2 hidden text-center md:block">
-                            <Link href="/jobs" className="text-blue font-medium hover:underline">
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {jobs.length > 0 ? (
+                                jobs.map((job: Job) => (
+                                    <Link
+                                        href={`/jobs/${job.id}`}
+                                        className="border-muted flex flex-col gap-2 rounded border p-4 shadow transition-shadow hover:shadow-md active:shadow-sm"
+                                        data-id={job.id}
+                                        key={job.id}
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <div>{job.category}</div>
+                                            <div className="bg-lighter-blue flex items-center justify-center px-4 py-2">
+                                                <span className="text-lighter-blue-foreground">{job.employment_type}</span>
+                                            </div>
+                                        </div>
+                                        <div className="my-4 flex flex-col">
+                                            <p className="text-3xl font-semibold">{job.title}</p>
+                                            <p className="text-mute text-xs">{`${job.area} - ${job.position}`}</p>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-mute text-sm">
+                                                Publicado hace <span className="text-blue">{dateFormat(job.published_at)}</span>
+                                            </p>
+                                            {job.application_deadline ? (
+                                                <p className="text-mute text-sm">
+                                                    Expira en <span className="text-blue">{dateFormat(job.application_deadline)}</span>
+                                                </p>
+                                            ) : null}
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <p className="text-muted col-span-full text-center">No hay oportunidades de empleo disponibles en este momento</p>
+                            )}
+                        </div>
+
+                        <div className="mt-4 block text-center md:hidden">
+                            <Link href="/jobs" className="text-blue font-medium active:underline">
                                 Ver todos los empleos &rarr;
                             </Link>
                         </div>
                     </div>
-
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {jobs.length > 0 ? (
-                            jobs.map((job: Job) => (
-                                <Link
-                                    href={`/jobs/${job.id}`}
-                                    className="border-muted flex flex-col gap-2 rounded border px-8 py-4 shadow transition-shadow hover:shadow-md active:shadow-sm"
-                                    data-id={job.id}
-                                    key={job.id}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>{job.category}</div>
-                                        <div className="bg-lighter-blue flex items-center justify-center px-4 py-2">
-                                            <span className="text-lighter-blue-foreground">{job.employment_type}</span>
-                                        </div>
-                                    </div>
-                                    <div className="my-4 flex flex-col">
-                                        <p className="text-3xl font-semibold">{job.title}</p>
-                                        <p className="text-mute text-xs">{`${job.area} - ${job.position}`}</p>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-mute text-sm">
-                                            Publicado hace <span className="text-blue">{dateFormat(job.published_at)}</span>
-                                        </p>
-                                        {job.application_deadline ? (
-                                            <p className="text-mute text-sm">
-                                                Expira en <span className="text-blue">{dateFormat(job.application_deadline)}</span>
-                                            </p>
-                                        ) : null}
-                                    </div>
-                                </Link>
-                            ))
-                        ) : (
-                            <p className="text-muted text-center">No hay oportunidades de empleo disponibles en este momento</p>
-                        )}
-                    </div>
-
-                    <div className="mt-2 block text-center md:hidden">
-                        <Link href="/jobs" className="text-blue font-medium active:underline">
-                            Ver todos los empleos &rarr;
-                        </Link>
-                    </div>
                 </section>
 
                 {/* About Section */}
-                <section id="about" className="bg-background-darker flex flex-col gap-4 px-4 py-8">
-                    <div className="text-center">
-                        <h2>Apoyamos tu crecimiento</h2>
-                        <p className="text-secondary-text">Cerramos la brecha entre la excelencia académica y el saber profesional</p>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                        <div className="bg-blue text-blue-foreground flex flex-col gap-2 rounded p-8">
-                            <div>Icon</div>
-                            <h3>Para profesionales</h3>
-                            <p className="text-lighter-blue">
-                                Acceso exclusivo a oportunidades de empleo dentro de la universidad. De profesionales para formar profesionales.
-                            </p>
+                <section id="about" className="bg-background-darker flex w-full flex-col items-center justify-center px-4 py-8">
+                    <div className="flex w-full max-w-6xl flex-col">
+                        <div className="mb-8 text-center">
+                            <h2>Apoyamos tu crecimiento</h2>
+                            <p className="text-secondary-text">Cerramos la brecha entre la excelencia académica y el saber profesional</p>
                         </div>
-                        <div className="border-muted flex flex-col gap-2 rounded border bg-white p-8">
-                            <div>Icon</div>
-                            <h3>Comunidad verificada</h3>
-                            <p className="text-secondary-text">
-                                Todas las propuestas exhibidas son previamente aprobadas por las comisiones y organismos necesarios dentro de la
-                                universidad.
-                            </p>
-                        </div>
-                        <div className="border-muted flex flex-col gap-2 rounded border bg-white p-8">
-                            <div>Icon</div>
-                            <h3>Soporte de Carrera Profesional</h3>
-                            <p className="text-secondary-text">
-                                Acceso a recursos, estadísticas y preparaciones para entrevistas por nuestro centro de empleos.
-                            </p>
-                        </div>
-                        <div className="border-muted flex flex-col items-center gap-2 rounded border bg-white p-8">
-                            <h3>¿Buscas un nuevo trabajo?</h3>
-                            <p className="text-secondary-text text-center">
-                                Considera la Universidad Politécnica Territorial José Félix Ribas como tu punto de partida hacia un trabajo de punta.
-                                Visita las propuestas, verifica el feedback de tus postulaciones, historial y muéstranos tu talento.
-                            </p>
-                            <Link href={route('register')} className="w-full">
-                                <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
-                                    Regístrate &rarr;
-                                </button>
-                            </Link>
+                        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                            <div className="bg-blue text-blue-foreground flex flex-col gap-2 rounded p-8 lg:col-span-2">
+                                <div>Icon</div>
+                                <h3>Para profesionales</h3>
+                                <p className="text-lighter-blue">
+                                    Acceso exclusivo a oportunidades de empleo dentro de la universidad. De profesionales para formar profesionales.
+                                </p>
+                            </div>
+                            <div className="border-muted flex flex-col gap-2 rounded border bg-white p-8 lg:col-span-1">
+                                <div>Icon</div>
+                                <h3>Comunidad verificada</h3>
+                                <p className="text-secondary-text">
+                                    Todas las propuestas exhibidas son previamente aprobadas por las comisiones y organismos necesarios dentro de la
+                                    universidad.
+                                </p>
+                            </div>
+                            <div className="border-muted flex flex-col gap-2 rounded border bg-white p-8 lg:col-span-1">
+                                <div>Icon</div>
+                                <h3>Soporte de Carrera Profesional</h3>
+                                <p className="text-secondary-text">
+                                    Acceso a recursos, estadísticas y preparaciones para entrevistas por nuestro centro de empleos.
+                                </p>
+                            </div>
+                            <div className="border-muted flex flex-col items-center gap-2 rounded border bg-white p-8 lg:col-span-2">
+                                <h3>¿Buscas un nuevo trabajo?</h3>
+                                <p className="text-secondary-text text-center">
+                                    Considera la Universidad Politécnica Territorial José Félix Ribas como tu punto de partida hacia un trabajo de
+                                    punta. Visita las propuestas, verifica el feedback de tus postulaciones, historial y muéstranos tu talento.
+                                </p>
+                                <Link href={route('register')} className="mt-auto w-full">
+                                    <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
+                                        Regístrate &rarr;
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 {/* CTA Section */}
 
-                <section id="cta" className="flex flex-col items-center gap-4 px-4 py-8">
-                    <div className="text-center">
-                        <h2>¿Listo para comenzar un nuevo hito en tu carrera profesional?</h2>
-                        <p className="text-secondary-text">
-                            Únete a nuestro portal de empleos hoy. El registro y proceso de contratación es completamente gratuito
-                        </p>
-                    </div>
-                    <div className="flex w-full flex-col items-center gap-2">
-                        <Link href={route('register')} className="w-full">
-                            <button className="bg-blue text-blue-foreground w-full cursor-pointer px-4 py-2 font-semibold">Crear una cuenta</button>
-                        </Link>
-                        <Link href={route('register')} className="w-full">
-                            <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
-                                Explorar los empleos disponibles
-                            </button>
-                        </Link>
+                <section id="cta" className="flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-screen">
+                    <div className="w-full max-w-6xl">
+                        <div className="mb-8 text-center">
+                            <h2>¿Listo para comenzar un nuevo hito en tu carrera profesional?</h2>
+                            <p className="text-secondary-text">
+                                Únete a nuestro portal de empleos hoy. El registro y proceso de contratación es completamente gratuito
+                            </p>
+                        </div>
+                        <div className="flex w-full flex-col items-center gap-2 lg:flex-row lg:justify-center">
+                            <Link href={route('register')} className="w-full lg:w-auto">
+                                <button className="bg-blue text-blue-foreground w-full cursor-pointer px-4 py-2 font-semibold">
+                                    Crear una cuenta
+                                </button>
+                            </Link>
+                            <Link href={route('register')} className="w-full lg:w-auto">
+                                <button className="text-blue border-blue w-full cursor-pointer border bg-white px-4 py-2 font-semibold">
+                                    Explorar los empleos disponibles
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </section>
             </main>
-            <footer className="bg-background-darker flex flex-col items-center justify-between gap-4 px-4 py-8">
-                <div>
-                    <p className="text-blue text-xl font-bold">UPT José Félix Ribas</p>
-                    <h6>&copy; 2026 UPT José Félix Ribas. Todos los derechos reservados.</h6>
+            <footer className="bg-background-darker flex w-full items-center justify-center px-4 py-8">
+                <div className="flex w-full max-w-6xl flex-col justify-between gap-4 lg:flex-row lg:items-center">
+                    <div>
+                        <p className="text-blue text-xl font-bold">UPT José Félix Ribas</p>
+                        <h6>&copy; 2026 UPT José Félix Ribas. Todos los derechos reservados.</h6>
+                    </div>
+                    <nav>
+                        <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
+                            <li>
+                                <Link href="#" className="underline">
+                                    Políticas de privacidad
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="#" className="underline">
+                                    Términos del servicio
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="#" className="underline">
+                                    Portal universitario
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="#" className="underline">
+                                    Contacto
+                                </Link>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <nav className="flex w-full">
-                    <ul className="text-secondary-text flex w-full flex-col justify-center gap-2">
-                        <li>
-                            <Link href="#" className="underline">
-                                Políticas de privacidad
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#" className="underline">
-                                Términos del servicio
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#" className="underline">
-                                Portal universitario
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#" className="underline">
-                                Contacto
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
             </footer>
         </>
     );
