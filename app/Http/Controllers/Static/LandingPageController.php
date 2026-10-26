@@ -21,6 +21,8 @@ class LandingPageController extends Controller
         ];
 
         try {
+            $now = now();
+
             $availableJobs = AvailableJob::select(
                 'available_jobs.id',
                 'areas.name as area',
@@ -32,17 +34,22 @@ class LandingPageController extends Controller
                 'available_jobs.application_deadline as application_deadline'
             )
                 ->where('available_jobs.is_active', true)
-                ->where('published_at', '<=', now())
-                ->where('application_deadline', '>', now())
+                ->where('available_jobs.published_at', '<=', $now)
+                ->where(function ($query) use ($now) {
+                    $query->where('available_jobs.application_deadline', '>', $now)
+                        ->orWhereNull('available_jobs.application_deadline');
+                })
                 ->join('job_categories', 'available_jobs.job_category_id', '=', 'job_categories.id')
                 ->where('job_categories.is_active', true)
+                ->whereNull('job_categories.deleted_at')
                 ->join('positions', 'available_jobs.position_id', '=', 'positions.id')
                 ->where('positions.is_active', true)
+                ->whereNull('positions.deleted_at')
                 ->join('areas', 'available_jobs.area_id', '=', 'areas.id')
                 ->where('areas.is_active', true)
-                ->offset(0)
+                ->whereNull('areas.deleted_at')
+                ->orderBy('available_jobs.published_at', 'desc')
                 ->limit(6)
-                ->orderBy('published_at', 'desc')
                 ->get();
 
             return Inertia::render(

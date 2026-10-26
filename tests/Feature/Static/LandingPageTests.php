@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\InstitutionalSetting;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 beforeEach(function () {
     $this->area = Area::factory()->create();
@@ -226,6 +227,158 @@ test(
 );
 
 /**
+ * Soft Deletes Tests
+ */
+
+test('Landing page excludes soft-deleted jobs', function () {
+    $job = AvailableJob::factory()->create(array_merge($this->jobData, [
+        'published_at' => now()->subDays(1),
+        'title' => 'Deleted Job',
+        'application_deadline' => now()->addDays(5),
+        'is_active' => true,
+    ]));
+
+    $job->delete();
+
+    $this->assertSoftDeleted('available_jobs', ['id' => $job->id]);
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 0)
+        );
+});
+
+test('Landing page excludes jobs whose area is soft-deleted', function () {
+    AvailableJob::factory()->create(array_merge($this->jobData, [
+        'published_at' => now()->subDays(1),
+        'title' => 'Job From Deleted Area',
+        'application_deadline' => now()->addDays(5),
+        'is_active' => true,
+    ]));
+
+    $this->area->delete();
+
+    $this->assertSoftDeleted('areas', ['id' => $this->area->id]);
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 0)
+        );
+});
+
+test('Landing page excludes jobs whose position is soft-deleted', function () {
+    AvailableJob::factory()->create(array_merge($this->jobData, [
+        'published_at' => now()->subDays(1),
+        'title' => 'Job From Deleted Position',
+        'application_deadline' => now()->addDays(5),
+        'is_active' => true,
+    ]));
+
+    $this->position->delete();
+
+    $this->assertSoftDeleted('positions', ['id' => $this->position->id]);
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 0)
+        );
+});
+
+test('Landing page excludes jobs whose job category is soft-deleted', function () {
+    AvailableJob::factory()->create(array_merge($this->jobData, [
+        'published_at' => now()->subDays(1),
+        'title' => 'Job From Deleted Category',
+        'application_deadline' => now()->addDays(5),
+        'is_active' => true,
+    ]));
+
+    $this->jobCategory->delete();
+
+    $this->assertSoftDeleted('job_categories', ['id' => $this->jobCategory->id]);
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 0)
+        );
+});
+
+/**
+ * Publication Window Tests
+ */
+
+test('Landing page includes jobs with no application deadline', function () {
+    AvailableJob::factory()->create(array_merge($this->jobData, [
+        'published_at' => now()->subDays(1),
+        'title' => 'Job Without Deadline',
+        'application_deadline' => null,
+        'is_active' => true,
+    ]));
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 1)
+                ->where('jobs.0.title', 'Job Without Deadline')
+        );
+});
+
+test('Landing page excludes jobs with a future published_at', function () {
+    AvailableJob::factory()->create(array_merge($this->jobData, [
+        'published_at' => now()->addDay(),
+        'title' => 'Future Job',
+        'application_deadline' => now()->addDays(5),
+        'is_active' => true,
+    ]));
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 0)
+        );
+});
+
+/**
+ * Limit and Ordering Tests
+ */
+
+test('Landing page returns at most 6 jobs ordered by published_at descending', function () {
+    foreach (range(1, 7) as $i) {
+        AvailableJob::factory()->create(array_merge($this->jobData, [
+            'published_at' => now()->subDays($i),
+            'title' => "Job {$i}",
+            'application_deadline' => now()->addDays(10),
+            'is_active' => true,
+        ]));
+    }
+
+    $this->get(route('home'))
+        ->assertStatus(200)
+        ->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Welcome')
+                ->has('jobs', 6)
+                ->where('jobs.0.title', 'Job 1')
+                ->where('jobs.5.title', 'Job 6')
+        );
+});
+
+/**
  * Empty States and Error Handling Tests
  */
 
@@ -242,9 +395,9 @@ test('Landing page shows jobs empty state when no active jobs are available', fu
 });
 
 test('Landing page shows jobs prop value as null with status 200 if query fails', function () {
-    $this->withoutExceptionHandling();
+    Schema::drop('available_jobs');
 
-    $this->get(route('home', ['force_error' => true]))
+    $this->get(route('home'))
         ->assertStatus(200)
         ->assertInertia(
             fn(Assert $page) => $page
@@ -252,4 +405,4 @@ test('Landing page shows jobs prop value as null with status 200 if query fails'
                 ->where('jobs', null)
                 ->has('errors')
         );
-})->skip('This test is skipped because it requires a specific implementation to force a query failure, which is not currently implemented.');
+});
