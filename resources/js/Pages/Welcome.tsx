@@ -65,24 +65,36 @@ export default function Welcome() {
                     </div>
                     <nav className="hidden flex-1 items-center justify-center lg:flex">
                         <ul className="flex flex-1 items-center justify-center gap-8">
-                            {/* TODO change href to real ones and style on hover */}
-                            <li>
-                                <Link className="hover:" href="#">
+                            {/* TODO change href to real ones */}
+                            <li className="flex items-center justify-center">
+                                <Link
+                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
+                                    href="#"
+                                >
                                     Inicio
                                 </Link>
                             </li>
-                            <li>
-                                <Link className="hover:" href="#">
+                            <li className="flex items-center justify-center">
+                                <Link
+                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
+                                    href="#"
+                                >
                                     Empleos
                                 </Link>
                             </li>
-                            <li>
-                                <Link className="hover:" href="#">
+                            <li className="flex items-center justify-center">
+                                <Link
+                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
+                                    href="#"
+                                >
                                     Nosotros
                                 </Link>
                             </li>
-                            <li>
-                                <Link className="hover:" href="#">
+                            <li className="flex items-center justify-center">
+                                <Link
+                                    className="text-lighter-blue active:text-muted after:bg-lighter-blue relative px-4 py-2 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all hover:text-white hover:after:w-full active:after:w-0"
+                                    href="#"
+                                >
                                     Contacto
                                 </Link>
                             </li>
@@ -129,16 +141,16 @@ export default function Welcome() {
                         {' '}
                         {/* TODO change href to real ones */}
                         <ul className="flex flex-col gap-2">
-                            <li className="border-lighter-blue border-b px-2 py-4">
+                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
                                 <Link href="#">Inicio</Link>
                             </li>
-                            <li className="border-lighter-blue border-b px-2 py-4">
+                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
                                 <Link href="#">Empleos</Link>
                             </li>
-                            <li className="border-lighter-blue border-b px-2 py-4">
+                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
                                 <Link href="#">Nosotros</Link>
                             </li>
-                            <li className="border-lighter-blue border-b px-2 py-4">
+                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
                                 <Link href="#">Contacto</Link>
                             </li>
                         </ul>
@@ -225,7 +237,7 @@ export default function Welcome() {
                                 <p className="text-secondary-text">Descubre los últimos puestos disponibles en nuestra universidad</p>
                             </div>
                             <div className="mt-2 hidden text-center md:block">
-                                <Link href="/jobs" className="text-blue font-medium hover:underline">
+                                <Link href="/jobs" className="text-blue active:text-muted font-medium hover:underline active:no-underline">
                                     Ver todos los empleos &rarr;
                                 </Link>
                             </div>
@@ -360,22 +372,22 @@ export default function Welcome() {
                         {/* TODO change href to real ones */}
                         <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
                             <li>
-                                <Link href="#" className="text-sm underline">
+                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
                                     Políticas de privacidad
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="text-sm underline">
+                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
                                     Términos del servicio
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="text-sm underline">
+                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
                                     Portal universitario
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="text-sm underline">
+                                <Link href="#" className="hover:text-blue active:text-muted text-sm underline transition-colors">
                                     Contacto
                                 </Link>
                             </li>
