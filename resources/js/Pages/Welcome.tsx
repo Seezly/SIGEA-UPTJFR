@@ -18,8 +18,8 @@ export default function Welcome() {
     }
 
     function dateFormat(date: string): string {
-        const jobDate = new Date(date).toTemporalInstant().epochMilliseconds;
-        const today = new Date().toTemporalInstant().epochMilliseconds;
+        const jobDate = new Date(date).getTime();
+        const today = Date.now();
         let formattedDate;
 
         const diff = Math.abs(today - jobDate);
