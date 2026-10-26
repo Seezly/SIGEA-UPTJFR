@@ -1,19 +1,11 @@
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/Button';
-import { NavLink } from '@/components/ui/NavLink';
 import { type Job, type WelcomeProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { useRef, useState } from 'react';
 
 export default function Welcome() {
     const { auth, jobs, institution } = usePage<WelcomeProps>().props;
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
-    const mobileMenuRef = useRef<HTMLDivElement>(null);
-
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen((prev) => !prev);
-    };
-
     function dateFormat(date: string): string {
         const jobDate = new Date(date).getTime();
         const today = Date.now();
@@ -52,123 +44,7 @@ export default function Welcome() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-
-            {/* Header */}
-
-            <header className="bg-blue text-blue-foreground sticky top-0 z-1000">
-                <div className="flex w-full items-center justify-between p-4">
-                    <div className="flex flex-1 items-center justify-start gap-2">
-                        <img className="size-8" src={institution.logo} alt='Logo de la Universidad Politécnica Territorial "José Félix Ribas"' />
-                    </div>
-                    <nav className="hidden flex-1 items-center justify-center lg:flex" aria-label="Menú de navegación principal">
-                        <ul className="flex flex-1 items-center justify-center gap-8">
-                            {/* TODO change href to real ones */}
-                            <li className="flex items-center justify-center">
-                                <NavLink href="#">Inicio</NavLink>
-                            </li>
-                            <li className="flex items-center justify-center">
-                                <NavLink href="#">Empleos</NavLink>
-                            </li>
-                            <li className="flex items-center justify-center">
-                                <NavLink href="#">Nosotros</NavLink>
-                            </li>
-                            <li className="flex items-center justify-center">
-                                <NavLink href="#">Contacto</NavLink>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
-                        {auth.user ? (
-                            <Button asChild variant="ghost">
-                                <Link href="#">Mi Perfil</Link>
-                            </Button>
-                        ) : (
-                            <>
-                                <Button asChild>
-                                    <Link href={route('register')}>Regístrate</Link>
-                                </Button>
-                                <Button asChild variant="outline">
-                                    <Link href={route('login')}>Iniciar Sesión</Link>
-                                </Button>
-                            </>
-                        )}
-                    </div>
-                    <div className="block lg:hidden">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            id="mobile-menu-button"
-                            className="flex size-8 items-center justify-center"
-                            ref={mobileMenuButtonRef}
-                            onClick={toggleMobileMenu}
-                            aria-label={mobileMenuOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
-                            aria-expanded={mobileMenuOpen}
-                            aria-controls="mobile-menu"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                                <path
-                                    className="fill-white"
-                                    d="M96 160C96 142.3 110.3 128 128 128L512 128C529.7 128 544 142.3 544 160C544 177.7 529.7 192 512 192L128 192C110.3 192 96 177.7 96 160zM96 320C96 302.3 110.3 288 128 288L512 288C529.7 288 544 302.3 544 320C544 337.7 529.7 352 512 352L128 352C110.3 352 96 337.7 96 320zM544 480C544 497.7 529.7 512 512 512L128 512C110.3 512 96 497.7 96 480C96 462.3 110.3 448 128 448L512 448C529.7 448 544 462.3 544 480z"
-                                />
-                            </svg>
-                        </Button>
-                    </div>
-                </div>
-
-                <div
-                    id="mobile-menu"
-                    ref={mobileMenuRef}
-                    aria-hidden={!mobileMenuOpen}
-                    inert={!mobileMenuOpen ? true : false}
-                    role="menu"
-                    className={`bg-blue text-blue-foreground flex ${mobileMenuOpen ? 'h-screen px-4 py-8' : 'max-h-0'} flex-col gap-8 overflow-hidden transition-all lg:hidden`}
-                    aria-label="Menú de navegación móvil"
-                >
-                    <nav>
-                        {' '}
-                        {/* TODO change href to real ones */}
-                        <ul className="flex flex-col gap-2">
-                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <NavLink href="#" className="block px-2 py-4">
-                                    Inicio
-                                </NavLink>
-                            </li>
-                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <NavLink href="#" className="block px-2 py-4">
-                                    Empleos
-                                </NavLink>
-                            </li>
-                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <NavLink href="#" className="block px-2 py-4">
-                                    Nosotros
-                                </NavLink>
-                            </li>
-                            <li className="text-lighter-blue border-lighter-blue active:border-muted active:text-muted border-b px-2 py-4 transition-colors">
-                                <NavLink href="#" className="block px-2 py-4">
-                                    Contacto
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <div className="flex flex-col gap-2">
-                        {auth.user ? (
-                            <Button asChild variant="ghost" className="w-full justify-start">
-                                <Link href="#">Mi Perfil</Link>
-                            </Button>
-                        ) : (
-                            <>
-                                <Button asChild className="w-full">
-                                    <Link href={route('register')}>Regístrate</Link>
-                                </Button>
-                                <Button asChild variant="outline" className="w-full">
-                                    <Link href={route('login')}>Iniciar Sesión</Link>
-                                </Button>
-                            </>
-                        )}
-                    </div>
-                </div>
-            </header>
+            <Header auth={auth} institution={institution} />
 
             {/* Main Content */}
 
@@ -365,43 +241,7 @@ export default function Welcome() {
                     </div>
                 </section>
             </main>
-            <footer className="bg-background-darker flex w-full items-center justify-center px-4 py-8">
-                <div className="flex w-full max-w-6xl flex-col justify-between gap-4 lg:flex-row lg:items-center">
-                    <div>
-                        <p className="text-blue text-xl font-bold">{institution.name}</p>
-                        <p className="text-secondary-text">{institution.acronym}</p>
-                        <small>
-                            &copy; {new Date().getFullYear()} {institution.name}. Todos los derechos reservados.
-                        </small>
-                    </div>
-                    <nav aria-label="Menú de navegación del footer">
-                        {' '}
-                        {/* TODO change href to real ones */}
-                        <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
-                            <li>
-                                <NavLink href="#" variant="secondary">
-                                    Políticas de privacidad
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href="#" variant="secondary">
-                                    Términos del servicio
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href="#" variant="secondary">
-                                    Portal universitario
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href="#" variant="secondary">
-                                    Contacto
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </footer>
+            <Footer institution={institution} />
         </>
     );
 }
