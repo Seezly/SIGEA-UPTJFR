@@ -23,7 +23,7 @@ beforeEach(function () {
 });
 
 test('Guest can render register page', function () {
-    $this->get(route('register.create'))
+    $this->get(route('register'))
         ->assertStatus(200)
         ->assertInertia(fn(Assert $page) => $page->component('Auth/Register'));
 });
@@ -32,12 +32,12 @@ test('Authenticated user is redirected away from register page', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->get(route('register.create'))
+        ->get(route('register'))
         ->assertRedirect(route('dashboard'));
 });
 
 test('User can register successfully with personal details', function () {
-    $response = $this->post(route('register.create'), $this->formData);
+    $response = $this->post(route('register'), $this->formData);
 
     $response->assertStatus(302)->assertRedirect(route('dashboard'));
 
@@ -54,7 +54,7 @@ test('User can register successfully with personal details', function () {
 });
 
 test('User cannot register with missing required fields', function () {
-    $this->post(route('register.create'), [
+    $this->post(route('register'), [
         'first_name' => '',
         'email' => '',
         'password' => '',
@@ -68,7 +68,7 @@ test('User cannot register with an already registered email or id_number', funct
     User::factory()->create(['email' => 'sergio@example.com']);
     People::factory()->create(['id_number' => '28273564']);
 
-    $response = $this->post(route('register.create'), $this->formData);
+    $response = $this->post(route('register'), $this->formData);
 
     $response->assertSessionHasErrors(['email', 'id_number']);
     $this->assertGuest();
@@ -79,7 +79,7 @@ test('User cannot register if passwords do not match', function () {
         'password_confirmation' => 'different_password',
     ]);
 
-    $this->post(route('register.create'), $invalidData)
+    $this->post(route('register'), $invalidData)
         ->assertSessionHasErrors(['password']);
 
     $this->assertGuest();

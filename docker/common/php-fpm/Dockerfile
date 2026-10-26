@@ -97,6 +97,15 @@ ARG XDEBUG_LOG_LEVEL=0
 
 USER root
 
+# Instalar Node.js y npm para Laravel Vite
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nodejs \
+    npm \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Instalar dependencias de frontend y compilar los assets
+RUN npm install
+
 # Configurar Xdebug si está habilitado
 RUN if [ "${XDEBUG_ENABLED}" = "true" ]; then \
     pecl install xdebug && \
@@ -142,4 +151,6 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Exponer el puerto 9000 para PHP-FPM
 EXPOSE 9000
-CMD ["php-fpm"]
+# Ejecutar Vite y PHP-FPM en desarrollo
+EXPOSE 5173
+CMD ["sh", "-c", "npm run dev -- --host 0.0.0.0 & exec php-fpm"]
