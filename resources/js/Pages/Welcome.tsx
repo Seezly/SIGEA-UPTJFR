@@ -1,8 +1,8 @@
-import { type Job, type SharedData } from '@/types';
+import { type Job, type WelcomeProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Welcome() {
-    const { auth, jobs } = usePage<SharedData>().props;
+    const { auth, jobs, institution } = usePage<WelcomeProps>().props;
 
     function handleMobileMenuToggle() {
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -61,10 +61,11 @@ export default function Welcome() {
             <header className="bg-blue text-blue-foreground sticky top-0 z-1000">
                 <div className="flex w-full items-center justify-between p-4">
                     <div className="flex flex-1 items-center justify-start gap-2">
-                        <img className="size-8" src="/logo_upt_vector.svg" alt='Logo de la Universidad Politécnica Territorial "José Félix Ribas"' />
+                        <img className="size-8" src={institution.logo} alt='Logo de la Universidad Politécnica Territorial "José Félix Ribas"' />
                     </div>
                     <nav className="hidden flex-1 items-center justify-center lg:flex">
                         <ul className="flex flex-1 items-center justify-center gap-8">
+                            {/* TODO change href to real ones and style on hover */}
                             <li>
                                 <Link className="hover:" href="#">
                                     Inicio
@@ -125,6 +126,8 @@ export default function Welcome() {
                     className="bg-blue text-blue-foreground flex h-screen max-h-0 flex-col gap-8 overflow-hidden transition-all lg:hidden"
                 >
                     <nav>
+                        {' '}
+                        {/* TODO change href to real ones */}
                         <ul className="flex flex-col gap-2">
                             <li className="border-lighter-blue border-b px-2 py-4">
                                 <Link href="#">Inicio</Link>
@@ -170,7 +173,7 @@ export default function Welcome() {
                 >
                     <div className="after:bg-blue/80 absolute inset-0 z-0 after:absolute after:inset-0">
                         <img
-                            src="/fachada_upt.jpg"
+                            src={institution.facade}
                             className="h-full w-full object-cover"
                             alt='Fachada de la Universidad Politécnica Territorial "José Félix Ribas"'
                         />
@@ -348,28 +351,31 @@ export default function Welcome() {
             <footer className="bg-background-darker flex w-full items-center justify-center px-4 py-8">
                 <div className="flex w-full max-w-6xl flex-col justify-between gap-4 lg:flex-row lg:items-center">
                     <div>
-                        <p className="text-blue text-xl font-bold">UPT José Félix Ribas</p>
-                        <h6>&copy; 2026 UPT José Félix Ribas. Todos los derechos reservados.</h6>
+                        <p className="text-blue text-xl font-bold">{institution.name}</p>
+                        <p className="text-secondary-text">{institution.acronym}</p>
+                        <h6>&copy; 2026 {institution.name}. Todos los derechos reservados.</h6>
                     </div>
                     <nav>
+                        {' '}
+                        {/* TODO change href to real ones */}
                         <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
                             <li>
-                                <Link href="#" className="underline">
+                                <Link href="#" className="text-sm underline">
                                     Políticas de privacidad
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="underline">
+                                <Link href="#" className="text-sm underline">
                                     Términos del servicio
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="underline">
+                                <Link href="#" className="text-sm underline">
                                     Portal universitario
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="underline">
+                                <Link href="#" className="text-sm underline">
                                     Contacto
                                 </Link>
                             </li>

@@ -18,6 +18,8 @@ class LandingPageController extends Controller
             'name' => $institutionalSettings['name'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
             'acronym' => $institutionalSettings['acronym'] ?? 'UPTJFR',
             'description' => $institutionalSettings['description'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
+            'logo' => $institutionalSettings['logo'] ?? '/logo_upt_vector.svg',
+            'facade' => $institutionalSettings['facade'] ?? '/fachada_upt.jpg',
         ];
 
         try {
@@ -67,7 +69,7 @@ class LandingPageController extends Controller
                 [
                     'institution' => $institution,
                     'jobs' => $availableJobs,
-                    'errors' => [ 'jobs' => $th->getMessage() ]
+                    'errors' => ['jobs' => $th->getMessage()]
                 ]
             );
         }
