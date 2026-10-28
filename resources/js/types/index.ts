@@ -58,9 +58,16 @@ export interface Institution {
     description: string;
     logo: string;
     facade: string;
+    about_us: string;
+    mission: string;
+    vision: string;
 }
 
 export interface WelcomeProps extends SharedData {
     jobs: Job[] | null;
+    institution: Institution;
+}
+
+export interface AboutUsProps extends SharedData {
     institution: Institution;
 }

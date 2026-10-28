@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Static\LandingPageController;
+use App\Http\Controllers\Static\AboutUsPageController;
 use Inertia\Inertia;
 
 Route::get('/', LandingPageController::class)->name('home');
+Route::get('/about-us', AboutUsPageController::class)->name('about-us');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {

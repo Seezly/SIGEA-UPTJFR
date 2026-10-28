@@ -1,5 +1,6 @@
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Hero } from '@/components/Hero';
 import { Button } from '@/components/ui/Button';
 import { type Job, type WelcomeProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -50,57 +51,45 @@ export default function Welcome() {
 
             <main className="flex flex-col items-center justify-center">
                 {/* Hero Section */}
-                <section
-                    id="hero"
-                    aria-labelledby="hero-heading"
-                    className="text-blue-foreground relative flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-[75vh]"
+                <Hero
+                    title="Impulsa tu futuro con nosotros"
+                    description="Conecta con las propuestas de trabajo ofrecidas por nuestra prestigiosa universidad. Empieza tu carrera profesional con nosotros hoy."
+                    image={institution.facade}
                 >
-                    <div className="after:bg-blue/80 absolute inset-0 z-0 after:absolute after:inset-0">
-                        <img src={institution.facade} className="h-full w-full object-cover" alt="" aria-hidden="true" />
-                    </div>
-                    <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-4">
-                        <div className="mb-8 text-center">
-                            <h1 id="hero-heading">Impulsa tu futuro con nosotros</h1>
-                            <p className="text-lighter-blue">
-                                Conecta con las propuestas de trabajo ofrecidas por nuestra prestigiosa universidad. Empieza tu carrera profesional
-                                con nosotros hoy.
-                            </p>
-                        </div>
-                        <form
-                            action=""
-                            role="search"
-                            aria-label="Buscar vacantes"
-                            className="bg-background text-text flex w-full flex-col gap-4 rounded p-2 lg:flex-row"
-                        >
-                            <label htmlFor="job-search" className="border-background flex flex-col rounded border bg-white p-2 lg:w-10/12">
-                                <div className="flex w-full items-center justify-between gap-4 lg:justify-center">
-                                    <div className="size-4 lg:size-8" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                                            <path
-                                                className="fill-mute"
-                                                d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div className="flex flex-1 flex-col">
-                                        Busca una vacante por título o palabras clave
-                                        <input
-                                            className="w-full outline-none"
-                                            type="search"
-                                            name="job-search"
-                                            autoComplete="off"
-                                            id="job-search"
-                                            placeholder="ej. Profesor de física"
+                    <form
+                        action=""
+                        role="search"
+                        aria-label="Buscar vacantes"
+                        className="bg-background text-text flex w-full flex-col gap-4 rounded p-2 lg:flex-row"
+                    >
+                        <label htmlFor="job-search" className="border-background flex flex-col rounded border bg-white p-2 lg:w-10/12">
+                            <div className="flex w-full items-center justify-between gap-4 lg:justify-center">
+                                <div className="size-4 lg:size-8" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                        <path
+                                            className="fill-mute"
+                                            d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z"
                                         />
-                                    </div>
+                                    </svg>
                                 </div>
-                            </label>
-                            <Button type="submit" variant="outline" className="cursor-pointer lg:w-2/12">
-                                Buscar
-                            </Button>
-                        </form>
-                    </div>
-                </section>
+                                <div className="flex flex-1 flex-col">
+                                    Busca una vacante por título o palabras clave
+                                    <input
+                                        className="w-full outline-none"
+                                        type="search"
+                                        name="job-search"
+                                        autoComplete="off"
+                                        id="job-search"
+                                        placeholder="ej. Profesor de física"
+                                    />
+                                </div>
+                            </div>
+                        </label>
+                        <Button type="submit" variant="outline" className="cursor-pointer lg:w-2/12">
+                            Buscar
+                        </Button>
+                    </form>
+                </Hero>
                 <section
                     id="featured-jobs"
                     aria-labelledby="featured-jobs-heading"
