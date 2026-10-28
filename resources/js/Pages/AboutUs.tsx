@@ -1,12 +1,12 @@
-import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Hero } from '@/components/Hero';
 import { Button } from '@/components/ui/Button';
-import { type WelcomeProps } from '@/types';
+import { type AboutUsProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function AboutUs() {
-    const { auth, institution } = usePage<WelcomeProps>().props;
+    const { auth, institution } = usePage<AboutUsProps>().props;
 
     const breadcrumbs = [
         { title: 'Inicio', href: route('home') },
@@ -25,24 +25,12 @@ export default function AboutUs() {
 
             <main className="flex flex-col items-center justify-center">
                 {/* Hero Section */}
-                <section
-                    id="hero"
-                    aria-labelledby="hero-heading"
-                    className="text-blue-foreground relative flex w-full flex-col items-center justify-center gap-4 px-4 py-8 lg:min-h-[75vh]"
-                >
-                    <div className="after:bg-blue/80 absolute inset-0 z-0 after:absolute after:inset-0">
-                        <img src={institution.facade} className="h-full w-full object-cover" alt="" aria-hidden="true" />
-                    </div>
-                    <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-4">
-                        <Breadcrumbs breadcrumbs={breadcrumbs}></Breadcrumbs>
-                        <div className="mb-8 text-center">
-                            <h1 id="hero-heading">Conectamos talento con oportunidades</h1>
-                            <p className="text-lighter-blue">
-                                Un espacio de encuentro entre la comunidad y el mundo laboral de la {institution.name}.
-                            </p>
-                        </div>
-                    </div>
-                </section>
+                <Hero
+                    title="Conectamos talento con oportunidades"
+                    description={`Un espacio de encuentro entre la comunidad y el mundo laboral de la ${institution.name}.`}
+                    image={institution.facade}
+                    breadcrumbs={breadcrumbs}
+                />
 
                 {/* About Us Section */}
                 <section
