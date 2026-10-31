@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Static\LandingPageController;
 use App\Http\Controllers\Static\AboutUsPageController;
+use App\Http\Controllers\Static\TermsPageController;
 use Inertia\Inertia;
 
 Route::get('/', LandingPageController::class)->name('home');
 Route::get('/nosotros', AboutUsPageController::class)->name('about-us');
+Route::get('/terminos-del-servicio', TermsPageController::class)->name('terms');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
