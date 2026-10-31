@@ -32,6 +32,10 @@
     --spacing-4: 1rem;
 }
 
+:root {
+    scroll-behavior: smooth;
+}
+
 body {
     font-size: clamp(0.875rem, 0.75rem + 0.625vw, 1.125rem);
 }
