@@ -63,6 +63,17 @@ export interface Institution {
     vision: string;
 }
 
+export interface Terms {
+    sections: TermSection[];
+    updated_at: string;
+}
+
+export interface TermSection {
+    id: string;
+    title: string;
+    content: string;
+}
+
 export interface WelcomeProps extends SharedData {
     jobs: Job[] | null;
     institution: Institution;
@@ -70,4 +81,9 @@ export interface WelcomeProps extends SharedData {
 
 export interface AboutUsProps extends SharedData {
     institution: Institution;
+}
+
+export interface TermsProps extends SharedData {
+    institution: Institution;
+    terms: Terms;
 }
