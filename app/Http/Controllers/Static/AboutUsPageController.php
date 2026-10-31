@@ -23,9 +23,9 @@ class AboutUsPageController extends Controller
             'description' => $institutionalSettings['description'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
             'logo' => $institutionalSettings['logo'] ?? '/logo_upt_vector.svg',
             'facade' => $institutionalSettings['facade'] ?? '/fachada_upt.jpg',
-            'about_us' => $institutionalSettings['institution_about_us'] ?? 'Información no disponible en este momento',
-            'mission' => $institutionalSettings['institution_mission'] ?? 'Información no disponible en este momento',
-            'vision' => $institutionalSettings['institution_vision'] ?? 'Información no disponible en este momento',
+            'about_us' => $institutionalSettings['about_us'] ?? 'Información no disponible en este momento',
+            'mission' => $institutionalSettings['mission'] ?? 'Información no disponible en este momento',
+            'vision' => $institutionalSettings['vision'] ?? 'Información no disponible en este momento',
         ];
 
         return Inertia::render('AboutUs', [

@@ -6,7 +6,7 @@ use App\Http\Controllers\Static\AboutUsPageController;
 use Inertia\Inertia;
 
 Route::get('/', LandingPageController::class)->name('home');
-Route::get('/about-us', AboutUsPageController::class)->name('about-us');
+Route::get('/nosotros', AboutUsPageController::class)->name('about-us');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {

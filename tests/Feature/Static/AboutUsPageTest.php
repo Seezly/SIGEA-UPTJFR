@@ -33,17 +33,17 @@ test('Authenticated user can access about us page', function () {
 
 test('About us page shows the current institutional information', function () {
     InstitutionalSetting::factory()->create([
-        'key' => 'institution_about_us',
+        'key' => 'about_us',
         'value' => 'Here goes the about us information',
     ]);
 
     InstitutionalSetting::factory()->create([
-        'key' => 'institution_mission',
+        'key' => 'mission',
         'value' => 'Here goes the about us mission',
     ]);
 
     InstitutionalSetting::factory()->create([
-        'key' => 'institution_vision',
+        'key' => 'vision',
         'value' => 'Here goes the about us vision',
     ]);
 
@@ -60,7 +60,7 @@ test('About us page shows the current institutional information', function () {
 });
 
 test('About us page handles correctly the content when it is not available', function () {
-    InstitutionalSetting::where('key', 'institution_about_us')->delete();
+    InstitutionalSetting::where('key', 'about_us')->delete();
 
     $response = $this->get(route('about-us'))->assertInertia(
         fn(Assert $page) => $page
