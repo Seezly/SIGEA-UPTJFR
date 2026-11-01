@@ -1,9 +1,9 @@
+import { Docs } from '@/components/Docs';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { TermsProps, type BreadcrumbItem, type TermSection } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import ReactMarkdown from 'react-markdown';
 
 export default function Terms() {
     const { auth, institution, terms } = usePage<TermsProps>().props;
@@ -38,41 +38,15 @@ export default function Terms() {
             <Header auth={auth} institution={institution} />
             <main className="flex flex-col items-center justify-center">
                 {/* Hero Section */}
-                <Hero title="Términos del servicio" image={institution.facade} breadcrumbs={breadcrumbs} />
+                <Hero
+                    title="Términos del servicio"
+                    description={`Condiciones propuestas para un uso responsable de la ${institution.name} y sus servicios.`}
+                    image={institution.facade}
+                    breadcrumbs={breadcrumbs}
+                />
 
                 {/* Docs Section */}
-                <section
-                    id="docs"
-                    aria-labelledby="docs-heading"
-                    className="flex w-full flex-col-reverse items-center justify-center gap-4 px-4 py-8 lg:flex-row-reverse"
-                >
-                    <div className="flex w-full flex-col items-start justify-start gap-8 lg:max-w-4xl">
-                        <div>
-                            <h2 id="docs-heading">Términos del servicio</h2>
-                            {sections.map((section: TermSection) => {
-                                return (
-                                    <article id={section.id} className="flex flex-col gap-4" key={section.id}>
-                                        <h3>{section.title}</h3>
-                                        <ReactMarkdown>{section.content}</ReactMarkdown>
-                                    </article>
-                                );
-                            })}
-                        </div>
-                        <p>Última actualización: {terms.updated_at ?? 'Nunca'}</p>
-                    </div>
-                    <aside className="w-full lg:max-w-xs">
-                        <h3>Indice</h3>
-                        <ol>
-                            {sections.map((section: TermSection) => {
-                                return (
-                                    <li key={section.id}>
-                                        <a href={`#${section.id}`}>{section.title}</a>
-                                    </li>
-                                );
-                            })}
-                        </ol>
-                    </aside>
-                </section>
+                <Docs sections={sections} updatedAt={terms.updated_at} />
             </main>
             <Footer institution={institution} />
         </>
