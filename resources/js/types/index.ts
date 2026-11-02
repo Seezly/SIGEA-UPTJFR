@@ -52,12 +52,13 @@ export interface Job {
 }
 
 export interface Institution {
-    id: number;
     name: string;
     acronym: string;
-    description: string;
     logo: string;
     facade: string;
+}
+
+export interface AboutUsInstitution extends Institution {
     about_us: string;
     mission: string;
     vision: string;
@@ -80,7 +81,7 @@ export interface WelcomeProps extends SharedData {
 }
 
 export interface AboutUsProps extends SharedData {
-    institution: Institution;
+    institution: AboutUsInstitution;
 }
 
 export interface TermsProps extends SharedData {
