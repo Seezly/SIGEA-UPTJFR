@@ -8,7 +8,7 @@ interface FooterProps {
 export function Footer({ institution }: FooterProps) {
     return (
         <footer className="bg-background-darker flex w-full items-center justify-center px-4 py-8">
-            <div className="flex w-full max-w-6xl flex-col justify-between gap-4 lg:flex-row lg:items-center">
+            <div className="flex w-full max-w-6xl flex-col justify-between lg:flex-row lg:items-center">
                 <div>
                     <p className="text-blue text-xl font-bold">{institution.name}</p>
                     <p className="text-secondary-text">{institution.acronym}</p>

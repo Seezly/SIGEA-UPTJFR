@@ -78,18 +78,13 @@ test('Authenticated user can access the landing page', function () {
 
 test('Landing page has institution prop built from institutional settings', function () {
     InstitutionalSetting::factory()->create([
-        'key' => 'institution_name',
-        'value' => 'Universidad Politécnica Territorial "José Félix Ribas"',
+        'key' => 'name',
+        'value' => 'Universidad Politécnica Territorial de Prueba',
     ]);
 
     InstitutionalSetting::factory()->create([
-        'key' => 'institution_acronym',
-        'value' => 'UPTJFR',
-    ]);
-
-    InstitutionalSetting::factory()->create([
-        'key' => 'institution_description',
-        'value' => 'Universidad Politécnica Territorial "José Félix Ribas"',
+        'key' => 'acronym',
+        'value' => 'UPTP',
     ]);
 
     $response = $this->get(route('home'))
@@ -98,9 +93,8 @@ test('Landing page has institution prop built from institutional settings', func
             fn(Assert $page) => $page
                 ->component('Welcome')
                 ->has('institution')
-                ->where('institution.name', 'Universidad Politécnica Territorial "José Félix Ribas"')
-                ->where('institution.acronym', 'UPTJFR')
-                ->where('institution.description', 'Universidad Politécnica Territorial "José Félix Ribas"')
+                ->where('institution.name', 'Universidad Politécnica Territorial de Prueba')
+                ->where('institution.acronym', 'UPTP')
         );
 });
 
@@ -115,7 +109,6 @@ test('Landing page has institution prop with default values when no institutiona
                 ->has('institution')
                 ->where('institution.name', 'Universidad Politécnica Territorial "José Félix Ribas"')
                 ->where('institution.acronym', 'UPTJFR')
-                ->where('institution.description', 'Universidad Politécnica Territorial "José Félix Ribas"')
         );
 });
 

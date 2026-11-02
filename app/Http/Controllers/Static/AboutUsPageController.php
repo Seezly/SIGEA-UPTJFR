@@ -5,27 +5,28 @@ namespace App\Http\Controllers\Static;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\InstitutionalSetting;
+use App\Services\InstitutionalSettingsService;
 
 class AboutUsPageController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, InstitutionalSettingsService $institutionalSetting)
     {
 
-        $institutionalSettings = InstitutionalSetting::pluck('value', 'key')->toArray();
+        $institutionalSettings = $institutionalSetting->institution();
+        $aboutUs = $institutionalSetting->get([
+            'about_us',
+            'mission',
+            'vision'
+        ]);
 
         $institution = [
-            'name' => $institutionalSettings['name'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
-            'acronym' => $institutionalSettings['acronym'] ?? 'UPTJFR',
-            'description' => $institutionalSettings['description'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
-            'logo' => $institutionalSettings['logo'] ?? '/logo_upt_vector.svg',
-            'facade' => $institutionalSettings['facade'] ?? '/fachada_upt.jpg',
-            'about_us' => $institutionalSettings['institution_about_us'] ?? 'Información no disponible en este momento',
-            'mission' => $institutionalSettings['institution_mission'] ?? 'Información no disponible en este momento',
-            'vision' => $institutionalSettings['institution_vision'] ?? 'Información no disponible en este momento',
+            ...$institutionalSettings,
+            'about_us' => $aboutUs['about_us'] ?? 'Información no disponible en este momento',
+            'mission' => $aboutUs['mission'] ?? 'Información no disponible en este momento',
+            'vision' => $aboutUs['vision'] ?? 'Información no disponible en este momento',
         ];
 
         return Inertia::render('AboutUs', [
