@@ -3,24 +3,16 @@
 namespace App\Http\Controllers\Static;
 
 use App\Http\Controllers\Controller;
-use App\Models\InstitutionalSetting;
 use App\Models\AvailableJob;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Services\InstitutionalSettingsService;
 
 class LandingPageController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, InstitutionalSettingsService $institutionalSetting)
     {
-        $institutionalSettings = InstitutionalSetting::pluck('value', 'key')->toArray();
-
-        $institution = [
-            'name' => $institutionalSettings['name'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
-            'acronym' => $institutionalSettings['acronym'] ?? 'UPTJFR',
-            'description' => $institutionalSettings['description'] ?? 'Universidad Politécnica Territorial "José Félix Ribas"',
-            'logo' => $institutionalSettings['logo'] ?? '/logo_upt_vector.svg',
-            'facade' => $institutionalSettings['facade'] ?? '/fachada_upt.jpg',
-        ];
+        $institution = $institutionalSetting->institution();
 
         try {
             $now = now();
