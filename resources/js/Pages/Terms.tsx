@@ -2,7 +2,7 @@ import { Docs } from '@/components/Docs';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
-import { TermsProps, type BreadcrumbItem, type TermSection } from '@/types';
+import { TermsProps, type BreadcrumbItem, type LegalSection } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 export default function Terms() {
@@ -13,8 +13,8 @@ export default function Terms() {
         { title: 'Términos del servicio', href: route('terms') },
     ];
 
-    const sections: TermSection[] = Array.isArray(terms.sections)
-        ? terms.sections.map((section: TermSection) => {
+    const sections: LegalSection[] = Array.isArray(terms.sections)
+        ? terms.sections.map((section: LegalSection) => {
               return {
                   id: section.id,
                   title: section.title,
