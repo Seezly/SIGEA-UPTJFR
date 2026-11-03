@@ -64,12 +64,12 @@ export interface AboutUsInstitution extends Institution {
     vision: string;
 }
 
-export interface Terms {
-    sections: TermSection[];
+export interface Legal {
+    sections: LegalSection[];
     updated_at: string;
 }
 
-export interface TermSection {
+export interface LegalSection {
     id: string;
     title: string;
     content: string;
@@ -86,5 +86,10 @@ export interface AboutUsProps extends SharedData {
 
 export interface TermsProps extends SharedData {
     institution: Institution;
-    terms: Terms;
+    terms: Legal;
+}
+
+export interface PrivacyPoliciesProps extends SharedData {
+    institution: Institution;
+    policies: Legal;
 }
