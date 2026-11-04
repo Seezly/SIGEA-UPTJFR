@@ -21,11 +21,17 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface Flash {
+    success?: string;
+    error?: string;
+    [key: string]: unknown;
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
-    flash: { [key: string]: unknown };
+    flash: Flash;
     [key: string]: unknown;
 }
 
@@ -92,4 +98,8 @@ export interface TermsProps extends SharedData {
 export interface PrivacyPoliciesProps extends SharedData {
     institution: Institution;
     policies: Legal;
+}
+
+export interface ContactProps extends SharedData {
+    institution: Institution;
 }
