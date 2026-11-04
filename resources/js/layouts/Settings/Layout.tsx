@@ -36,7 +36,6 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                         {sidebarNavItems.map((item) => (
                             <Button
                                 key={item.url}
-                                size="sm"
                                 variant="ghost"
                                 asChild
                                 className={cn('w-full justify-start', {

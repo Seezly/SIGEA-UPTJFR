@@ -4,9 +4,11 @@ import { Hero } from '@/components/Hero';
 import { Button } from '@/components/ui/Button';
 import { type Job, type WelcomeProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { ShieldCheck, TrendingUp, UserGroup } from 'lucide-react';
 
 export default function Welcome() {
     const { auth, jobs, institution } = usePage<WelcomeProps>().props;
+
     function dateFormat(date: string): string {
         const jobDate = new Date(date).getTime();
         const today = Date.now();
@@ -56,6 +58,7 @@ export default function Welcome() {
                     description="Conecta con las propuestas de trabajo ofrecidas por nuestra prestigiosa universidad. Empieza tu carrera profesional con nosotros hoy."
                     image={institution.facade}
                 >
+                    {/* TODO - Implement the search functionality for job vacancies */}
                     <form
                         action=""
                         role="search"
@@ -123,7 +126,7 @@ export default function Welcome() {
                                         <Link href={`/jobs/${job.id}`}>
                                             <div className="flex items-center justify-between">
                                                 <div>{job.category}</div>
-                                                <div className="bg-lighter-blue flex items-center justify-center px-4 py-2">
+                                                <div className="bg-lighter-blue flex items-center justify-center px-2 py-1 text-xs">
                                                     <span className="text-lighter-blue-foreground">{job.employment_type}</span>
                                                 </div>
                                             </div>
@@ -170,14 +173,18 @@ export default function Welcome() {
                         </div>
                         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
                             <div className="bg-blue text-blue-foreground flex flex-col gap-2 rounded p-8 lg:col-span-2">
-                                <div>Icon</div>
+                                <div className="bg-background-darker flex size-10 items-center justify-center p-2">
+                                    <UserGroup color="var(--color-text)" />
+                                </div>
                                 <h3>Para profesionales</h3>
                                 <p className="text-lighter-blue">
                                     Acceso exclusivo a oportunidades de empleo dentro de la universidad. De profesionales para formar profesionales.
                                 </p>
                             </div>
                             <div className="border-muted flex flex-col gap-2 rounded border bg-white p-8 lg:col-span-1">
-                                <div>Icon</div>
+                                <div className="bg-background-darker flex size-10 items-center justify-center p-2">
+                                    <ShieldCheck color="var(--color-text)" />
+                                </div>
                                 <h3>Comunidad verificada</h3>
                                 <p className="text-secondary-text">
                                     Todas las propuestas exhibidas son previamente aprobadas por las comisiones y organismos necesarios dentro de la
@@ -185,7 +192,9 @@ export default function Welcome() {
                                 </p>
                             </div>
                             <div className="border-muted flex flex-col gap-2 rounded border bg-white p-8 lg:col-span-1">
-                                <div>Icon</div>
+                                <div className="bg-background-darker flex size-10 items-center justify-center p-2">
+                                    <TrendingUp color="var(--color-text)" />
+                                </div>
                                 <h3>Soporte de Carrera Profesional</h3>
                                 <p className="text-secondary-text">
                                     Acceso a recursos, estadísticas y preparaciones para entrevistas por nuestro centro de empleos.
@@ -197,7 +206,7 @@ export default function Welcome() {
                                     Considera la Universidad Politécnica Territorial José Félix Ribas como tu punto de partida hacia un trabajo de
                                     punta. Visita las propuestas, verifica el feedback de tus postulaciones, historial y muéstranos tu talento.
                                 </p>
-                                <Button asChild variant="default" className="mt-auto w-full">
+                                <Button asChild variant="default" size="full" className="mt-auto">
                                     <Link href={route('register')}>Regístrate &rarr;</Link>
                                 </Button>
                             </div>

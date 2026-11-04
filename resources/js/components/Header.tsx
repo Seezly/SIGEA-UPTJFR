@@ -23,6 +23,7 @@ export function Header({ auth, institution }: HeaderProps) {
                 </div>
                 <MainNav />
                 <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
+                    {/* TODO - Update the href to the actual user profile link */}
                     {auth.user ? (
                         <Button asChild variant="ghost">
                             <Link href="#">Mi Perfil</Link>

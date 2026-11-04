@@ -1,10 +1,10 @@
 import { NavLink } from '@/components/ui/NavLink';
 
 const navigationItems = [
-    { label: 'Inicio', href: '#' },
-    { label: 'Empleos', href: '#' },
-    { label: 'Nosotros', href: '#' },
-    { label: 'Contacto', href: '#' },
+    { label: 'Inicio', href: route('home') },
+    { label: 'Empleos', href: route('home') }, // TODO - Update the href to the actual job vacancies link
+    { label: 'Nosotros', href: route('about-us') },
+    { label: 'Contacto', href: route('contact') },
 ];
 
 export function MainNav() {

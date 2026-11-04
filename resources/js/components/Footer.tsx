@@ -19,22 +19,23 @@ export function Footer({ institution }: FooterProps) {
                 <nav aria-label="Menú de navegación del footer">
                     <ul className="text-secondary-text flex w-full flex-col justify-end gap-4 lg:flex-row">
                         <li>
-                            <NavLink href="#" variant="secondary">
+                            <NavLink href={route('privacy-policies')} variant="secondary">
                                 Políticas de privacidad
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink href="#" variant="secondary">
+                            <NavLink href={route('terms')} variant="secondary">
                                 Términos del servicio
                             </NavLink>
                         </li>
                         <li>
+                            {/* TODO - Update the href to the actual university portal link */}
                             <NavLink href="#" variant="secondary">
                                 Portal universitario
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink href="#" variant="secondary">
+                            <NavLink href={route('contact')} variant="secondary">
                                 Contacto
                             </NavLink>
                         </li>
