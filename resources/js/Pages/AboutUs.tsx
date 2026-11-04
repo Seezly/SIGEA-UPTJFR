@@ -4,6 +4,7 @@ import { Hero } from '@/components/Hero';
 import { Button } from '@/components/ui/Button';
 import { type AboutUsProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { Eye, HandHeart, Handshake, ShieldCheck, Target, Users } from 'lucide-react';
 
 export default function AboutUs() {
     const { auth, institution } = usePage<AboutUsProps>().props;
@@ -49,12 +50,22 @@ export default function AboutUs() {
                             </div>
                         </div>
                         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-4 text-center">
-                                <h3>Misión</h3>
+                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-8 text-center">
+                                <div className="flex items-center justify-center gap-4">
+                                    <div className="bg-background-darker flex size-10 items-center justify-center p-2">
+                                        <Target color="var(--color-text)" />
+                                    </div>
+                                    <h3>Nuestra misión</h3>
+                                </div>
                                 <p className="text-secondary-text">{institution.mission}</p>
                             </div>
-                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-4 text-center">
-                                <h3>Visión</h3>
+                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-8 text-center">
+                                <div className="flex items-center justify-center gap-4">
+                                    <div className="bg-background-darker flex size-10 items-center justify-center p-2">
+                                        <Eye color="var(--color-text)" />
+                                    </div>
+                                    <h3>Nuestra visión</h3>
+                                </div>
                                 <p className="text-secondary-text">{institution.vision}</p>
                             </div>
                         </div>
@@ -71,19 +82,31 @@ export default function AboutUs() {
                             <h2 id="principles-heading">Los valores que nos guían</h2>
                         </div>
                         <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
-                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-4">
+                            <div className="flex flex-col items-start gap-2 p-4">
+                                <div className="flex size-10 items-center justify-center bg-white p-2">
+                                    <HandHeart color="var(--color-text)" />
+                                </div>
                                 <h3>Compromiso</h3>
                                 <p className="text-secondary-text">Acompañamos el desarrollo profesional de nuestra comunidad.</p>
                             </div>
-                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-4">
+                            <div className="flex flex-col items-start gap-2 p-4">
+                                <div className="flex size-10 items-center justify-center bg-white p-2">
+                                    <ShieldCheck color="var(--color-text)" />
+                                </div>
                                 <h3>Transparencia</h3>
                                 <p className="text-secondary-text">Promovemos información clara para tomar decisiones laborales informadas.</p>
                             </div>
-                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-4">
+                            <div className="flex flex-col items-start gap-2 p-4">
+                                <div className="flex size-10 items-center justify-center bg-white p-2">
+                                    <Users color="var(--color-text)" />
+                                </div>
                                 <h3>Inclusión</h3>
                                 <p className="text-secondary-text">Valoramos la diversidad de talentos y la igualdad de oportunidades.</p>
                             </div>
-                            <div className="border-muted flex flex-col items-start gap-2 rounded border bg-white p-4">
+                            <div className="flex flex-col items-start gap-2 p-4">
+                                <div className="flex size-10 items-center justify-center bg-white p-2">
+                                    <Handshake color="var(--color-text)" />
+                                </div>
                                 <h3>Colaboración</h3>
                                 <p className="text-secondary-text">Impulsamos el trabajo en equipo para lograr objetivos comunes.</p>
                             </div>
