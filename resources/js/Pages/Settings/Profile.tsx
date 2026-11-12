@@ -53,6 +53,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 required
                                 autoComplete="name"
                                 placeholder="Full name"
+                                aria-invalid={!!errors.name}
                             />
 
                             <InputError className="mt-2" message={errors.name} />
@@ -70,6 +71,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 required
                                 autoComplete="username"
                                 placeholder="Email address"
+                                aria-invalid={!!errors.email}
                             />
 
                             <InputError className="mt-2" message={errors.email} />

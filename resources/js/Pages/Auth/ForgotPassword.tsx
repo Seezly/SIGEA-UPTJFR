@@ -40,6 +40,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             autoFocus
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
+                            aria-invalid={!!errors.email}
                         />
 
                         <InputError message={errors.email} />

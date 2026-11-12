@@ -53,6 +53,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
+                            aria-invalid={!!errors.email}
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -75,6 +76,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
+                            aria-invalid={!!errors.password}
                         />
                         <InputError message={errors.password} />
                     </div>

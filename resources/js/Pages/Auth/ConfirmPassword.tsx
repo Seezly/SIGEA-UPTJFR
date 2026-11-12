@@ -42,6 +42,7 @@ export default function ConfirmPassword() {
                             value={data.password}
                             autoFocus
                             onChange={(e) => setData('password', e.target.value)}
+                            aria-invalid={!!errors.password}
                         />
 
                         <InputError message={errors.password} />

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\People;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -37,14 +38,15 @@ class RegisteredUserController extends Controller
             'second_name' => 'string|max:255',
             'middle_name' => 'required|string|max:255',
             'last_name' => 'string|max:255',
-            'id_prefix' => 'required|string|max:1',
+            'id_prefix' => 'required|string|max:1|in:V,E',
             'id_number' => 'required|string|max:9|unique:' . People::class,
             'address' => 'required|string|min:10',
-            'birth_date' => 'required|date_format:d/m/Y|before:today',
-            'gender' => 'required|string|max:1',
+            'birth_date' => 'required|date_format:d/m/Y|before:' . now()->subYears(18)->format('d/m/Y'),
+            'gender' => 'required|string|max:1|in:M,F',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'phone_number' => 'required|string|lowercase|max:11|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'terms_of_service' => 'required|accepted',
         ]);
 
         $user = DB::transaction(function () use ($validated) {
@@ -67,6 +69,10 @@ class RegisteredUserController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
         });
+
+        $role = Role::firstOrCreate(['slug' => 'postulante'], ['name' => 'Postulante']);
+
+        $user->assignRole($role);
 
         event(new Registered($user));
 

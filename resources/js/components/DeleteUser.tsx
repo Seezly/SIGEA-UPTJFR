@@ -65,6 +65,7 @@ export default function DeleteUser() {
                                     onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Password"
                                     autoComplete="current-password"
+                                    aria-invalid={!!errors.password}
                                 />
 
                                 <InputError message={errors.password} />

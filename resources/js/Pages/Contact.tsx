@@ -2,6 +2,9 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Button } from '@/components/ui/Button';
+import { FormField } from '@/components/ui/FormField';
+import { Input } from '@/components/ui/Input';
+import { Textarea } from '@/components/ui/Textarea';
 import { type ContactProps } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { GraduationCap, LifeBuoy, School } from 'lucide-react';
@@ -68,11 +71,8 @@ export default function Contact() {
                                 <p className="text-secondary-text">Los campos marcados con * son obligatorios</p>
                             </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="mb-4">
-                                    <label htmlFor="name" className="block font-medium">
-                                        Nombre <span className="text-blue">*</span>
-                                    </label>
-                                    <input
+                                <FormField label="Nombre" htmlFor="name" required error={errors.name}>
+                                    <Input
                                         type="text"
                                         id="name"
                                         name="name"
@@ -80,16 +80,12 @@ export default function Contact() {
                                         placeholder="Pedro Perez"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className={`border-muted focus:border-lighter-blue focus:ring-lighter-blue mt-2 block w-full rounded-md border px-4 py-2${errors.name ? 'border-red-500' : ''}`}
                                         required
+                                        aria-invalid={!!errors.name}
                                     />
-                                    {errors.name && <span className="text-sm text-red-500">{errors.name}</span>}
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="email" className="block font-medium">
-                                        Correo electrónico <span className="text-blue">*</span>
-                                    </label>
-                                    <input
+                                </FormField>
+                                <FormField label="Correo electrónico" htmlFor="email" required error={errors.email}>
+                                    <Input
                                         type="email"
                                         id="email"
                                         name="email"
@@ -97,43 +93,34 @@ export default function Contact() {
                                         placeholder="pedro@ejemplo.com"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className={`border-muted focus:border-lighter-blue focus:ring-lighter-blue mt-2 block w-full rounded-md border px-4 py-2${errors.email ? 'border-red-500' : ''}`}
                                         required
+                                        aria-invalid={!!errors.email}
                                     />
-                                    {errors.email && <span className="text-sm text-red-500">{errors.email}</span>}
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="subject" className="block font-medium">
-                                        Asunto <span className="text-blue">*</span>
-                                    </label>
-                                    <input
+                                </FormField>
+                                <FormField label="Asunto" htmlFor="subject" required error={errors.subject}>
+                                    <Input
                                         type="text"
                                         id="subject"
                                         name="subject"
                                         placeholder="Consulta sobre el proceso de admisión"
                                         value={data.subject}
                                         onChange={(e) => setData('subject', e.target.value)}
-                                        className={`border-muted focus:border-lighter-blue focus:ring-lighter-blue mt-2 block w-full rounded-md border px-4 py-2${errors.subject ? 'border-red-500' : ''}`}
                                         required
+                                        aria-invalid={!!errors.subject}
                                     />
-                                    {errors.subject && <span className="text-sm text-red-500">{errors.subject}</span>}
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="message" className="block font-medium">
-                                        Mensaje <span className="text-blue">*</span>
-                                    </label>
-                                    <textarea
+                                </FormField>
+                                <FormField label="Mensaje" htmlFor="message" required error={errors.message}>
+                                    <Textarea
                                         id="message"
                                         name="message"
                                         rows={4}
                                         placeholder="Describe tu consulta con el detalle necesario para comprenderla"
                                         value={data.message}
                                         onChange={(e) => setData('message', e.target.value)}
-                                        className={`border-muted focus:border-lighter-blue focus:ring-lighter-blue mt-2 block w-full rounded-md border px-4 py-2${errors.message ? 'border-red-500' : ''}`}
                                         required
-                                    ></textarea>
-                                    {errors.message && <span className="text-sm text-red-500">{errors.message}</span>}
-                                </div>
+                                        aria-invalid={!!errors.message}
+                                    />
+                                </FormField>
                                 <div className="mb-8 text-sm">
                                     <p className="text-secondary-text mb-4">
                                         Comparte solo la información necesaria. No incluyas contraseñas ni datos sensibles en tu mensaje.
