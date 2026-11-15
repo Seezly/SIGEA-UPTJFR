@@ -1,111 +1,15 @@
+import { type RegisterForm } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { useState, type ReactNode } from 'react';
 import { FormWizard, type FormWizardSchema, type WizardData } from 'react-form-wizard-component';
 import 'react-form-wizard-component/styles.css';
 
+import { CredentialStep } from '@/components/Register/CredentialStep';
+import { CVStep } from '@/components/Register/CVStep';
+import { PersonalStep } from '@/components/Register/PersonalStep';
 import { Button } from '@/components/ui/Button';
-import { FormField } from '@/components/ui/FormField';
-import { Input } from '@/components/ui/Input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import { CV_ACCEPT, CV_MAX_SIZE_MB } from '@/components/ui/FilePicker';
 import AuthLayout from '@/layouts/AuthLayout';
-
-interface RegisterForm {
-    first_name: string;
-    second_name: string;
-    middle_name: string;
-    last_name: string;
-    id_prefix: string;
-    id_number: string;
-    address: string;
-    birth_date: string;
-    gender: string;
-}
-
-type StepProps = {
-    data: RegisterForm;
-    errors: Record<string, string>;
-    onChange: (field: keyof RegisterForm, value: string) => void;
-};
-
-const PersonalStep = ({ data, errors, onChange }: StepProps) => (
-    <div className="grid gap-x-4 md:grid-cols-2">
-        <FormField label="Primer nombre" htmlFor="first_name" required error={errors.first_name}>
-            <Input
-                id="first_name"
-                defaultValue={data.first_name}
-                onChange={(e) => onChange('first_name', e.target.value)}
-                aria-invalid={!!errors.first_name}
-            />
-        </FormField>
-        <FormField label="Segundo nombre" htmlFor="second_name" error={errors.second_name}>
-            <Input
-                id="second_name"
-                defaultValue={data.second_name}
-                onChange={(e) => onChange('second_name', e.target.value)}
-                aria-invalid={!!errors.second_name}
-            />
-        </FormField>
-        <FormField label="Primer apellido" htmlFor="middle_name" required error={errors.middle_name}>
-            <Input
-                id="middle_name"
-                defaultValue={data.middle_name}
-                onChange={(e) => onChange('middle_name', e.target.value)}
-                aria-invalid={!!errors.middle_name}
-            />
-        </FormField>
-        <FormField label="Segundo apellido" htmlFor="last_name" error={errors.last_name}>
-            <Input
-                id="last_name"
-                defaultValue={data.last_name}
-                onChange={(e) => onChange('last_name', e.target.value)}
-                aria-invalid={!!errors.last_name}
-            />
-        </FormField>
-        <FormField label="Nacionalidad" htmlFor="id_prefix" required error={errors.id_prefix}>
-            <Select defaultValue={data.id_prefix} onValueChange={(value) => onChange('id_prefix', value)}>
-                <SelectTrigger id="id_prefix" aria-invalid={!!errors.id_prefix}>
-                    <SelectValue placeholder="Selecciona" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="V">Venezolano (V)</SelectItem>
-                    <SelectItem value="E">Extranjero (E)</SelectItem>
-                </SelectContent>
-            </Select>
-        </FormField>
-        <FormField label="Cédula" htmlFor="id_number" required error={errors.id_number}>
-            <Input
-                id="id_number"
-                inputMode="numeric"
-                defaultValue={data.id_number}
-                onChange={(e) => onChange('id_number', e.target.value)}
-                aria-invalid={!!errors.id_number}
-            />
-        </FormField>
-        <FormField label="Dirección" htmlFor="address" required error={errors.address} className="md:col-span-2">
-            <Input id="address" defaultValue={data.address} onChange={(e) => onChange('address', e.target.value)} aria-invalid={!!errors.address} />
-        </FormField>
-        <FormField label="Fecha de nacimiento" htmlFor="birth_date" required error={errors.birth_date}>
-            <Input
-                id="birth_date"
-                type="date"
-                defaultValue={data.birth_date}
-                onChange={(e) => onChange('birth_date', e.target.value)}
-                aria-invalid={!!errors.birth_date}
-            />
-        </FormField>
-        <FormField label="Género" htmlFor="gender" required error={errors.gender}>
-            <Select defaultValue={data.gender} onValueChange={(value) => onChange('gender', value)}>
-                <SelectTrigger id="gender" aria-invalid={!!errors.gender}>
-                    <SelectValue placeholder="Selecciona" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="M">Masculino (M)</SelectItem>
-                    <SelectItem value="F">Femenino (F)</SelectItem>
-                </SelectContent>
-            </Select>
-        </FormField>
-    </div>
-);
 
 const isAtLeast18 = (isoDate: string) => {
     const birth = new Date(`${isoDate}T00:00:00`);
@@ -127,17 +31,34 @@ const validatePersonal = (data: RegisterForm): true | string => {
     return true;
 };
 
-const withMessage = (content: ReactNode, message: string | null) =>
-    message ? (
-        <>
+const validateCredentials = (data: RegisterForm): true | string => {
+    if (!data.email?.trim()) return 'El correo electrónico es obligatorio';
+    if (!data.password) return 'La contraseña es obligatoria';
+    if (data.password.length < 8) return 'La contraseña debe tener al menos 8 caracteres';
+    if (!data.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/))
+        return 'La contraseña debe tener al menos una letra mayúscula, una letra minúscula y un número';
+    if (data.password !== data.password_confirmation) return 'Las contraseñas no coinciden';
+    if (!data.terms_of_service) return 'Debes aceptar los términos y condiciones';
+    return true;
+};
+
+const validateCV = (data: RegisterForm): true | string => {
+    if (!data.cv) return 'Debes subir tu Curriculum Vitae';
+    if (data.cv.size > CV_MAX_SIZE_MB * 1024 * 1024) return `El archivo debe ser menor a ${CV_MAX_SIZE_MB} MB`;
+    if (!Object.keys(CV_ACCEPT).includes(data.cv.type)) return 'El archivo debe ser un PDF, Word, o una imagen (JPG, PNG)';
+    return true;
+};
+
+const withMessage = (content: ReactNode, message: string | null) => (
+    <>
+        {message ? (
             <p role="alert" className="mb-4 text-sm text-red-600">
                 {message}
             </p>
-            {content}
-        </>
-    ) : (
-        content
-    );
+        ) : null}
+        {content}
+    </>
+);
 
 export default function Register() {
     const { data, setData, errors } = useForm<RegisterForm>({
@@ -150,19 +71,29 @@ export default function Register() {
         address: '',
         birth_date: '',
         gender: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        terms_of_service: false,
+        cv: null,
     });
 
     const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
 
-    const update = (field: keyof RegisterForm, value: string) => {
+    const update = (field: keyof RegisterForm, value: string | boolean | File | null) => {
         setData((prev) => ({ ...prev, [field]: value }));
         setBlockedMessage(null);
     };
 
     const handleFinishClick = (complete: () => void) => {
         const result = validatePersonal(data);
+        const result2 = validateCredentials(data);
         if (result !== true) {
             setBlockedMessage(result);
+            return;
+        }
+        if (result2 !== true) {
+            setBlockedMessage(result2);
             return;
         }
         setBlockedMessage(null);
@@ -178,10 +109,16 @@ export default function Register() {
                 content: withMessage(<PersonalStep data={data} errors={errors} onChange={update} />, blockedMessage),
             },
             {
-                id: 'personal-2',
-                title: 'Información Personal 2',
-                validate: ({ data: stepData }) => validatePersonal(stepData as unknown as RegisterForm),
-                content: withMessage(<PersonalStep data={data} errors={errors} onChange={update} />, blockedMessage),
+                id: 'credentials',
+                title: 'Credenciales de Acceso',
+                validate: ({ data: stepData }) => validateCredentials(stepData as unknown as RegisterForm),
+                content: withMessage(<CredentialStep data={data} errors={errors} onChange={update} />, blockedMessage),
+            },
+            {
+                id: 'cv',
+                title: 'Curriculum Vitae',
+                validate: ({ data: stepData }) => validateCV(stepData as unknown as RegisterForm),
+                content: withMessage(<CVStep data={data} errors={errors} onChange={update} />, blockedMessage),
             },
         ],
     };
@@ -208,9 +145,9 @@ export default function Register() {
                         </Button>
                     </div>
                 )}
-                nextButtonTemplate={(complete) => (
+                nextButtonTemplate={(next) => (
                     <div className="wizard-footer-right">
-                        <Button variant="outline" onClick={() => handleFinishClick(complete)}>
+                        <Button variant="outline" onClick={next}>
                             Siguiente
                         </Button>
                     </div>

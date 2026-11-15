@@ -103,3 +103,26 @@ export interface PrivacyPoliciesProps extends SharedData {
 export interface ContactProps extends SharedData {
     institution: Institution;
 }
+
+export interface RegisterForm {
+    first_name: string;
+    second_name: string;
+    middle_name: string;
+    last_name: string;
+    id_prefix: string;
+    id_number: string;
+    address: string;
+    birth_date: string;
+    gender: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+    terms_of_service: boolean;
+    cv: File | null;
+}
+
+export type StepProps = {
+    data: RegisterForm;
+    errors: Record<string, string>;
+    onChange: (field: keyof RegisterForm, value: string | boolean | File | null) => void;
+};
