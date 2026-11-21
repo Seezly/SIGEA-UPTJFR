@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\People;
 use App\Models\Document;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,24 +31,9 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'second_name' => 'string|max:255',
-            'middle_name' => 'required|string|max:255',
-            'last_name' => 'string|max:255',
-            'id_prefix' => 'required|string|max:1|in:V,E',
-            'id_number' => 'required|string|max:9|unique:' . People::class,
-            'address' => 'required|string|min:10',
-            'birth_date' => 'required|date_format:d/m/Y|before:' . now()->subYears(18)->format('d/m/Y'),
-            'gender' => 'required|string|max:1|in:M,F',
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
-            'phone_number' => 'required|string|lowercase|max:11|unique:' . User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'terms_of_service' => 'required|accepted',
-            'cv' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        ]);
+        $validated = $request->validated();
 
         $user = DB::transaction(function () use ($validated) {
             $people = People::create([

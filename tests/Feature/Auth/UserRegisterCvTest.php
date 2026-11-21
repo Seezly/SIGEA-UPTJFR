@@ -20,8 +20,8 @@ beforeEach(function () {
         'gender' => 'M',
         'email' => 'sergio@example.com',
         'phone_number' => '04245412882',
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'Password123*',
+        'password_confirmation' => 'Password123*',
         'terms_of_service' => true,
         'cv' => null,
     ];
@@ -38,8 +38,8 @@ beforeEach(function () {
         'gender' => 'M',
         'email' => 'sergio@example.com',
         'phone_number' => '04245412882',
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'Password123*',
+        'password_confirmation' => 'Password123*',
         'terms_of_service' => true,
         'cv' => UploadedFile::fake()->create('cv.pdf', 1024, 'application/pdf'),
     ];
