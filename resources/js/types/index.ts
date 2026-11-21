@@ -112,6 +112,7 @@ export interface RegisterForm {
     id_prefix: string;
     id_number: string;
     address: string;
+    phone_number: string;
     birth_date: string;
     gender: string;
     email: string;

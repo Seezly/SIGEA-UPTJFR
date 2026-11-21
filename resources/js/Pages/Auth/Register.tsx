@@ -20,12 +20,21 @@ const isAtLeast18 = (isoDate: string) => {
     return birth.getTime() <= cutoff.getTime();
 };
 
+/** El input date entrega yyyy-mm-dd y el backend exige d/m/Y: se convierte solo en el payload. */
+const toDmy = (isoDate: string) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return isoDate;
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
+};
+
 const validatePersonal = (data: RegisterForm): true | string => {
     if (!data.first_name?.trim()) return 'El nombre es obligatorio';
     if (!data.middle_name?.trim()) return 'El primer apellido es obligatorio';
     if (data.id_prefix !== 'V' && data.id_prefix !== 'E') return 'Selecciona la nacionalidad';
     if (!/^\d{1,9}$/.test(data.id_number)) return 'La cédula debe contener de 1 a 9 dígitos';
     if (data.address?.trim().length < 10) return 'La dirección debe tener al menos 10 caracteres';
+    if (!data.phone_number) return 'El teléfono es obligatorio';
+    if (!/^\d{7,11}$/.test(data.phone_number)) return 'El teléfono debe contener de 7 a 11 dígitos';
     if (!data.birth_date) return 'La fecha de nacimiento es obligatoria';
     if (!isAtLeast18(data.birth_date)) return 'Debes ser mayor de 18 años para registrarte';
     if (data.gender !== 'M' && data.gender !== 'F') return 'Selecciona el género';
@@ -34,6 +43,7 @@ const validatePersonal = (data: RegisterForm): true | string => {
 
 const validateCredentials = (data: RegisterForm): true | string => {
     if (!data.email?.trim()) return 'El correo electrónico es obligatorio';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return 'Ingresa un correo electrónico válido';
     if (!data.password) return 'La contraseña es obligatoria';
     if (data.password.length < 8) return 'La contraseña debe tener al menos 8 caracteres';
     if (!data.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/))
@@ -61,7 +71,7 @@ const withMessage = (content: ReactNode, message: string | null) => (
 );
 
 export default function Register() {
-    const { data, setData, errors, post, processing, reset, clearErrors } = useForm<RegisterForm>({
+    const { data, setData, errors, post, processing, transform, reset, clearErrors } = useForm<RegisterForm>({
         first_name: '',
         second_name: '',
         middle_name: '',
@@ -69,6 +79,7 @@ export default function Register() {
         id_prefix: '',
         id_number: '',
         address: '',
+        phone_number: '',
         birth_date: '',
         gender: '',
         email: '',
@@ -108,6 +119,7 @@ export default function Register() {
             return;
         }
         setBlockedMessage(null);
+        transform((d) => ({ ...d, birth_date: toDmy(d.birth_date) }));
         post(route('register'), {
             forceFormData: true,
             onError: () => {

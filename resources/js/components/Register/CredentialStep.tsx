@@ -8,11 +8,18 @@ import { Link } from '@inertiajs/react';
 export const CredentialStep = ({ data, errors, onChange }: StepProps) => (
     <div className="grid gap-x-4 md:grid-cols-2">
         <FormField className="md:col-span-2" label="Correo electrónico" htmlFor="email" required error={errors.email}>
-            <Input id="email" defaultValue={data.email} onChange={(e) => onChange('email', e.target.value)} aria-invalid={!!errors.email} />
+            <Input
+                id="email"
+                name="email"
+                defaultValue={data.email}
+                onChange={(e) => onChange('email', e.target.value.toLowerCase())}
+                aria-invalid={!!errors.email}
+            />
         </FormField>
         <FormField label="Contraseña" htmlFor="password" required error={errors.password}>
             <Input
                 id="password"
+                name="password"
                 type="password"
                 defaultValue={data.password}
                 onChange={(e) => onChange('password', e.target.value)}
@@ -22,6 +29,7 @@ export const CredentialStep = ({ data, errors, onChange }: StepProps) => (
         <FormField label="Confirmar contraseña" htmlFor="password_confirmation" required error={errors.password_confirmation}>
             <Input
                 id="password_confirmation"
+                name="password_confirmation"
                 type="password"
                 defaultValue={data.password_confirmation}
                 onChange={(e) => onChange('password_confirmation', e.target.value)}
@@ -32,6 +40,7 @@ export const CredentialStep = ({ data, errors, onChange }: StepProps) => (
             <div className="flex items-center justify-start gap-2">
                 <Checkbox
                     id="terms_of_service"
+                    name="terms_of_service"
                     checked={data.terms_of_service}
                     onCheckedChange={(checked) => onChange('terms_of_service', checked === true)}
                     aria-invalid={!!errors.terms_of_service}
