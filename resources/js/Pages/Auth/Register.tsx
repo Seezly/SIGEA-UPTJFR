@@ -10,6 +10,7 @@ import { PersonalStep } from '@/components/Register/PersonalStep';
 import { Button } from '@/components/ui/Button';
 import { CV_ACCEPT, CV_MAX_SIZE_MB } from '@/components/ui/FilePicker';
 import AuthLayout from '@/layouts/AuthLayout';
+import { CircleX } from 'lucide-react';
 
 const isAtLeast18 = (isoDate: string) => {
     const birth = new Date(`${isoDate}T00:00:00`);
@@ -43,9 +44,8 @@ const validateCredentials = (data: RegisterForm): true | string => {
 };
 
 const validateCV = (data: RegisterForm): true | string => {
-    if (!data.cv) return 'Debes subir tu Curriculum Vitae';
-    if (data.cv.size > CV_MAX_SIZE_MB * 1024 * 1024) return `El archivo debe ser menor a ${CV_MAX_SIZE_MB} MB`;
-    if (!Object.keys(CV_ACCEPT).includes(data.cv.type)) return 'El archivo debe ser un PDF, Word, o una imagen (JPG, PNG)';
+    if (data?.cv?.size && data?.cv?.size > CV_MAX_SIZE_MB * 1024 * 1024) return `El archivo debe ser menor a ${CV_MAX_SIZE_MB} MB`;
+    if (data?.cv?.type && !Object.keys(CV_ACCEPT).includes(data?.cv?.type)) return 'El archivo debe ser un PDF, Word, o una imagen (JPG, PNG)';
     return true;
 };
 
@@ -61,7 +61,7 @@ const withMessage = (content: ReactNode, message: string | null) => (
 );
 
 export default function Register() {
-    const { data, setData, errors } = useForm<RegisterForm>({
+    const { data, setData, errors, post, processing, reset, clearErrors } = useForm<RegisterForm>({
         first_name: '',
         second_name: '',
         middle_name: '',
@@ -78,26 +78,45 @@ export default function Register() {
         cv: null,
     });
 
+    const [screen, setScreen] = useState<'form' | 'error'>('form');
+
     const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
+
+    if (errors && Object.keys(errors).length > 0 && screen === 'form') {
+        setScreen('error');
+    }
 
     const update = (field: keyof RegisterForm, value: string | boolean | File | null) => {
         setData((prev) => ({ ...prev, [field]: value }));
         setBlockedMessage(null);
     };
 
-    const handleFinishClick = (complete: () => void) => {
-        const result = validatePersonal(data);
-        const result2 = validateCredentials(data);
-        if (result !== true) {
-            setBlockedMessage(result);
+    const handleFinishClick = () => {
+        const validatePersonalResult = validatePersonal(data);
+        const validateCredentialsResult = validateCredentials(data);
+        const validateCVResult = validateCV(data);
+        if (validatePersonalResult !== true) {
+            setBlockedMessage(validatePersonalResult);
             return;
         }
-        if (result2 !== true) {
-            setBlockedMessage(result2);
+        if (validateCredentialsResult !== true) {
+            setBlockedMessage(validateCredentialsResult);
+            return;
+        }
+        if (validateCVResult !== true) {
+            setBlockedMessage(validateCVResult);
             return;
         }
         setBlockedMessage(null);
-        complete();
+        post(route('register'), {
+            forceFormData: true,
+            onError: () => {
+                setScreen('error');
+            },
+            onSuccess: () => {
+                reset();
+            },
+        });
     };
 
     const schema: FormWizardSchema = {
@@ -126,43 +145,63 @@ export default function Register() {
     return (
         <AuthLayout title="Crea una cuenta" description="Ingresa tus datos para crear una cuenta en el sistema">
             <Head title="Registro" />
-            <FormWizard
-                schema={schema}
-                data={data as unknown as WizardData}
-                onDataChange={(nextData) => setData((prev) => ({ ...prev, ...(nextData as unknown as RegisterForm) }))}
-                theme={{
-                    primaryColor: '#001e40',
-                    borderRadius: '0',
-                    backgroundColor: '#ffffff',
-                    textColor: '#1a1c1c',
-                    subtitleColor: '#43474f',
-                    errorColor: '#fb2c36',
-                }}
-                finishButtonTemplate={(complete) => (
-                    <div className="wizard-footer-right">
-                        <Button variant="outline" onClick={() => handleFinishClick(complete)}>
-                            Finalizar registro
-                        </Button>
+            {screen === 'error' ? (
+                <div className="mx-auto flex w-full flex-col items-center justify-between bg-white p-8 shadow">
+                    <CircleX className="size-32 text-red-500" />
+                    <div className="my-8 text-center">
+                        <p className="text-xl font-medium text-red-500">Ocurrió un error al registrar tu cuenta</p>
+                        <span className="text-secondary-text text-sm">Por favor, inténtalo de nuevo más tarde.</span>
                     </div>
-                )}
-                nextButtonTemplate={(next) => (
-                    <div className="wizard-footer-right">
-                        <Button variant="outline" onClick={next}>
-                            Siguiente
-                        </Button>
-                    </div>
-                )}
-                backButtonTemplate={(back) => (
-                    <div className="wizard-footer-left">
-                        <Button variant="outline-light" onClick={back}>
-                            Anterior
-                        </Button>
-                    </div>
-                )}
-                classNames={{
-                    root: 'p-4',
-                }}
-            />
+                    <Button
+                        variant="outline"
+                        size="full"
+                        onClick={() => {
+                            setScreen('form');
+                            clearErrors();
+                        }}
+                    >
+                        Volver a intentarlo
+                    </Button>
+                </div>
+            ) : (
+                <FormWizard
+                    schema={schema}
+                    data={data as unknown as WizardData}
+                    onDataChange={(nextData) => setData((prev) => ({ ...prev, ...(nextData as unknown as RegisterForm) }))}
+                    theme={{
+                        primaryColor: '#001e40',
+                        borderRadius: '0',
+                        backgroundColor: '#ffffff',
+                        textColor: '#1a1c1c',
+                        subtitleColor: '#43474f',
+                        errorColor: '#fb2c36',
+                    }}
+                    finishButtonTemplate={() => (
+                        <div className="wizard-footer-right">
+                            <Button variant="outline" onClick={() => handleFinishClick()} disabled={processing}>
+                                {processing ? 'Enviando…' : 'Finalizar registro'}
+                            </Button>
+                        </div>
+                    )}
+                    nextButtonTemplate={(next) => (
+                        <div className="wizard-footer-right">
+                            <Button variant="outline" onClick={next}>
+                                Siguiente
+                            </Button>
+                        </div>
+                    )}
+                    backButtonTemplate={(back) => (
+                        <div className="wizard-footer-left">
+                            <Button variant="outline-light" onClick={back}>
+                                Anterior
+                            </Button>
+                        </div>
+                    )}
+                    classNames={{
+                        root: 'p-4',
+                    }}
+                />
+            )}
         </AuthLayout>
     );
 }

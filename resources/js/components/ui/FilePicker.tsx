@@ -29,6 +29,7 @@ interface FilePickerProps {
     onReject?: (rejections: FileRejection[]) => void;
     disabled?: boolean;
     className?: string;
+    name: string;
 }
 
 const formatExtensions = (accept: Accept): string =>
@@ -65,6 +66,7 @@ export function FilePicker({
     accept,
     maxSizeMB,
     id,
+    name,
     children = 'Arrastra el archivo aquí o haz clic para seleccionarlo',
     hint,
     ariaLabel = 'Seleccionar archivo',
@@ -111,7 +113,7 @@ export function FilePicker({
                     ),
                 })}
             >
-                <input {...getInputProps({ id, 'aria-label': ariaLabel })} />
+                <input {...getInputProps({ id, name, 'aria-label': ariaLabel })} />
 
                 <Upload className={cn('mx-auto mb-3 size-8 text-secondary-text', isDragReject && 'text-red-500')} aria-hidden="true" />
 
