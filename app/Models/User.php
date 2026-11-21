@@ -81,6 +81,16 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
 
     /**
+     * Get the person associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function people()
+    {
+        return $this->belongsTo(People::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

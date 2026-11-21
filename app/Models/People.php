@@ -26,6 +26,41 @@ class People extends Model
         'id_number',
     ];
 
+    /**
+     * Get the user associated with the person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
+    /**
+     * Get the documents associated with the person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get the applicant profile associated with the person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function applicantProfile()
+    {
+        return $this->hasOne(ApplicantProfile::class);
+    }
+
+    /**
+     * Get the birth date of the person in dd/mm/yyyy format.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
     protected function birthDate(): Attribute
     {
         return Attribute::make(

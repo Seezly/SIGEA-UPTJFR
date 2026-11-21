@@ -21,6 +21,7 @@ beforeEach(function () {
         'password' => 'password',
         'password_confirmation' => 'password',
         'terms_of_service' => true,
+        'cv' => null,
     ];
 });
 

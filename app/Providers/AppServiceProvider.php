@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use App\Services\Cv\GeminiCvExtractor;
+use App\Services\Cv\DocxToText;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(GeminiCvExtractor::class, function ($app) {
+            return new GeminiCvExtractor(
+                $app->make(DocxToText::class),
+                apiKey: config('services.gemini.api_key')
+            );
+        });
     }
 
     /**

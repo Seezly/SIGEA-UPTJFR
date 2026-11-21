@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\People;
+use App\Models\Document;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,6 +48,7 @@ class RegisteredUserController extends Controller
             'phone_number' => 'required|string|lowercase|max:11|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'terms_of_service' => 'required|accepted',
+            'cv' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         $user = DB::transaction(function () use ($validated) {
@@ -61,6 +63,25 @@ class RegisteredUserController extends Controller
                 'birth_date' => $validated['birth_date'],
                 'gender' => $validated['gender'],
             ]);
+
+            DB::afterCommit(function () use ($people, $validated) {
+                if (isset($validated['cv'])) {
+                    $path = $validated['cv']->store('documents', 'local');
+                    $document = Document::create([
+                        'people_id' => $people->id,
+                        'document_type' => 'curriculum_vitae',
+                        'file_name' => $validated['cv']->getClientOriginalName(),
+                        'mime_type' => $validated['cv']->getClientMimeType(),
+                        'file_path' => $path,
+                        'file_size' => $validated['cv']->getSize(),
+                        'verification_status' => 'approved',
+                    ]);
+                }
+
+                $people->applicantProfile()->create([
+                    'current_curriculum_vitae_id' => $document->id ?? null,
+                ]);
+            });
 
             return User::create([
                 'people_id' => $people->id,
