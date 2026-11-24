@@ -3,7 +3,9 @@
 use App\Models\People;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->formData = [
@@ -151,6 +153,19 @@ test('User registration succeeds and user is assigned postulante role', function
     $user = User::where('email', 'sergio@example.com')->first();
     $this->assertNotNull($user);
     $this->assertEquals('postulante', $user->role()?->slug);
+});
+
+test('User registration starts email verification', function () {
+    Notification::fake();
+
+    $this->post(route('register'), $this->formData)
+        ->assertStatus(302)
+        ->assertRedirect(route('dashboard'));
+
+    $user = User::where('email', 'sergio@example.com')->first();
+    $this->assertNotNull($user);
+
+    Notification::assertSentTo($user, VerifyEmail::class);
 });
 
 test('User registration fails if birth date is 18 years ago or less', function () {
