@@ -1,7 +1,7 @@
-import { type RegisterForm } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { useState, type ReactNode } from 'react';
-import { FormWizard, type FormWizardSchema, type WizardData } from 'react-form-wizard-component';
+import { type RegisterForm, type SharedData } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { FormWizard, type FormWizardMethods, type FormWizardSchema, type WizardData } from 'react-form-wizard-component';
 import 'react-form-wizard-component/styles.css';
 
 import { CredentialStep } from '@/components/Register/CredentialStep';
@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { CV_ACCEPT, CV_MAX_SIZE_MB } from '@/components/ui/FilePicker';
 import AuthLayout from '@/layouts/AuthLayout';
 import { CircleX } from 'lucide-react';
+import { toast } from 'sonner';
 
 const isAtLeast18 = (isoDate: string) => {
     const birth = new Date(`${isoDate}T00:00:00`);
@@ -59,6 +60,22 @@ const validateCV = (data: RegisterForm): true | string => {
     return true;
 };
 
+const STEP_BY_FIELD: Record<string, string> = {
+    email: 'credentials',
+    password: 'credentials',
+    password_confirmation: 'credentials',
+    terms_of_service: 'credentials',
+    cv: 'cv',
+};
+
+const STEP_ORDER = ['personal', 'credentials', 'cv'];
+
+/** Paso del wizard que contiene al campo (los no listados pertenecen al primero). */
+const stepForField = (field: string) => STEP_BY_FIELD[field] ?? 'personal';
+
+/** Primer paso, en orden del wizard, que tenga algún campo con error. */
+const firstStepWithError = (fields: string[]) => STEP_ORDER.find((step) => fields.some((field) => stepForField(field) === step));
+
 const withMessage = (content: ReactNode, message: string | null) => (
     <>
         {message ? (
@@ -71,7 +88,7 @@ const withMessage = (content: ReactNode, message: string | null) => (
 );
 
 export default function Register() {
-    const { data, setData, errors, post, processing, transform, reset, clearErrors } = useForm<RegisterForm>({
+    const { data, setData, errors, post, processing, transform, clearErrors } = useForm<RegisterForm>({
         first_name: '',
         second_name: '',
         middle_name: '',
@@ -93,9 +110,17 @@ export default function Register() {
 
     const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
 
-    if (errors && Object.keys(errors).length > 0 && screen === 'form') {
-        setScreen('error');
-    }
+    const wizardRef = useRef<FormWizardMethods>(null);
+
+    const { flash } = usePage<SharedData>().props;
+
+    // El throttle de registro redirige de vuelta al formulario con un mensaje
+    // en la sesión (flash); sin esto el usuario no veía por qué falló.
+    useEffect(() => {
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
 
     const update = (field: keyof RegisterForm, value: string | boolean | File | null) => {
         setData((prev) => ({ ...prev, [field]: value }));
@@ -122,12 +147,30 @@ export default function Register() {
         transform((d) => ({ ...d, birth_date: toDmy(d.birth_date) }));
         post(route('register'), {
             forceFormData: true,
-            onError: () => {
+            // Errores de validación (422/302 con errors en sesión): nos quedamos
+            // en el formulario, mostramos el banner y saltamos al primer paso
+            // que contiene un campo con error.
+            onError: (serverErrors) => {
+                const fields = Object.keys(serverErrors);
+                const step = firstStepWithError(fields);
+                if (!step) return;
+                const firstField = fields.find((field) => stepForField(field) === step);
+                if (firstField) setBlockedMessage(serverErrors[firstField]);
+                wizardRef.current?.goToTabById(step);
+            },
+            // 419 (CSRF), 429, 500 y respuestas no-Inertia: pantalla de error.
+            // Devolver false cancela el diálogo HTML crudo de Inertia.
+            onHttpException: () => {
                 setScreen('error');
+                return false;
             },
-            onSuccess: () => {
-                reset();
+            onNetworkError: () => {
+                setScreen('error');
+                return false;
             },
+            // Un registro exitoso siempre redirige al dashboard (el componente
+            // se desmonta), así que no hay nada que limpiar. Resetear aquí
+            // borraría el formulario cuando el throttle rebota a esta página.
         });
     };
 
@@ -169,6 +212,7 @@ export default function Register() {
                         size="full"
                         onClick={() => {
                             setScreen('form');
+                            setBlockedMessage(null);
                             clearErrors();
                         }}
                     >
@@ -177,6 +221,7 @@ export default function Register() {
                 </div>
             ) : (
                 <FormWizard
+                    ref={wizardRef}
                     schema={schema}
                     data={data as unknown as WizardData}
                     onDataChange={(nextData) => setData((prev) => ({ ...prev, ...(nextData as unknown as RegisterForm) }))}
