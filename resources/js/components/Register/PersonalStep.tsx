@@ -1,3 +1,4 @@
+import { DatePicker, toIsoDate } from '@/components/ui/DatePicker';
 import { FormField } from '@/components/ui/FormField';
 import { Input } from '@/components/ui/Input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
@@ -83,12 +84,12 @@ export const PersonalStep = ({ data, errors, onChange }: StepProps) => (
             />
         </FormField>
         <FormField label="Fecha de nacimiento" htmlFor="birth_date" required error={errors.birth_date}>
-            <Input
+            <DatePicker
                 id="birth_date"
                 name="birth_date"
-                type="date"
-                defaultValue={data.birth_date}
-                onChange={(e) => onChange('birth_date', e.target.value)}
+                value={data.birth_date}
+                onChange={(value) => onChange('birth_date', value)}
+                max={toIsoDate(new Date())}
                 aria-invalid={!!errors.birth_date}
             />
         </FormField>
