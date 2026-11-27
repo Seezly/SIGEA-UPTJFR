@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\People;
 use App\Models\Document;
+use App\Services\Cv\CvExtractionService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -31,11 +32,11 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(RegisterRequest $request): RedirectResponse
+    public function store(RegisterRequest $request, CvExtractionService $cvExtraction): RedirectResponse
     {
         $validated = $request->validated();
 
-        $user = DB::transaction(function () use ($validated) {
+        $user = DB::transaction(function () use ($validated, $cvExtraction) {
             $people = People::create([
                 'first_name' => $validated['first_name'],
                 'second_name' => $validated['second_name'] ?? null,
@@ -48,7 +49,9 @@ class RegisteredUserController extends Controller
                 'gender' => $validated['gender'],
             ]);
 
-            DB::afterCommit(function () use ($people, $validated) {
+            DB::afterCommit(function () use ($people, $validated, $cvExtraction) {
+                $document = null;
+
                 if (isset($validated['cv'])) {
                     $path = $validated['cv']->store('documents', 'local');
                     $document = Document::create([
@@ -62,9 +65,11 @@ class RegisteredUserController extends Controller
                     ]);
                 }
 
-                $people->applicantProfile()->create([
+                $profile = $people->applicantProfile()->create([
                     'current_curriculum_vitae_id' => $document->id ?? null,
                 ]);
+
+                $cvExtraction->extractAndPersist($document, $profile);
             });
 
             return User::create([

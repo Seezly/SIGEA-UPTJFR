@@ -1,7 +1,5 @@
 <?php
 
-// TODO: Verificar manualmente antes de commitear y pushear.
-
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -64,7 +62,7 @@ test('Registration stores an uploaded CV in documents', function () {
         'email' => 'sergio@example.com',
     ]);
 
-    Storage::disk('local')->assertExists('documents/'.$this->withCvData['cv']->hashName());
+    Storage::disk('local')->assertExists('documents/' . $this->withCvData['cv']->hashName());
 });
 
 test('Registration accepts an image CV', function () {
@@ -78,7 +76,7 @@ test('Registration accepts an image CV', function () {
         'email' => 'sergio@example.com',
     ]);
 
-    Storage::disk('local')->assertExists('documents/'.$this->withCvData['cv']->hashName());
+    Storage::disk('local')->assertExists('documents/' . $this->withCvData['cv']->hashName());
 });
 
 test('Registration rejects a CV with an unsupported format', function () {
@@ -92,7 +90,7 @@ test('Registration rejects a CV with an unsupported format', function () {
         'email' => 'sergio@example.com',
     ]);
 
-    Storage::disk('local')->assertMissing('documents/'.$this->withCvData['cv']->hashName());
+    Storage::disk('local')->assertMissing('documents/' . $this->withCvData['cv']->hashName());
 });
 
 test('Registration rejects a CV that is too large', function () {
@@ -106,5 +104,5 @@ test('Registration rejects a CV that is too large', function () {
         'email' => 'sergio@example.com',
     ]);
 
-    Storage::disk('local')->assertMissing('documents/'.$this->withCvData['cv']->hashName());
+    Storage::disk('local')->assertMissing('documents/' . $this->withCvData['cv']->hashName());
 });
